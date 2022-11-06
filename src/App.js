@@ -1,24 +1,47 @@
-import logo from './logo.svg';
 import './App.css';
+import { Sidebar } from './components/Sidebar';
+import { Header } from './components/Header';
+import { User } from './components/contents/User'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import background from './background.jpg'
 
 function App() {
+  document.body.style.backgroundImage = `url(${background})`
+  document.body.style.backgroundSize = 'cover'
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Header />
+        <div className="container-float mx-3 my-3">
+          <div className="row">
+            <div className="col-md-12">
+              <Sidebar />
+            </div>
+            <Routes>
+              {/* <Route
+              path='/'
+              element={
+                <div className="col md 10">
+                  <Dashboard />
+                </div>
+              }
+            /> */}
+
+              <Route
+                path='/users'
+                element={
+                  <div className="col md 10">
+                    <User />
+                  </div>
+                }
+              />
+            </Routes>
+
+          </div>
+        </div>
+      </Router>
+    </>
   );
 }
 
