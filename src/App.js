@@ -1,5 +1,6 @@
 import './App.css';
-import { Sidebar } from './components/Sidebar';
+// import { Sidebar } from './components/Sidebar';
+import { SideMenu } from './components/SideMenu';
 import { Header } from './components/Header';
 import { User } from './components/contents/User'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -12,11 +13,11 @@ function App() {
   return (
     <>
       <Router>
-        <Header />
+        {/* <Header /> */}
         <div className="container-float mx-3 my-3">
           <div className="row">
             <div className="col-md-12">
-              <Sidebar />
+              <SideMenu />
             </div>
             <Routes>
               {/* <Route
