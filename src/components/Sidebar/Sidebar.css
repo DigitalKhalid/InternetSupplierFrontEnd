@@ -1,0 +1,107 @@
+.sidebar-open-btn {
+    position: absolute;
+    left: 0;
+    padding-top: 0.5em;
+    padding-left: 0.75em;
+    font-size: 1.5em;
+}
+
+.sidebar-open-btn.hide {
+    visibility: hidden;
+}
+
+.sidebar-open-btn:hover {
+    cursor: pointer;
+    color: greenyellow;
+}
+
+.sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    height: 100%;
+    overflow: auto;
+    transform: translateX(0);
+    transition: 1s ease;
+}
+
+.sidebar.close {
+    transform: translateX(-100%);
+    transition: 1s ease;
+}
+
+.sidebar .sidebar-menu {
+    padding-top: 50px;
+}
+
+.sidebar-close-btn {
+    position: absolute;
+    right: 0;
+    padding-top: .5em;
+    padding-right: 1em;
+    font-size: 1.25em;
+}
+
+.sidebar-close-btn:hover {
+    color: red;
+    cursor: pointer;
+}
+.sidebar-item {
+    font-size: 1em;
+    display: block;
+    cursor: pointer;
+}
+
+.sidebar-title:hover {
+    background-color: rgba(0, 0, 255, 1);
+}
+
+.sidebar-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sidebar-title span i {
+    display: inline-block;
+    width: 2em;
+}
+
+.sidebar-title .toggle-btn {
+    margin-top: 0.8em;
+    font-size: .9em;
+    transition: transform 0.3s;
+}
+
+.sidebar-item.open > .sidebar-title .toggle-btn {
+    transform: rotate(90deg);
+}
+
+.sidebar-item.open > .sidebar-content {
+    transition: 0.2s ease;
+    height: auto;
+}
+
+.sidebar-content {
+    background-color: rgba(255, 255, 255, 0.1);
+    font-size: 1em;
+    padding: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    width: 100%;
+    display: block;
+    line-height: 35px;
+    text-align: left;
+    padding: 0.5em 1.25em;
+    padding-left: 1.5em;
+}
+
+button:hover {
+    transition: 0.3s ease;
+}
