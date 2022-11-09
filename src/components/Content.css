@@ -1,12 +1,21 @@
+.main {
+    display: flex;
+    flex-direction: wrap;
+    height: 100vh;
+}
+
 .container-content{
     transform: translateX(0%);
     transition: 1s ease;
 
+    position: relative;
     flex-grow: 1;
-    padding: 2em;
     display: flex;
     flex-direction: column;
-    text-align: center;
+    margin-top: 1em;
+    margin-left: 2em;
+    margin-right: 2em;
+    overflow-y: auto;
 }
 
 .container-content.expand {
@@ -15,15 +24,18 @@
 }
 
 .content-header {
+    /* width: 100%; */
+    padding-left: 1em;
     background: rgba(255, 255, 255, 0.2);
     font-size: 2em;
+    border-radius: 10px;
 }
 
 .content-body {
-    display: flexbox;
     margin-top: 1em;
-    padding: 1em;
-    /* height:100vh; */
+    padding: 2em;
     background: rgba(255, 255, 255, 0.1);
-    overflow: hidden;
+    /* overflow: hidden; */
+    border-radius: 10px;
+    justify-content: center;
 }

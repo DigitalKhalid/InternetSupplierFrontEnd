@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './Sidebar.css'
-import './Sidebar.json'
+import { Link } from 'react-router-dom'
 
 export const SidebarItem = (props) => {
     let { title, icon, childrens, path } = props
@@ -9,31 +9,32 @@ export const SidebarItem = (props) => {
     if (childrens) {
         return (
             <div className={open ? 'sidebar-item open' : 'sidebar-item'}>
-                <button className="sidebar-title" onClick={() => setOpen(!open)}>
+                <span className="sidebar-title" onClick={() => setOpen(!open)}>
                     <span>
                         <i className={icon}></i>
                         {title}
                     </span>
                     <i className='fa fa-angle-right toggle-btn'></i>
-                </button>
-                <button className="sidebar-content">
+                </span>
+
+                <span className="sidebar-content">
                     {childrens.map((item, index) => {
                         return (
                             <SidebarItem key={index} title={item.title} icon={item.icon} childrens={item.childrens} path={item.path}/>
                         )
                     })}
-                </button>
+                </span>
             </div>
         )
     } else {
         return (
             <div className={open ? 'sidebar-item open' : 'sidebar-item'}>
-                <button className="sidebar-title" onClick={() => setOpen(!open)}>
+                <Link className="sidebar-title" to={path}>
                     <span>
                     <i className={icon}></i>
                         {title}
                     </span>
-                </button>
+                </Link>
             </div>
         )
     }

@@ -9,15 +9,10 @@ html, body {
 }
 
 body {
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 16px;
     color: white;
-}
-
-.main {
-    display: flex;
-    height: 100vh;
-    background: radial-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url('../src/background.jpg');
+    background: radial-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url('./components/background.jpg');
     background-position: center;
     background-size: cover;
 }

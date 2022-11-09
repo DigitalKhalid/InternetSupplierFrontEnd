@@ -16,23 +16,28 @@
 }
 
 .sidebar {
-    width: 240px;
     flex-shrink: 0;
+    width: 240px;
+    height: 100%;
     background-color: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    height: 100%;
     overflow: auto;
     transform: translateX(0);
-    transition: 1s ease;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.75s linear;
 }
 
 .sidebar.close {
+    visibility: hidden;
+    opacity: 0;
     transform: translateX(-100%);
-    transition: 1s ease;
+    width: 30px;
+
 }
 
 .sidebar .sidebar-menu {
-    padding-top: 50px;
+    padding-top: 1em;
 }
 
 .sidebar-close-btn {
@@ -48,7 +53,6 @@
     cursor: pointer;
 }
 .sidebar-item {
-    font-size: 1em;
     display: block;
     cursor: pointer;
 }
@@ -58,8 +62,8 @@
 }
 
 .sidebar-title {
-    display: flex;
-    justify-content: space-between;
+    padding-left: 1.5em;
+    font-size: 1.1em;
 }
 
 .sidebar-title span i {
@@ -77,6 +81,11 @@
     transform: rotate(90deg);
 }
 
+.toggle-btn {
+    float: right;
+    margin-right: 1em;
+}
+
 .sidebar-item.open > .sidebar-content {
     transition: 0.2s ease;
     height: auto;
@@ -84,24 +93,77 @@
 
 .sidebar-content {
     background-color: rgba(255, 255, 255, 0.1);
-    font-size: 1em;
-    padding: 0;
+    font-size: .9em;
     height: 0;
     overflow: hidden;
+    padding-left: 1em;
 }
 
-button {
-    background-color: transparent;
+.sidebar-content, .sidebar-title {
+    text-decoration: none;
     color: white;
-    border: none;
     width: 100%;
     display: block;
-    line-height: 35px;
-    text-align: left;
-    padding: 0.5em 1.25em;
-    padding-left: 1.5em;
+    line-height: 40px;
 }
 
-button:hover {
+.sidebar-content:hover, .sidebar-title:hover {
+    text-decoration: none;
     transition: 0.3s ease;
+    color: white;
 }
+
+.user-info {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 1.25em;
+    padding-left: 1.5em;
+    align-items: center;
+}
+
+.avatar {
+    flex: 0 0;
+    width: 5em;
+    height: 5em;
+    border-radius: 100%;
+}
+
+.user {
+    margin-left: .5em;
+    line-height: 0px;
+    margin-top: 1.25em;
+}
+.bizz-footer {
+    display: flex;
+    float: left;
+    margin-left: 1.75em;
+    margin-top: 1em;
+    height: 2em;
+    border-radius: 7px;
+    overflow: hidden;
+    opacity: 50%;
+}
+
+.bizz-footer:hover {
+    cursor: pointer;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgba(150, 200, 250, 1);
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 150, 200, 1);
+  }

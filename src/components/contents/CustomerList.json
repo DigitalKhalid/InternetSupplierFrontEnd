@@ -1,0 +1,23 @@
+[
+    {
+        "id": "admin",
+        "name": "Muhamamd Khalid",
+        "contactno":"0000-0000000",
+        "email":"admin@gmail.com",
+        "area":"Rawalpindi"
+    },
+    {
+        "id": "admin",
+        "name": "Muhamamd Khalid",
+        "contactno":"0000-0000000",
+        "email":"admin@gmail.com",
+        "area":"Islamabad"
+    },
+    {
+        "id": "admin",
+        "name": "Muhamamd Khalid",
+        "contactno":"0000-0000000",
+        "email":"admin@gmail.com",
+        "area":"Rawalpindi"
+    }
+]

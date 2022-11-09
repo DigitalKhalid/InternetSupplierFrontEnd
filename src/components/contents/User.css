@@ -1,5 +1,5 @@
 .label {
-    color: gray;
+    color: rgba(225, 225, 225, 1);
     font-size: small;
 }
 
@@ -10,4 +10,18 @@
 .required:after{
     content: "*";
     color: red;
+}
+
+.form-control, .form-select{
+    background: rgba(255, 255, 255, 0.8);
+    color: black;
+}
+
+.row.g-2 {
+    justify-content: center;
+}
+
+.form-btn {
+    width: 5em;
+    float: right;
 }
