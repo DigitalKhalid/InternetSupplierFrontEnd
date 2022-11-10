@@ -1,9 +1,12 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import data from './CustomerList.json'
 import './CustomerList.css'
 import { Link } from 'react-router-dom'
+import CustomerContext from '../../context/CustomerContext'
 
 export const CustomersList = () => {
+    const pageInfo = useContext(CustomerContext)
+
     return (
         <>
             <div className='list'>

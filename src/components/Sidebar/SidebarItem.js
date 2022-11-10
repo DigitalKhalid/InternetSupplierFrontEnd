@@ -1,10 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Sidebar.css'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 export const SidebarItem = (props) => {
     let { title, icon, childrens, path } = props
     const [open, setOpen] = useState(false)
+    
+    let location = useLocation();
+    
+    useEffect(() => {
+        console.log(location.pathname)
+
+    }, [location])
 
     if (childrens) {
         return (
@@ -29,7 +36,7 @@ export const SidebarItem = (props) => {
     } else {
         return (
             <div className={open ? 'sidebar-item open' : 'sidebar-item'}>
-                <Link className="sidebar-title" to={path}>
+                <Link className={`${location.pathname=== path ? "sidebar-title active":"sidebar-title"}`} to={path}>
                     <span>
                     <i className={icon}></i>
                         {title}

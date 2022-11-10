@@ -1,8 +1,9 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import './Sidebar.css'
 import { SidebarItem } from './SidebarItem'
 import items from './Sidebar.json'
 import logo from '../logo.png'
+
 
 export const Sidebar = () => {
     const [sidebarOpen, setSidebarOpen] = useState(true)
@@ -10,7 +11,7 @@ export const Sidebar = () => {
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen)
     }
-
+  
     return (
         <>
             <div className={`${sidebarOpen ? "sidebar-open-btn hide" : "sidebar-open-btn"}`} onClick={toggleSidebar}>

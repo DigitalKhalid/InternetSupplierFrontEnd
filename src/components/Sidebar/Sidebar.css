@@ -167,3 +167,10 @@
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(100, 150, 200, 1);
   }
+
+  .active {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    /* font-weight: bold; */
+    font-style: italic;
+  }
