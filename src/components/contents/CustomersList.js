@@ -1,11 +1,15 @@
 import React, {useContext} from 'react'
-import data from './CustomerList.json'
 import './CustomerList.css'
 import { Link } from 'react-router-dom'
-import CustomerContext from '../../context/CustomerContext'
+import CustomerContext from '../../context/customer/CustomerContext'
 
 export const CustomersList = () => {
-    const pageInfo = useContext(CustomerContext)
+    const context = useContext(CustomerContext)
+    const {customers, updateCustomer, deleteCustomer} = context
+
+    const editCustomer = ()=>{
+
+    }
 
     return (
         <>
@@ -14,7 +18,8 @@ export const CustomersList = () => {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
                             <th>Contact No.</th>
                             <th>Email</th>
                             <th>Area</th>
@@ -22,17 +27,18 @@ export const CustomersList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((value, index) => {
+                        {customers.map((customer, index) => {
                             return (
                                 <tr key={index}>
-                                    <td>{value.id}</td>
-                                    <td>{value.name}</td>
-                                    <td>{value.contactno}</td>
-                                    <td>{value.email}</td>
-                                    <td>{value.area}</td>
+                                    <td>{customer.id}</td>
+                                    <td>{customer.first_name}</td>
+                                    <td>{customer.last_name}</td>
+                                    <td>{customer.contact}</td>
+                                    <td>{customer.city}</td>
+                                    <td>{customer.area}</td>
                                     <td >
-                                        <Link className='action-btn'><i className='fa fa-trash-can'></i></Link>
-                                        <Link className='action-btn'><i className='fa fa-pen-to-square'></i></Link>
+                                        <Link className='action-btn' onClick={()=>deleteCustomer(customer.id)} ><i className='fa fa-trash-can'></i></Link>
+                                        <Link className='action-btn' onClick={editCustomer} ><i className='fa fa-pen-to-square'></i></Link>
                                     </td>
                                 </tr>
                             )

@@ -1,10 +1,10 @@
 import React from 'react'
 import { Sidebar } from './Sidebar/Sidebar.js'
 import '../components/Content.css'
-import { User } from './contents/User'
+import { NewCustomer } from './contents/NewCustomer'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { CustomersList } from './contents/CustomersList.js'
-import CustomerState from '../context/CustomerState'
+import CustomerState from '../context/customer/CustomerState'
 
 export const Content = () => {
     return (
@@ -41,7 +41,7 @@ export const Content = () => {
                                             </div>
 
                                             <div className="content-body">
-                                                <User />
+                                                <NewCustomer />
                                             </div>
                                         </div>
                                     </div>

@@ -7,11 +7,6 @@ export const SidebarItem = (props) => {
     const [open, setOpen] = useState(false)
     
     let location = useLocation();
-    
-    useEffect(() => {
-        console.log(location.pathname)
-
-    }, [location])
 
     if (childrens) {
         return (
