@@ -1,15 +1,30 @@
-import React, {useContext} from 'react'
+import React, { useContext, useEffect } from 'react'
 import './CustomerList.css'
 import { Link } from 'react-router-dom'
 import CustomerContext from '../../context/customer/CustomerContext'
+import PopupContext from '../../context/popup/PopupContext'
+import Popup from '../Popup'
+import EditCustomerForm from '../contents/EditCustomerForm'
 
 export const CustomersList = () => {
     const context = useContext(CustomerContext)
-    const {customers, updateCustomer, deleteCustomer} = context
+    const { customers, setCustomerId, getAllCustomers, deleteCustomer, updateCustomer } = context
+    const { togglePopup } = useContext(PopupContext)
 
-    const editCustomer = ()=>{
+    useEffect(() => {
+        getAllCustomers()
+        //   eslint-disable-next-line
+    }, [])
 
+    const openEditPopup = (id) => {
+        togglePopup()
+        setCustomerId(id)
     }
+
+    // const UpdateCustomerAndClose=()=>{
+    //     updateCustomer()
+    //     togglePopup()
+    // }
 
     return (
         <>
@@ -23,6 +38,7 @@ export const CustomersList = () => {
                             <th>Contact No.</th>
                             <th>Email</th>
                             <th>Area</th>
+                            <th>City</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -34,11 +50,12 @@ export const CustomersList = () => {
                                     <td>{customer.first_name}</td>
                                     <td>{customer.last_name}</td>
                                     <td>{customer.contact}</td>
-                                    <td>{customer.city}</td>
+                                    <td>{customer.email}</td>
                                     <td>{customer.area}</td>
+                                    <td>{customer.city}</td>
                                     <td >
-                                        <Link className='action-btn' onClick={()=>deleteCustomer(customer.id)} ><i className='fa fa-trash-can'></i></Link>
-                                        <Link className='action-btn' onClick={editCustomer} ><i className='fa fa-pen-to-square'></i></Link>
+                                        <Link className='action-btn' onClick={() => deleteCustomer(customer.id)} ><i className='fa fa-trash-can'></i></Link>
+                                        <Link className='action-btn' onClick={() => openEditPopup(customer.id)} ><i className='fa fa-pen-to-square'></i></Link>
                                     </td>
                                 </tr>
                             )
@@ -59,6 +76,9 @@ export const CustomersList = () => {
                         <a className="page-link" href="/">Next</a>
                     </li>
                 </ul>
+            </div>
+            <div>
+                <Popup header='Edit Customer' body={<EditCustomerForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={updateCustomer}/>
             </div>
         </>
     )
