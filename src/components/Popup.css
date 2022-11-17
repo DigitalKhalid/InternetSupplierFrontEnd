@@ -19,8 +19,14 @@
     color: white;
     border-radius: .75em;
     box-shadow: 2px 2px 5px 1px rgba(255, 255, 255, .2), 5px 5px 20px 0 rgba(0, 0, 0, .4);
-    min-width: 60%;
-    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 500ms ease, visibility 500ms ease;
+}
+
+.popup.open {
+    visibility: visible;
+    opacity: 1;
 }
 
 .popup-content {

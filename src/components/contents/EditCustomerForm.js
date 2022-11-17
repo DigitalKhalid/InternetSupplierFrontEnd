@@ -1,52 +1,17 @@
 import './NewCustomer.css'
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import CustomerContext from '../../context/customer/CustomerContext'
 
 const EditCustomerForm = () => {
     const context = useContext(CustomerContext)
-    const { customers, customer, setCustomer, customerId, updateCustomer } = context
-    // const [currentCustomer, setCurrentCustomer] = useState(customers)
-
-    // const [customer, setCustomer] = useState({
-    //     first_name: '',
-    //     last_name: '',
-    //     contact: '',
-    //     email:'',
-    //     biography: '',
-    //     street_address: '',
-    //     area: '',
-    //     city: '',
-    //     image: '',
-    // })
-
-    useEffect(() => {
-        const cc = customers.filter((customer) => { return customer.id === customerId })
-        setCustomer({
-            first_name: cc[0].first_name,
-            last_name: cc[0].last_name,
-            contact: cc[0].contact,
-            email: cc[0].email,
-            biography: cc[0].biography,
-            street_address: cc[0].street_address,
-            area: cc[0].area,
-            city: cc[0].city,
-            // image: cc[0].image,
-        })
-        //   eslint-disable-next-line
-    }, [])
-
-    // const saveCustomer = (event) => {
-    //     event.preventDefault(); //to prevent page reloading on function call
-    //     updateCustomer();
-    // }
+    const { customer, setCustomer } = context
 
     const handleOnChange = (event) => {
         setCustomer({ ...customer, [event.target.name]: event.target.value })
-        console.log(customer)
     }
 
     return (
-        <div className='container col-md-8'>
+        <div className='container'>
             <form className="row g-2">
                 { }
                 <div className="col-md-5">

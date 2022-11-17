@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import PopupContext from './PopupContext'
 
 const PopupState = (props) => {
-    const [openPopup, setOpenPopup] = useState(false)
+    const [isOpen, setIsOpen] = useState(false)
 
     const togglePopup = () => {
-        setOpenPopup(!openPopup)
+        setIsOpen(!isOpen)
     }
 
     return (
-        <PopupContext.Provider value={{ openPopup, togglePopup }}>
+        <PopupContext.Provider value={{ isOpen, togglePopup }}>
             {props.children}
         </PopupContext.Provider>
     )

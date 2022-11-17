@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './CustomerList.css'
 import { Link } from 'react-router-dom'
 import CustomerContext from '../../context/customer/CustomerContext'
@@ -8,23 +8,24 @@ import EditCustomerForm from '../contents/EditCustomerForm'
 
 export const CustomersList = () => {
     const context = useContext(CustomerContext)
-    const { customers, setCustomerId, getAllCustomers, deleteCustomer, updateCustomer } = context
+    const { customers, setCustomer, getAllCustomers, deleteCustomer, updateCustomer } = context
     const { togglePopup } = useContext(PopupContext)
 
-    useEffect(() => {
-        getAllCustomers()
-        //   eslint-disable-next-line
-    }, [])
+    let cusid =
+        useEffect(() => {
+            getAllCustomers()
+            //   eslint-disable-next-line
+        }, [])
 
-    const openEditPopup = (id) => {
+    const openEditPopup = (customer) => {
+        setCustomer(customer)
         togglePopup()
-        setCustomerId(id)
     }
 
-    // const UpdateCustomerAndClose=()=>{
-    //     updateCustomer()
-    //     togglePopup()
-    // }
+    const updateCustomerClose = () => {
+        updateCustomer()
+        togglePopup()
+    }
 
     return (
         <>
@@ -55,7 +56,7 @@ export const CustomersList = () => {
                                     <td>{customer.city}</td>
                                     <td >
                                         <Link className='action-btn' onClick={() => deleteCustomer(customer.id)} ><i className='fa fa-trash-can'></i></Link>
-                                        <Link className='action-btn' onClick={() => openEditPopup(customer.id)} ><i className='fa fa-pen-to-square'></i></Link>
+                                        <Link className='action-btn' onClick={() => openEditPopup(customer)} ><i className='fa fa-pen-to-square'></i></Link>
                                     </td>
                                 </tr>
                             )
@@ -78,7 +79,7 @@ export const CustomersList = () => {
                 </ul>
             </div>
             <div>
-                <Popup header='Edit Customer' body={<EditCustomerForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={updateCustomer}/>
+                <Popup header='Edit Customer' body={<EditCustomerForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={updateCustomerClose} />
             </div>
         </>
     )
