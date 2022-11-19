@@ -1,0 +1,15 @@
+@import "./Themes.css";
+
+.login {
+  position: fixed;
+  display: block;
+}
+
+.login-overlay {
+  position: fixed;
+  width: 1000px;
+  inset: 0;
+  z-index: 1000;
+  border-radius: 0.5em;
+  background-color: black;
+}

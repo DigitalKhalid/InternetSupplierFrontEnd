@@ -39,6 +39,14 @@
 
 /* Light Theme */
 :root {
+  /* Admin Header Footer */
+  --admin-header-bgcolor: rgba(50, 150, 200, 1);
+  --admin-header-color:white;
+  
+  --admin-footer-bgcolor: rgba(25, 50, 100, 1);
+  --admin-footer-color: white;
+
+
   /* text color */
   --color: black;
   --field-color: black;

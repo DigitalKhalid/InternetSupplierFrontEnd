@@ -1,30 +1,30 @@
-import '../assets/css/Content.css'
+import '../assets/css/Admin.css'
 import React from 'react'
 import CustomerState from '../context/customer/CustomerState'
-import PopupState from '../context/popup/PopupState.js'
+// import PopupState from '../context/popup/PopupState.js'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Sidebar } from './Sidebar.js'
 import { NewCustomer } from './NewCustomer'
 import { CustomersList } from './CustomersList.js'
+import AdminHeader from './AdminHeader'
+import AdminFooter from './AdminFooter'
 
-export const Content = () => {
+export const Admin = () => {
     return (
         <>
-            <PopupState>
+            {/* <PopupState> */}
                 <CustomerState>
                     <Router>
+                        {/* Admin */}
+                        <AdminHeader />
                         <div className="main">
                             <Sidebar />
                             <Routes>
                                 <Route
-                                    path='/'
+                                    path='/admin'
                                     element={
                                         <div className="container-content">
                                             <div className='content'>
-                                                <div className="content-header">
-                                                    Dashboard
-                                                </div>
-
                                                 <div className="content-body">
 
                                                 </div>
@@ -83,9 +83,10 @@ export const Content = () => {
                                 />
                             </Routes>
                         </div>
+                        <AdminFooter />
                     </Router>
                 </CustomerState>
-            </PopupState>
+            {/* </PopupState> */}
         </>
     )
 }
