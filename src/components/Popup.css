@@ -1,10 +1,12 @@
+@import '../components/Themes.css';
+
 .overlay {
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: var(--popup-overlay-bgcolor);
     z-index: 1000;
 }
 
@@ -13,12 +15,12 @@
     left: 50%;
     top: 25%;
     transform: translate(-50%, -25%);
-    background-color:rgba(50, 105, 150, 1);
+    background-color: var(--popup-bgcolor);
     padding: .5em;
     z-index: 1000;
-    color: white;
+    color: var(--color);
     border-radius: .75em;
-    box-shadow: 2px 2px 5px 1px rgba(255, 255, 255, .2), 5px 5px 20px 0 rgba(0, 0, 0, .4);
+    box-shadow: 2px 2px 5px 1px var(--popup-shadow-color-1), 5px 5px 20px 0 var(--popup-shadow-color-1);
     opacity: 0;
     visibility: hidden;
     transition: opacity 500ms ease, visibility 500ms ease;
@@ -36,9 +38,9 @@
 .popup-close-btn {
     float: right;
     border: none;
-    background-color: rgba(50, 105, 150, 1);
+    background-color: var(--popup-bgcolor);
     font-size: 1em;
-    color: white;
+    color: var(--color);
 }
 
 .popup-close-btn:hover {
@@ -52,7 +54,6 @@
 .popup-body {
     padding-left: .5em;
     padding-right: .5em;
-    
 }
 
 .popup-footer {

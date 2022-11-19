@@ -1,3 +1,5 @@
+@import '../Themes.css';
+
 .list {
   display: flex;
   width: 100%;
@@ -5,12 +7,12 @@
 }
 
 table {
-  border: 0.5px solid white;
+  border: 0.5px solid var(--border-color);
   width: 100%;
 }
 
 th {
-  border-bottom: 0.5px solid white;
+  border-bottom: 0.5px solid var(--border-color);
   text-align: center;
   line-height: 2.5em;
 }
@@ -27,7 +29,7 @@ td {
     padding-top: .25em;
     padding-bottom: .25em;
     border-radius: 100%;
-    background: white;
+    background: var(--actions-bgcolor);
     margin: .25em;
     color: black;
 }

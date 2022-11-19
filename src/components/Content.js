@@ -1,6 +1,7 @@
 import React from 'react'
 import { Sidebar } from './Sidebar/Sidebar.js'
 import '../components/Content.css'
+import '../components/Themes.css'
 import { NewCustomer } from './contents/NewCustomer'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { CustomersList } from './contents/CustomersList.js'

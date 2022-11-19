@@ -1,6 +1,9 @@
+@import '../Themes.css';
+
 .label {
-    color: rgba(225, 225, 225, 1);
+    color: var(--color);
     font-size: small;
+    margin-left: .5em;
 }
 
 .title {
@@ -14,7 +17,7 @@
 
 .form-control, .form-select{
     background: rgba(255, 255, 255, 0.8);
-    color: black;
+    color: var(--field-color);
 }
 
 .row.g-2 {

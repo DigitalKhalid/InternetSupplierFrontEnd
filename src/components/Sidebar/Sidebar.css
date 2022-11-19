@@ -1,3 +1,5 @@
+@import '../Themes.css';
+
 .sidebar-open-btn {
     position: absolute;
     left: 0;
@@ -12,16 +14,16 @@
 
 .sidebar-open-btn:hover {
     cursor: pointer;
-    color: greenyellow;
+    color: var(--sidebar-open-color);
 }
 
 .sidebar {
     flex-shrink: 0;
     width: 240px;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
     overflow: auto;
+    background-color: var(--sidebar-bgcolor);
+    backdrop-filter: blur(10px);
     transform: translateX(0);
     visibility: visible;
     opacity: 1;
@@ -37,7 +39,8 @@
 }
 
 .sidebar .sidebar-menu {
-    padding-top: 1em;
+    padding-top: 0em;
+    overflow: auto;
 }
 
 .sidebar-close-btn {
@@ -49,7 +52,7 @@
 }
 
 .sidebar-close-btn:hover {
-    color: red;
+    color: var(--sidebar-close-color);
     cursor: pointer;
 }
 .sidebar-item {
@@ -58,7 +61,7 @@
 }
 
 .sidebar-title:hover {
-    background-color: rgba(0, 0, 255, 1);
+    background-color: var(--sidebar-hover-bgcolor);
 }
 
 .sidebar-title {
@@ -92,7 +95,7 @@
 }
 
 .sidebar-content {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--sidebar-bgcolor);
     font-size: .9em;
     height: 0;
     overflow: hidden;
@@ -101,7 +104,7 @@
 
 .sidebar-content, .sidebar-title {
     text-decoration: none;
-    color: white;
+    color: var(--color);
     width: 100%;
     display: block;
     line-height: 40px;
@@ -110,13 +113,14 @@
 .sidebar-content:hover, .sidebar-title:hover {
     text-decoration: none;
     transition: 0.3s ease;
-    color: white;
+    color: var(--color);
 }
 
 .user-info {
     display: flex;
     flex-wrap: wrap;
     padding-top: 1.25em;
+    padding-bottom: .5em;
     padding-left: 1.5em;
     align-items: center;
 }
@@ -133,9 +137,14 @@
     line-height: 0px;
     margin-top: 1.25em;
 }
+
+/* .copywrite {
+
+} */
+
 .bizz-footer {
     display: flex;
-    float: left;
+    /* float: center; */
     margin-left: 1.75em;
     margin-top: 1em;
     height: 2em;
@@ -169,8 +178,7 @@
   }
 
   .active {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    /* font-weight: bold; */
+    background: var(--sidebar-active-bgcolor);
+    color: var(--sidebar-active-color);
     font-style: italic;
   }
