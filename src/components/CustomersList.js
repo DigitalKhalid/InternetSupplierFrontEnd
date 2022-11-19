@@ -1,21 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react'
-import './CustomerList.css'
+import '../assets/css/CustomerList.css'
+import React, { useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import CustomerContext from '../../context/customer/CustomerContext'
-import PopupContext from '../../context/popup/PopupContext'
-import Popup from '../Popup'
-import EditCustomerForm from '../contents/EditCustomerForm'
+import CustomerContext from '../context/customer/CustomerContext'
+import PopupContext from '../context/popup/PopupContext'
+import Popup from './Popup'
+import EditCustomerForm from './EditCustomerForm'
 
 export const CustomersList = () => {
     const context = useContext(CustomerContext)
     const { customers, setCustomer, getAllCustomers, deleteCustomer, updateCustomer } = context
     const { togglePopup } = useContext(PopupContext)
 
-    let cusid =
-        useEffect(() => {
-            getAllCustomers()
-            //   eslint-disable-next-line
-        }, [])
+    useEffect(() => {
+        getAllCustomers()
+        //   eslint-disable-next-line
+    }, [])
 
     const openEditPopup = (customer) => {
         setCustomer(customer)

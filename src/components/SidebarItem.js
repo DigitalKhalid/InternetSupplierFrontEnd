@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import './Sidebar.css'
+import React, { useState } from 'react'
+import '../assets/css/Sidebar.css'
 import { Link, useLocation } from 'react-router-dom'
 
 export const SidebarItem = (props) => {

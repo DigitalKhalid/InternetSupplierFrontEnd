@@ -1,4 +1,4 @@
-@import './components/Themes.css';
+@import './assets/css/Themes.css';
 /* * {
     margin: 0;
     padding: 0;
@@ -16,4 +16,11 @@ body {
     background: var(--main-bg);
     background-position: center;
     background-size: cover;
+}
+
+hr {
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-top: .25em;
+    margin-bottom: .25em;
 }

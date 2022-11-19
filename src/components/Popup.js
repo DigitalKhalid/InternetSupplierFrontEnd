@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import './Popup.css'
+import '../assets/css/Popup.css'
 import PopupContext from '../context/popup/PopupContext'
 
 const Popup = (props) => {
@@ -14,24 +14,25 @@ const Popup = (props) => {
                 togglePopup()
             }, 1500);
         }
+        //   eslint-disable-next-line
     }, [isOpen])
 
     if (isOpen !== true) return null
     return (
         <>
             <div className="overlay" />
-            <div className={isOpen?'popup open':'popup'}>
+            <div className={isOpen ? 'popup open' : 'popup'}>
                 <button className='popup-close-btn' onClick={togglePopup} ><i className='fa fa-xmark'></i></button>
                 <div className="popup-content">
                     <div className="popup-header">
                         {header}
                     </div>
-                    <hr />
+                    <hr className='hr'/>
 
                     <div className="popup-body">
                         {body}
                     </div>
-                    <hr />
+                    <hr className='hr'/>
 
                     <div className="popup-footer">
                         {btnCancel && <button className='btn btn-warning btn-sm' onClick={togglePopup}>{btnCancel}</button>}

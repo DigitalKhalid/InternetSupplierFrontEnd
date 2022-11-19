@@ -22,7 +22,7 @@
     /* background image */
     --gradiant-color-1: rgba(0, 0, 0, 0.1);
     --gradiant-color-2: rgba(0, 0, 0, 0.4);
-    --bg-image: url("./background.jpg");
+    --bg-image: url('../images/bg-dark.jpg');
   
     --main-bg: radial-gradient(var(--gradiant-color-1), var(--gradiant-color-2)),
       var(--bg-image);
@@ -31,8 +31,8 @@
     --font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   
       /* popup */
-      --popup-overlay-bgcolor:  rgba(0, 0, 0, 0.5);
-      --popup-bgcolor: rgba(50, 105, 150, 1);
+      --popup-overlay-bgcolor:  rgba(255, 255, 255, 0.2);
+      /* --popup-bgcolor: rgba(50, 105, 150, 1); */
       --popup-shadow-color-1: rgba(255, 255, 255, .2);
       --popup-shadow-color-2: rgba(0, 0, 0, .4);
   }
@@ -62,7 +62,7 @@
   /* background image */
   --gradiant-color-1: rgba(255, 255, 255, 0.1);
   --gradiant-color-2: rgba(255, 255, 255, 0.4);
-  --bg-image: url("./background1.jpg");
+  --bg-image: url('../images/bg-light.jpg');
 
   --main-bg: radial-gradient(var(--gradiant-color-1), var(--gradiant-color-2)),
     var(--bg-image);
@@ -71,8 +71,8 @@
   --font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 
   /* popup */
-  --popup-overlay-bgcolor:  rgba(0, 0, 0, 0.2);
-  --popup-bgcolor: rgba(75, 175, 225, 1);
+  --popup-overlay-bgcolor:  rgba(0, 0, 0, 0.1);
+  /* --popup-bgcolor: rgba(200, 225, 255, 1); */
   --popup-shadow-color-1: rgba(0, 0, 0, .2);
   --popup-shadow-color-2: rgba(0, 0, 0, .4);
 }

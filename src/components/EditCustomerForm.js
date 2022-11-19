@@ -1,6 +1,6 @@
-import './NewCustomer.css'
-import React, { useContext, useEffect } from 'react'
-import CustomerContext from '../../context/customer/CustomerContext'
+import '../assets/css/NewCustomer.css'
+import React, { useContext } from 'react'
+import CustomerContext from '../context/customer/CustomerContext'
 
 const EditCustomerForm = () => {
     const context = useContext(CustomerContext)

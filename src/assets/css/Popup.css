@@ -1,4 +1,4 @@
-@import '../components/Themes.css';
+@import './Themes.css';
 
 .overlay {
     position: fixed;
@@ -8,6 +8,7 @@
     right: 0;
     background-color: var(--popup-overlay-bgcolor);
     z-index: 1000;
+    border-radius: 0.5em;
 }
 
 .popup {
@@ -15,7 +16,9 @@
     left: 50%;
     top: 25%;
     transform: translate(-50%, -25%);
-    background-color: var(--popup-bgcolor);
+    background-image: var(--main-bg);
+    background-position: center;
+    background-size: cover;
     padding: .5em;
     z-index: 1000;
     color: var(--color);
@@ -39,7 +42,6 @@
     float: right;
     border: none;
     background-color: var(--popup-bgcolor);
-    font-size: 1em;
     color: var(--color);
 }
 
@@ -49,9 +51,11 @@
 
 .popup-header {
     font-weight: bold;
+    /* padding-bottom: .1em; */
 }
 
 .popup-body {
+    padding-top: 1.5em;
     padding-left: .5em;
     padding-right: .5em;
 }
@@ -60,6 +64,7 @@
    float: right;
    margin-bottom: .75em;
    margin-right: 1em;
+   padding-top: .5em;
 }
 
 .btn-warning.btn-sm {
@@ -69,4 +74,12 @@
 .btn-primary.btn-sm {
     width: 5em;
     margin-left: 1em;
+}
+
+.hr {
+    /* padding: 0; */
+    margin-left: 0em;
+    margin-right: 0em;
+    margin-top: .25em;
+    margin-bottom: .25em;
 }

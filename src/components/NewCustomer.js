@@ -1,8 +1,8 @@
-import './NewCustomer.css'
+import '../assets/css/NewCustomer.css'
 import React, { useContext, useEffect } from 'react'
-import CustomerContext from '../../context/customer/CustomerContext'
-import Popup from '../../components/Popup'
-import PopupContext from '../../context/popup/PopupContext'
+import CustomerContext from '../context/customer/CustomerContext'
+import PopupContext from '../context/popup/PopupContext'
+import Popup from './Popup'
 
 export const NewCustomer = () => {
   const context = useContext(CustomerContext)
@@ -12,6 +12,7 @@ export const NewCustomer = () => {
 
   useEffect(() => {
     setCustomer(blankFields)
+    //   eslint-disable-next-line
   }, [])
 
   const saveCustomer = (event) => {

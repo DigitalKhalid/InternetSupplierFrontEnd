@@ -1,12 +1,11 @@
+import '../assets/css/Content.css'
 import React from 'react'
-import { Sidebar } from './Sidebar/Sidebar.js'
-import '../components/Content.css'
-import '../components/Themes.css'
-import { NewCustomer } from './contents/NewCustomer'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { CustomersList } from './contents/CustomersList.js'
 import CustomerState from '../context/customer/CustomerState'
 import PopupState from '../context/popup/PopupState.js'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Sidebar } from './Sidebar.js'
+import { NewCustomer } from './NewCustomer'
+import { CustomersList } from './CustomersList.js'
 
 export const Content = () => {
     return (

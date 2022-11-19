@@ -1,4 +1,4 @@
-@import '../Themes.css';
+@import './Themes.css';
 
 .sidebar-open-btn {
     position: absolute;

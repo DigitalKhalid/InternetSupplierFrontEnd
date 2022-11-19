@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import './Sidebar.css'
+import '../assets/css/Sidebar.css'
 import { SidebarItem } from './SidebarItem'
-import items from './Sidebar.json'
-import logo from '../logo.png'
-import avatar from '../../components/avatar.jpg'
+import items from '../data/Sidebar.json'
+import logo from '../assets/images/logo.png'
+import avatar from '../assets/images/avatar.jpg'
 
 
 export const Sidebar = () => {
