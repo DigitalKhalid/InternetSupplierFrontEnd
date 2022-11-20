@@ -34,6 +34,14 @@
   height: 1.7em;
 }
 
+.content-header .alerts {
+  float: right;
+  padding-top: 0.75em;
+  padding-right: 2em;
+  font-size: 0.5em;
+  font-weight: lighter;
+}
+
 .content-body {
   margin-top: 1em;
   padding: 2em;
@@ -79,12 +87,12 @@
   text-align: center;
 }
 
-.admin-footer a:link{
-    text-decoration: none;
-    color: var(--admin-footer-color);
+.admin-footer a:link {
+  text-decoration: none;
+  color: var(--admin-footer-color);
 }
 
-.admin-footer a:visited{
-    text-decoration: none;
-    color: var(--admin-footer-color);
+.admin-footer a:visited {
+  text-decoration: none;
+  color: var(--admin-footer-color);
 }

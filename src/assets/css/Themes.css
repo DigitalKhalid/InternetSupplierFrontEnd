@@ -39,6 +39,11 @@
 
 /* Light Theme */
 :root {
+  /* Alerts */
+  --success: green;
+  --warning: orange;
+  --error: red;
+
   /* Admin Header Footer */
   --admin-header-bgcolor: rgba(50, 150, 200, 1);
   --admin-header-color:white;

@@ -2,7 +2,7 @@
     {
         "title": "Dashboard",
         "icon": "fa fa-desktop",
-        "path": "/"
+        "path": "/admin"
     },
     {
         "title": "Customers",

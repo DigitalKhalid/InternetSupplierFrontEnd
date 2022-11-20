@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import '../assets/css/Sidebar.css'
 import { SidebarItem } from './SidebarItem'
 import items from '../data/Sidebar.json'
@@ -12,6 +12,11 @@ export const Sidebar = () => {
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen)
     }
+
+    useEffect(() => {
+      console.log(localStorage.getItem('username'))
+    }, [localStorage.getItem('username')])
+    
 
     return (
         <>
@@ -43,11 +48,6 @@ export const Sidebar = () => {
                     })}
                 </div>
                 <hr />
-                {/* <div className="copywrite">
-                    <a href='https://bizzsole.com' target='_blank' rel="noreferrer" className="bizz-footer">
-                        <img src={logo} alt="BizzSole" />
-                    </a>
-                </div> */}
             </div>
 
         </>
