@@ -68,6 +68,10 @@
   cursor: pointer;
 }
 
+.admin-header-icon:hover {
+  color: brown;
+}
+
 .admin-footer {
   background-color: var(--admin-footer-bgcolor);
   color: var(--admin-footer-color);

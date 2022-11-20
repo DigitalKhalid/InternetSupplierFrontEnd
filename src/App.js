@@ -1,6 +1,6 @@
 import './App.css';
 import './assets/css/Admin.css'
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Login from './components/Login';
 import PopupState from './context/popup/PopupState.js'
@@ -14,12 +14,11 @@ import { Connections } from './components/Connections.js'
 import AdminHeader from './components/AdminHeader'
 import AdminFooter from './components/AdminFooter'
 import CustomerState from './context/customer/CustomerState';
-import LoginContext from './context/login/LoginContext';
 
 function App() {  
-  useEffect(() => {
-    console.log(localStorage.getItem('authtoken'))
-  }, [localStorage.getItem('authtoken')])
+  // useEffect(() => {
+  //   console.log(localStorage.getItem('authtoken'))
+  // }, [localStorage.getItem('authtoken')])
 
   return (
     <>

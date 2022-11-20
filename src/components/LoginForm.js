@@ -1,10 +1,14 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import LoginContext from '../context/login/LoginContext'
 
 function LoginForm() {
   const context = useContext(LoginContext)
-  const { credentials, setCredentials } = context
+  const { credentials, setCredentials, blankFields } = context
 
+  useEffect(() => {
+    setCredentials(blankFields)
+  }, [])
+  
   const handleOnChange = (event) => {
       setCredentials({ ...credentials, [event.target.name]: event.target.value })
   }

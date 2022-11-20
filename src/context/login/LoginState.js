@@ -37,7 +37,7 @@ const LoginState = (props) => {
     }
 
     return (
-        <LoginContext.Provider value={{credentials, setCredentials, getToken, authToken, setAuthToken}}>
+        <LoginContext.Provider value={{credentials, setCredentials, getToken, authToken, setAuthToken, blankFields}}>
             {props.children}
         </LoginContext.Provider>
     )
