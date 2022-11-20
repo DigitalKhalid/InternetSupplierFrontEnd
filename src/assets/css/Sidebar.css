@@ -120,22 +120,20 @@
     display: flex;
     flex-wrap: wrap;
     padding-top: 1.25em;
-    padding-bottom: .5em;
+    padding-bottom: 1em;
     padding-left: 1.5em;
     align-items: center;
 }
 
 .avatar {
     flex: 0 0;
-    width: 5em;
-    height: 5em;
+    height: 4.5em;
     border-radius: 100%;
 }
 
 .user {
-    margin-left: .5em;
-    line-height: 0px;
-    margin-top: 1.25em;
+    margin-left: .75em;
+    line-height: 0.2em;
 }
 
 /* .copywrite {

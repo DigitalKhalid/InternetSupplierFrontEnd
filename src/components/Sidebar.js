@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import '../assets/css/Sidebar.css'
 import { SidebarItem } from './SidebarItem'
 import items from '../data/Sidebar.json'
 import logo from '../assets/images/logo.png'
 import avatar from '../assets/images/avatar.jpg'
-
+import LoginContext from '../context/login/LoginContext'
 
 export const Sidebar = () => {
     const [sidebarOpen, setSidebarOpen] = useState(true)
@@ -30,7 +30,7 @@ export const Sidebar = () => {
                     <img className="avatar" src={avatar} alt="Logo" />
                     <div className='user'>
                         <p>Welcome!</p>
-                        <h3>Admin</h3>
+                        <strong>{localStorage.getItem('username')}</strong>
                     </div>
                 </div>
                 <hr />

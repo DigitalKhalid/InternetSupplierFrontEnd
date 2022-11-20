@@ -1,9 +1,12 @@
-import React, { useState} from "react";
+import React, { useContext, useState, useEffect} from "react";
 import CustomerContext from './CustomerContext'
+import LoginContext from "../login/LoginContext";
 
 const CustomerState = (props) => {
-  const host = ' http://127.0.0.1:8000/'
-  const authToken = '56072d4808b19e689c420e1b46a70d3ddf0aea64'
+  const {authToken, setAuthToken} = useContext(LoginContext)
+
+  const host = process.env.REACT_APP_HOST
+  // const authToken = '56072d4808b19e689c420e1b46a70d3ddf0aea64'
   const [customers, setCustomers] = useState([])
   const blankFields = {
       id: '',
@@ -26,42 +29,13 @@ const CustomerState = (props) => {
     setCustomer(copy)
   }
 
-  // const callAPI = async (url, method, body='') => {
-  //   console.log(url)
-  //   console.log(method)
-  //   console.log(body)
-
-  //   if (body === '') {
-  //     console.log('nobody')
-  //     const responseWithOutBody = await fetch(url, {
-  //       method: method,
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': 'Token ' + authToken
-  //       },
-  //     }
-  //     );
-  //     const json = await responseWithOutBody.json()
-  //     return json
-      
-  //   } else {
-  //     const responseWithBody = await fetch(url, {
-  //       method: method,
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': 'Token ' + authToken
-  //       },
-  //       body: JSON.stringify(body)
-  //     }
-  //     );
-      
-  //     const json = await responseWithBody.json()
-  //     return json
-  //   }
-  // }
+  useEffect(() => {
+    setAuthToken(localStorage.getItem('authtoken'))
+  }, [authToken])
 
   // Get all Records
   const getAllCustomers = async () => {
+    console.log(authToken)
     const url = `${host}customerapi/`
 
     const response = await fetch(url, {
@@ -73,6 +47,7 @@ const CustomerState = (props) => {
     });
     const json = await response.json();
     setCustomers(json)
+    console.log('get all customer: ' + authToken)
   }
 
 

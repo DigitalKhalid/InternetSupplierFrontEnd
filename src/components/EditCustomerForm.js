@@ -13,7 +13,6 @@ const EditCustomerForm = () => {
     return (
         <div className='container'>
             <form className="row g-2">
-                { }
                 <div className="col-md-5">
                     <p className='title required'><strong>Full Name</strong></p>
                     <input type="text" className="form-control" id="first_name" name='first_name' placeholder="" defaultValue={customer.first_name} onChange={handleOnChange} ></input>
