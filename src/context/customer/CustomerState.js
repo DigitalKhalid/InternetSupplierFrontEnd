@@ -4,7 +4,7 @@ import LoginContext from "../login/LoginContext";
 import AlertContext from "../alert/AlertContext"
 
 const CustomerState = (props) => {
-  const { authToken, setAuthToken } = useContext(LoginContext)
+  // const { authToken, setAuthToken } = useContext(LoginContext)
   const { toggleAlert } = useContext(AlertContext)
 
   const host = process.env.REACT_APP_HOST
@@ -30,9 +30,9 @@ const CustomerState = (props) => {
     setCustomer(copy)
   }
 
-  useEffect(() => {
-    setAuthToken(localStorage.getItem('authtoken'))
-  }, [authToken])
+  // useEffect(() => {
+  //   setAuthToken(localStorage.getItem('authtoken'))
+  // }, [authToken])
 
   const showAlert = (status)=>{
   if (status === 200) {
@@ -66,7 +66,6 @@ const CustomerState = (props) => {
     });
     const json = await response.json();
     setCustomers(json)
-    showAlert(response.status)
   }
 
 

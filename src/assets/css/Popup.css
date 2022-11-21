@@ -83,3 +83,11 @@
     margin-top: .25em;
     margin-bottom: .25em;
 }
+
+.popup-alert {
+    float: left;
+    font-weight: lighter;
+    width:19em;
+    font-size: 0.9em;
+    text-align: justify;
+}

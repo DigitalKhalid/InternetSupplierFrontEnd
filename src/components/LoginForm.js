@@ -7,6 +7,7 @@ function LoginForm() {
 
   useEffect(() => {
     setCredentials(blankFields)
+    //   eslint-disable-next-line
   }, [])
   
   const handleOnChange = (event) => {

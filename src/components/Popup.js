@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import '../assets/css/Popup.css'
 import PopupContext from '../context/popup/PopupContext'
+import Alert from '../components/Alerts'
 
 const Popup = (props) => {
     let { header, body, btnCancel = '', btnOk = 'Ok', btnOkClick, autoClose = false } = props
@@ -27,16 +28,20 @@ const Popup = (props) => {
                     <div className="popup-header">
                         {header}
                     </div>
-                    <hr className='hr'/>
+                    <hr className='hr' />
 
                     <div className="popup-body">
                         {body}
                     </div>
-                    <hr className='hr'/>
+                    <hr className='hr' />
 
                     <div className="popup-footer">
                         {btnCancel && <button className='btn btn-warning btn-sm' onClick={togglePopup}>{btnCancel}</button>}
                         <button className='btn btn-primary btn-sm' onClick={btnOkClick} >{btnOk}</button>
+                    </div>
+
+                    <div className='popup-alert'>
+                        <Alert />
                     </div>
                 </div>
             </div>

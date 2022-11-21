@@ -24,8 +24,8 @@ function App() {
 
   return (
     <>
-      <LoginState>
-        <AlertState>
+      <AlertState>
+        <LoginState>
           <PopupState>
             <CustomerState>
               <Router>
@@ -98,8 +98,8 @@ function App() {
               </Router>
             </CustomerState>
           </PopupState>
-        </AlertState>
-      </LoginState>
+        </LoginState>
+      </AlertState>
     </>
   );
 }
