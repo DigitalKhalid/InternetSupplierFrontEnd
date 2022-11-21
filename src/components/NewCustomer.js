@@ -1,14 +1,10 @@
 import '../assets/css/NewCustomer.css'
 import React, { useContext, useEffect } from 'react'
 import CustomerContext from '../context/customer/CustomerContext'
-import PopupContext from '../context/popup/PopupContext'
-import Popup from './Popup'
 
 export const NewCustomer = () => {
   const context = useContext(CustomerContext)
   const { blankFields, customer, setCustomer, addCustomer } = context
-
-  const { togglePopup } = useContext(PopupContext)
 
   useEffect(() => {
     setCustomer(blankFields)
@@ -19,7 +15,6 @@ export const NewCustomer = () => {
     event.preventDefault(); //to prevent page reloading on function call
     addCustomer();
     setCustomer(blankFields)
-    togglePopup()
   }
 
   const handleOnChange = (event) => {
@@ -91,9 +86,7 @@ export const NewCustomer = () => {
             {/* </span> */}
           </div>
         </form>
-
       </div>
-      <Popup autoClose={true} header='Saved' body='New customer is added successfully.' btnOkClick={togglePopup} />
     </>
   )
 }

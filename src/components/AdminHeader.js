@@ -1,13 +1,10 @@
-import React, { useContext } from 'react'
-import LoginContext from '../context/login/LoginContext'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const AdminHeader = () => {
-  const { setAuthToken } = useContext(LoginContext)
   const navigate = useNavigate()
 
   const handleLogout = () => {
-    setAuthToken(null)
     localStorage.clear()
     navigate('/admin/login')
   }

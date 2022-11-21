@@ -31,7 +31,8 @@ function App() {
               <Router>
                 <Routes>
                   <Route path='/admin/login' element={<Login />} />
-                  {localStorage.getItem('authtoken') && <Route path='/admin/*' element={
+                  
+                  {<Route path='/admin/*' element={
                     <>
                       <AdminHeader />
                       <div className="main">

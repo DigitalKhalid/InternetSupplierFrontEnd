@@ -4,7 +4,6 @@ import AlertContext from '../alert/AlertContext'
 
 const LoginState = (props) => {
     const host = process.env.REACT_APP_HOST
-    const [authToken, setAuthToken] = useState(null)
     const { toggleAlert } = useContext(AlertContext)
 
     const blankFields = {
@@ -14,9 +13,9 @@ const LoginState = (props) => {
 
     const [credentials, setCredentials] = useState(blankFields)
     
-    useEffect(() => {
-        setAuthToken(localStorage.getItem('authtoken'))
-      }, [authToken])
+    // useEffect(() => {
+    //     setAuthToken(localStorage.getItem('authtoken'))
+    //   }, [authToken])
       
       const showAlert = (status)=>{
         if (status === 200) {
@@ -35,21 +34,20 @@ const LoginState = (props) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Token ' + authToken
+                'Authorization': 'Token ' + localStorage.getItem('authtoken')
             },
 
             body: JSON.stringify(credentials)
         });
 
         const json = await response.json();
-        setAuthToken(json.token)
         localStorage.setItem('authtoken', json.token)
         localStorage.setItem('username', credentials.username)
         showAlert(response.status)
     }
 
     return (
-        <LoginContext.Provider value={{credentials, setCredentials, getToken, authToken, setAuthToken, blankFields}}>
+        <LoginContext.Provider value={{credentials, setCredentials, getToken, blankFields}}>
             {props.children}
         </LoginContext.Provider>
     )

@@ -1,10 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import CustomerContext from './CustomerContext'
-import LoginContext from "../login/LoginContext";
 import AlertContext from "../alert/AlertContext"
 
 const CustomerState = (props) => {
-  // const { authToken, setAuthToken } = useContext(LoginContext)
   const { toggleAlert } = useContext(AlertContext)
 
   const host = process.env.REACT_APP_HOST
@@ -30,38 +28,35 @@ const CustomerState = (props) => {
     setCustomer(copy)
   }
 
-  // useEffect(() => {
-  //   setAuthToken(localStorage.getItem('authtoken'))
-  // }, [authToken])
-
-  const showAlert = (status)=>{
-  if (status === 200) {
-    toggleAlert('success', 'Information of ' + customer.first_name + ' ' + customer.last_name + ' is updated!')
-  } else if (status === 201){
-    toggleAlert('success', 'New customer, ' + customer.first_name + ' ' + customer.last_name + ' is added!')
-  } else if (status === 400){
-    toggleAlert('error', '(' + status + ') Unable to recognize your action. Please contact vendor.')
-  } else if (status === 401){
-    toggleAlert('error', '(' + status + ') Application is unable to recognize your identity. Please login through valid credentials.')
-  } else if (status === 403){
-    toggleAlert('warning', '(' + status + ') You are not authorize to perform this action.')
-  } else if (status === 404){
-    toggleAlert('error', '(' + status + ') Information not found. Unable to process your requested.')
-  } else if (status > 499){
-    toggleAlert('error', '(' + status + ') Application is unable to connect to the server.')
-  }}
+  const showAlert = (status) => {
+    if (status === 200) {
+      toggleAlert('success', 'Information of ' + customer.first_name + ' ' + customer.last_name + ' is updated!')
+    } else if (status === 201) {
+      toggleAlert('success', 'New customer, ' + customer.first_name + ' ' + customer.last_name + ' is added!')
+    } else if (status === 400) {
+      toggleAlert('error', '(' + status + ') Unable to recognize your action. Please contact vendor.')
+    } else if (status === 401) {
+      toggleAlert('error', '(' + status + ') Application is unable to recognize your identity. Please login through valid credentials.')
+    } else if (status === 403) {
+      toggleAlert('warning', '(' + status + ') You are not authorize to perform this action.')
+    } else if (status === 404) {
+      toggleAlert('error', '(' + status + ') Information not found. Unable to process your requested.')
+    } else if (status > 499) {
+      toggleAlert('error', '(' + status + ') Application is unable to connect to the server.')
+    }
+  }
 
 
   // Get all Records
   const getAllCustomers = async () => {
-    console.log(authToken)
+    console.log(localStorage.getItem('authtoken'))
     const url = `${host}customerapi/`
 
     const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Token ' + authToken
+        'Authorization': 'Token ' + localStorage.getItem('authtoken')
       },
     });
     const json = await response.json();
@@ -80,16 +75,19 @@ const CustomerState = (props) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Token ' + authToken
+        'Authorization': 'Token ' + localStorage.getItem('authtoken')
       },
 
       body: JSON.stringify(customer)
     });
     showAlert(response.status)
+    console.log(response.ok)
 
     // Add record to frontend
-    const json = await response.json();
-    setCustomers(customers.concat(customer))
+    if (response.ok) {
+      const json = await response.json();
+      setCustomers(customers.concat(customer))
+    }
   }
 
 
@@ -104,7 +102,7 @@ const CustomerState = (props) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Token ' + authToken
+        'Authorization': 'Token ' + localStorage.getItem('authtoken')
       },
       body: JSON.stringify(customer)
     });
@@ -112,16 +110,18 @@ const CustomerState = (props) => {
     showAlert(response.status)
 
 
-      // Update record in frontend
+    // Update record in frontend
+    if (response.ok) {
       let newCustomers = JSON.parse(JSON.stringify(customers))
-    for (let index = 0; index < customers.length; index++) {
-      const element = newCustomers[index];
-      if (element.id === customer.id) {
-        newCustomers[index] = customer
-        break
+      for (let index = 0; index < customers.length; index++) {
+        const element = newCustomers[index];
+        if (element.id === customer.id) {
+          newCustomers[index] = customer
+          break
+        }
       }
+      setCustomers(newCustomers)
     }
-    setCustomers(newCustomers)
   }
 
 
@@ -134,13 +134,17 @@ const CustomerState = (props) => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Token ' + authToken
+        'Authorization': 'Token ' + localStorage.getItem('authtoken')
       },
     });
 
     // delete record from frontend
-    const customersLeft = customers.filter((customer) => { return customer.id !== id })
-    setCustomers(customersLeft)
+    if (response.ok) {
+      const customersLeft = customers.filter((customer) => { return customer.id !== id })
+      setCustomers(customersLeft)
+    } else {
+      showAlert(response.status)
+    }
   }
 
 
