@@ -3,54 +3,58 @@ import LoginContext from './LoginContext'
 import AlertContext from '../alert/AlertContext'
 
 const LoginState = (props) => {
-    const host = process.env.REACT_APP_HOST
-    const { toggleAlert } = useContext(AlertContext)
+  const host = process.env.REACT_APP_HOST
+  const { toggleAlert } = useContext(AlertContext)
 
-    const blankFields = {
-        username: '',
-        password: '',
+  const blankFields = {
+    username: '',
+    password: '',
+  }
+
+  const [credentials, setCredentials] = useState(blankFields)
+
+  useEffect(() => {
+    console.log(localStorage.getItem('authtoken'))
+  }, [])
+
+  const showAlert = (status) => {
+    if (status === 200) {
+      toggleAlert('success', 'Welcome! ' + credentials.username)
+    } else if (status > 399 && status < 405) {
+      toggleAlert('error', 'Invalid username or password.')
+    } else if (status > 499) {
+      toggleAlert('error', '(' + status + ') Application is unable to connect to the server.')
     }
+  }
 
-    const [credentials, setCredentials] = useState(blankFields)
-    
-    // useEffect(() => {
-    //     setAuthToken(localStorage.getItem('authtoken'))
-    //   }, [authToken])
-      
-      const showAlert = (status)=>{
-        if (status === 200) {
-          toggleAlert('success', 'Welcome! ' + credentials.username)
-        } else if (status > 399 && status < 405){
-          toggleAlert('error', 'Invalid username or password.')
-        } else if (status > 499){
-          toggleAlert('error', '(' + status + ') Application is unable to connect to the server.')
-        }}
+  // Get AuthToken
+  const getToken = async () => {
+    const url = `${host}gettoken/`
 
-    // Get AuthToken
-    const getToken = async () => {
-        const url = `${host}gettoken/`
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Token ' + localStorage.getItem('authtoken')
+      },
 
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
+      body: JSON.stringify(credentials)
+    });
 
-            body: JSON.stringify(credentials)
-        });
+    const json = await response.json();
+    showAlert(response.status)
 
-        const json = await response.json();
-        localStorage.setItem('authtoken', json.token)
-        localStorage.setItem('username', credentials.username)
-        showAlert(response.status)
+    if (response.ok) {
+      localStorage.setItem('authtoken', json.token)
+      localStorage.setItem('username', credentials.username)
     }
+  }
 
-    return (
-        <LoginContext.Provider value={{credentials, setCredentials, getToken, blankFields}}>
-            {props.children}
-        </LoginContext.Provider>
-    )
+  return (
+    <LoginContext.Provider value={{ credentials, setCredentials, getToken, blankFields }}>
+      {props.children}
+    </LoginContext.Provider>
+  )
 }
 
 export default LoginState

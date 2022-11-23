@@ -25,7 +25,7 @@ function LoginForm() {
 
               <div className="col-md-8">
                   <p className='title'><strong>Password</strong></p>
-                  <input type="password" className="form-control" id="password" name='password' autoComplete='on' placeholder="" defaultValue={credentials.password} onChange={handleOnChange} ></input>
+                  <input type="password" className="form-control" id="password" name='password' autoComplete='off' placeholder="" defaultValue={credentials.password} onChange={handleOnChange} ></input>
                   <p className='label'></p>
               </div>
           </form>

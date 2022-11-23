@@ -1,12 +1,19 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../assets/css/Sidebar.css'
 import { SidebarItem } from './SidebarItem'
 import items from '../data/Sidebar.json'
 import logo from '../assets/images/logo.png'
 import avatar from '../assets/images/avatar.jpg'
-import LoginContext from '../context/login/LoginContext'
+
+
+import { useDispatch } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import {actionCreators} from '../state/index'
 
 export const Sidebar = () => {
+    const dispatch = useDispatch();
+    const {withdrawMoney, depositMoney} = bindActionCreators(actionCreators, dispatch);
+
     const [sidebarOpen, setSidebarOpen] = useState(true)
 
     const toggleSidebar = () => {
@@ -48,6 +55,11 @@ export const Sidebar = () => {
                     })}
                 </div>
                 <hr />
+
+                <div>
+                    <button className="btn btn-primary mx-2 my-2" onClick={()=>withdrawMoney(500)}>-</button>
+                    <button className="btn btn-primary mx-2 my-2" onClick={()=>depositMoney(100)}>+</button>
+                </div>
             </div>
 
         </>
