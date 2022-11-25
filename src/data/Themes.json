@@ -1,0 +1,88 @@
+[
+  {
+    "title": "light",
+    "detail": {
+      "success": "green",
+      "warning": "orange",
+      "error": "red",
+
+      "adminHeaderBgcolor": "rgba(50, 150, 200, 1)",
+      "adminHeaderColor": "white",
+
+      "adminFooterBgcolor": "rgba(25, 50, 100, 1)",
+      "adminFooterColor": "white",
+
+      "color": "black",
+      "fieldColor": "black",
+
+      "borderColor": "rgba(0, 0, 0, 0.8)",
+
+      "headerBgcolor": "rgba(100, 150, 200, 0.2)",
+      "bodyBgcolor": "rgba(100, 150, 200, 0.1)",
+      "footerBgcolor": "rgba(100, 150, 200, 0.2)",
+      "actionsBgcolor": "none",
+
+      "sidebarBgcolor": "rgba(100, 150, 200, 0.1)",
+      "sidebarHoverBgcolor": "rgba(50, 200, 255, 1)",
+      "sidebarActiveBgcolor": "rgba(50, 150, 200, 1)",
+      "sidebarActiveColor": "white",
+      "sidebarCloseColor": "red",
+      "sidebaOopenColor": "lightgreen",
+
+      "gradiantColor1": "rgba(255, 255, 255, 0.1)",
+      "gradiantColor2": "rgba(255, 255, 255, 0.4)",
+      "bgImage": "url('../images/bg-light.jpg')",
+
+      "mainBg": "radialgradient(var(gradiantcolor1), var(gradiantcolor2)), var(bgimage)",
+
+      "fontFamily": "'Segoe UI', Tahoma, Geneva, Verdana, sansserif",
+
+      "popupOverlayBgcolor": "rgba(0, 0, 0, 0.1)",
+      "popupShadowColor1": "rgba(0, 0, 0, 0.2)",
+      "popupShadowcColor2": "rgba(0, 0, 0, 0.4)"
+    }
+  },
+  {
+    "title": "dark",
+    "detail": {
+      "success": "green",
+      "warning": "orange",
+      "error": "red",
+
+      "adminHeaderBgcolor": "rgba(25, 50, 100, 1)",
+      "adminHeaderColor": "white",
+
+      "adminFooterBgcolor": "rgba(50, 150, 200, 1)",
+      "adminFooterColor": "white",
+
+      "color": "white",
+      "fieldColor": "black",
+
+      "borderColor": "rgba(255, 255, 255, 0.8)",
+
+      "headerBgcolor": "rgba(255, 255, 255, 0.2)",
+      "bodyBgcolor": "rgba(255, 255, 255, 0.1)",
+      "footerBgcolor": "rgba(255, 255, 255, 0.2)",
+      "actionsBgcolor": "white",
+
+      "sidebarBgcolor": "rgba(255, 255, 255, 0.1)",
+      "sidebarHoverBgcolor": "rgba(0, 0, 255, 1)",
+      "sidebarActiveBgcolor": "rgba(255, 255, 255, 0.2)",
+      "sidebarActiveColor": "white",
+      "sidebarCloseColor": "red",
+      "sidebaOopenColor": "green",
+
+      "gradiantColor1": "rgba(0, 0, 0, 0.1)",
+      "gradiantColor2": "rgba(0, 0, 0, 0.4)",
+      "bgImage": "url('../images/bg-dark.jpg')",
+
+      "mainBg": "radial-gradient(var(--gradiant-color-1), var(--gradiant-color-2)), var(--bg-image);",
+
+      "fontFamily": "'Segoe UI', Tahoma, Geneva, Verdana, sansserif",
+
+      "popupOverlayBgcolor": "rgba(255, 255, 255, 0.2)",
+      "popupShadowColor1": "rgba(255, 255, 255, 0.2)",
+      "popupShadowcColor2": "rgba(0, 0, 0, 0.4)"
+    }
+  }
+]

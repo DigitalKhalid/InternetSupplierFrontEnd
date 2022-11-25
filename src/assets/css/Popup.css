@@ -9,6 +9,14 @@
     background-color: var(--popup-overlay-bgcolor);
     z-index: 1000;
     border-radius: 0.5em;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.overlay.open {
+    visibility: visible;
+    opacity: 1;
 }
 
 .popup {
@@ -26,7 +34,7 @@
     box-shadow: 2px 2px 5px 1px var(--popup-shadow-color-1), 5px 5px 20px 0 var(--popup-shadow-color-1);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 500ms ease, visibility 500ms ease;
+    transition: opacity 1s ease, visibility 1s ease;
 }
 
 .popup.open {

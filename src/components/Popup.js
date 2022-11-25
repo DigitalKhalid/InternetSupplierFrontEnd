@@ -18,10 +18,9 @@ const Popup = (props) => {
         //   eslint-disable-next-line
     }, [isOpen])
 
-    if (isOpen !== true) return null
     return (
         <>
-            <div className="overlay" />
+            <div className={isOpen ? 'overlay open' : 'overlay'} />
             <div className={isOpen ? 'popup open' : 'popup'}>
                 <button className='popup-close-btn' onClick={togglePopup} ><i className='fa fa-xmark'></i></button>
                 <div className="popup-content">

@@ -15,3 +15,12 @@ export const withdrawMoney = (amount)=>{
         })
     } 
 }
+
+export const authenticate = (authtoken, username)=>{
+    return (dispatch) =>{
+        dispatch({
+            type: 'authenticate',
+            payload: {authtoken, username}
+        })
+    } 
+}

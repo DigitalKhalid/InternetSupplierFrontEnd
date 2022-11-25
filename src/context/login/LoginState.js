@@ -1,10 +1,16 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import LoginContext from './LoginContext'
 import AlertContext from '../alert/AlertContext'
+import { useDispatch } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { actionCreators } from '../../state/index'
 
 const LoginState = (props) => {
   const host = process.env.REACT_APP_HOST
   const { toggleAlert } = useContext(AlertContext)
+
+  const dispatch = useDispatch();
+  const { authenticate } = bindActionCreators(actionCreators, dispatch);
 
   const blankFields = {
     username: '',
@@ -12,10 +18,6 @@ const LoginState = (props) => {
   }
 
   const [credentials, setCredentials] = useState(blankFields)
-
-  useEffect(() => {
-    console.log(localStorage.getItem('authtoken'))
-  }, [])
 
   const showAlert = (status) => {
     if (status === 200) {
@@ -45,6 +47,7 @@ const LoginState = (props) => {
     showAlert(response.status)
 
     if (response.ok) {
+      authenticate(json.token, credentials.username)
       localStorage.setItem('authtoken', json.token)
       localStorage.setItem('username', credentials.username)
     }

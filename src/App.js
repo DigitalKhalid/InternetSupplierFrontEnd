@@ -1,6 +1,6 @@
 import './App.css';
 import './assets/css/Admin.css'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Login from './components/Login';
 import PopupState from './context/popup/PopupState.js'
@@ -16,11 +16,20 @@ import AdminFooter from './components/AdminFooter'
 import CustomerState from './context/customer/CustomerState';
 import Alerts from './components/Alerts';
 import AlertState from './context/alert/AlertState';
+import applyTheme from './functions/Theme';
+
+import { useDispatch } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { actionCreators } from './state/index'
 
 function App() {
-  // useEffect(() => {
-  //   console.log(localStorage.getItem('authtoken'))
-  // }, [localStorage.getItem('authtoken')])
+  const dispatch = useDispatch();
+  const { authenticate } = bindActionCreators(actionCreators, dispatch);
+
+  useEffect(() => {
+    {localStorage.getItem('theme')? applyTheme(localStorage.getItem('theme')): applyTheme('light')}
+    authenticate(localStorage.getItem('authtoken'), localStorage.getItem('username'))
+  }, [])
 
   return (
     <>
@@ -31,7 +40,7 @@ function App() {
               <Router>
                 <Routes>
                   <Route path='/admin/login' element={<Login />} />
-                  
+
                   {<Route path='/admin/*' element={
                     <>
                       <AdminHeader />

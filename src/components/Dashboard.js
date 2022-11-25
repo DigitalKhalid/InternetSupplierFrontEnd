@@ -14,7 +14,7 @@ export const Dashboard = () => {
       navigate('/admin/login')
     }
     // eslint-disable-next-line
-  }, [localStorage.getItem('authtoken')])
+  }, [])
 
   return (
     <div>

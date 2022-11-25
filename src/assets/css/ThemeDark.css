@@ -1,0 +1,38 @@
+/* Dark Theme */
+:root {
+    /* text color */
+    --color: white;
+    --field-color: black;
+    
+    --border-color: rgba(255, 255, 255, .8);
+  
+    /* background colors */
+    --header-bgcolor: rgba(255, 255, 255, 0.2);
+    --body-bgcolor: rgba(255, 255, 255, 0.1);
+    --footer-bgcolor: rgba(255, 255, 255, 0.2);
+    --actions-bgcolor: white;
+  
+    /* sidebar */
+    --sidebar-bgcolor: rgba(255, 255, 255, 0.1);
+    --sidebar-hover-bgcolor: rgba(0, 0, 255, 1);
+    --sidebar-active-bgcolor: rgba(255, 255, 255, 0.2);
+    --sidebar-close-color: red;
+    --sidebar-open-color: green;
+  
+    /* background image */
+    --gradiant-color-1: rgba(0, 0, 0, 0.1);
+    --gradiant-color-2: rgba(0, 0, 0, 0.4);
+    --bg-image: url('../images/bg-dark.jpg');
+  
+    --main-bg: radial-gradient(var(--gradiant-color-1), var(--gradiant-color-2)),
+      var(--bg-image);
+  
+    /* fonts */
+    --font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  
+      /* popup */
+      --popup-overlay-bgcolor:  rgba(255, 255, 255, 0.2);
+      /* --popup-bgcolor: rgba(50, 105, 150, 1); */
+      --popup-shadow-color-1: rgba(255, 255, 255, .2);
+      --popup-shadow-color-2: rgba(0, 0, 0, .4);
+  }

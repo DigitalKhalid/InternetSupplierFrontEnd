@@ -4,7 +4,7 @@ import AlertContext from '../context/alert/AlertContext'
 
 export default function Alerts() {
     const { alert } = useContext(AlertContext)
-    
+
     return (
         <div>
         {<div  id='alerts' className={`my-alerts alert-${alert.type}`}>

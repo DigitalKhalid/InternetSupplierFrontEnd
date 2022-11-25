@@ -4,8 +4,10 @@ import LoginForm from './LoginForm'
 import PopupContext from '../context/popup/PopupContext'
 import LoginContext from '../context/login/LoginContext'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const Login = () => {
+    const login = useSelector(state => state.authenticate)
     const context = useContext(PopupContext)
     const { togglePopup } = context
 
@@ -20,7 +22,7 @@ const Login = () => {
 
     const authenticate = () => {
         getToken()
-        if (localStorage.getItem('authtoken')) {
+        if (login.authtoken !== null) {
             togglePopup()
             navigate('/admin')
         }
@@ -28,7 +30,6 @@ const Login = () => {
 
     return (
         <>
-            {/* <div className="login-overlay" /> */}
             <div>
                 <Popup header='Login' body={<LoginForm />} btnCancel='Cancel' btnOk='Login' btnOkClick={authenticate} />
             </div>

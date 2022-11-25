@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import CustomerContext from './CustomerContext'
 import AlertContext from "../alert/AlertContext"
 
@@ -49,7 +49,6 @@ const CustomerState = (props) => {
 
   // Get all Records
   const getAllCustomers = async () => {
-    console.log(localStorage.getItem('authtoken'))
     const url = `${host}customerapi/`
 
     const response = await fetch(url, {
@@ -81,11 +80,10 @@ const CustomerState = (props) => {
       body: JSON.stringify(customer)
     });
     showAlert(response.status)
-    console.log(response.ok)
 
     // Add record to frontend
     if (response.ok) {
-      const json = await response.json();
+      // const json = await response.json();
       setCustomers(customers.concat(customer))
     }
   }
@@ -106,7 +104,7 @@ const CustomerState = (props) => {
       },
       body: JSON.stringify(customer)
     });
-    const json = await response.json();
+    // const json = await response.json();
     showAlert(response.status)
 
 
