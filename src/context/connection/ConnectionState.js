@@ -1,40 +1,46 @@
 import React, { useContext, useState } from "react";
-import CustomerContext from './CustomerContext'
+import ConnectionContext from './ConnectionContext'
 import AlertContext from "../alert/AlertContext"
 
-const CustomerState = (props) => {
+const ConnectionState = (props) => {
   const { toggleAlert } = useContext(AlertContext)
 
   const host = process.env.REACT_APP_HOST
-  const [customers, setCustomers] = useState([])
+  const [connections, setConnections] = useState([])
+
+  const getConnectionID = () => {
+    let serial = Math.max(...connections.map(o => (o.id))) + 1
+    const connectionID = 'ClickPick-' + serial.toString().padStart(5, '0')
+    return connectionID
+  }
+
   const blankFields = {
     id: '',
-    first_name: '',
-    last_name: '',
-    contact: '',
-    email: '',
-    biography: '',
-    street_address: '',
-    area: '',
-    city: '',
-    image: ''
+    customer: '',
+    connection_id: getConnectionID(),
+    installation_date: new Date().toISOString().slice(0, 10),
+    package: '',
+    status: 'Inactive',
+    new: 'True'
   }
 
-  const [customer, setCustomer] = useState(blankFields)
+  const [connection, setConnection] = useState(blankFields)
 
-  const removeKeys = (key) => {
-    const copy = customer // make a copy of dictionary
-    delete copy[key] // remove id and image fields (keys of dictionary)
-    setCustomer(copy)
-  }
+  // const removeKeys = (key) => {
+  //   const copy = connection // make a copy of dictionary
+  //   delete copy[key] // remove keys from dictionary)
+  //   setConnection(copy)
+  // }
 
   const showAlert = (status) => {
     if (status === 200) {
-      toggleAlert('success', 'Information of ' + customer.first_name + ' ' + customer.last_name + ' is updated!')
+      toggleAlert('success', 'Information of ' + connection.connection_id + ' is updated!')
     } else if (status === 201) {
-      toggleAlert('success', 'New customer, ' + customer.first_name + ' ' + customer.last_name + ' is added!')
+      toggleAlert('success', 'New Connection, ' + connection.connection_id + ' is added!')
+    } else if (status === 204) {
+      toggleAlert('success', connection.connection_id + ' has been delete!')
     } else if (status === 400) {
-      toggleAlert('error', '(' + status + ') Unable to recognize your action. Please contact vendor.')
+      toggleAlert('error', '(' + status + ') Invalid request or data.')
     } else if (status === 401) {
       toggleAlert('error', '(' + status + ') Application is unable to recognize your identity. Please login through valid credentials.')
     } else if (status === 403) {
@@ -48,8 +54,11 @@ const CustomerState = (props) => {
 
 
   // Get all Records
-  const getAllCustomers = async () => {
-    const url = `${host}customerapi/`
+  const getAllConnections = async (field, sort) => {
+    if (sort === 'DESC') {
+      field = '-'+field
+    }
+    const url = `${host}connectionapi/${field !==null ? '?ordering=' + field : ''}`
 
     const response = await fetch(url, {
       method: 'GET',
@@ -59,16 +68,14 @@ const CustomerState = (props) => {
       },
     });
     const json = await response.json();
-    setCustomers(json)
+    setConnections(json)
   }
 
 
   // Add Record
-  const addCustomer = async () => {
-    removeKeys('image')
-
+  const addConnection = async () => {
     // Add record to server
-    const url = `${host}customerapi/`
+    const url = `${host}connectionapi/`
 
     const response = await fetch(url, {
       method: 'POST',
@@ -77,24 +84,17 @@ const CustomerState = (props) => {
         'Authorization': 'Token ' + localStorage.getItem('authtoken')
       },
 
-      body: JSON.stringify(customer)
+      body: JSON.stringify(connection)
     });
+    getAllConnections()
     showAlert(response.status)
-
-    // Add record to frontend
-    if (response.ok) {
-      // const json = await response.json();
-      setCustomers(customers.concat(customer))
-    }
   }
 
 
   // Update Record
-  const updateCustomer = async () => {
-    removeKeys('image')
-
+  const updateConnection = async () => {
     // Update record to server side
-    const url = `${host}customerapi/${customer.id}/`
+    const url = `${host}connectionapi/${connection.id}/`
 
     const response = await fetch(url, {
       method: 'PUT',
@@ -102,32 +102,22 @@ const CustomerState = (props) => {
         'Content-Type': 'application/json',
         'Authorization': 'Token ' + localStorage.getItem('authtoken')
       },
-      body: JSON.stringify(customer)
+      body: JSON.stringify(connection)
     });
     // const json = await response.json();
-    console.log(customer)
     showAlert(response.status)
-
 
     // Update record in frontend
     if (response.ok) {
-      let newCustomers = JSON.parse(JSON.stringify(customers))
-      for (let index = 0; index < customers.length; index++) {
-        const element = newCustomers[index];
-        if (element.id === customer.id) {
-          newCustomers[index] = customer
-          break
-        }
-      }
-      setCustomers(newCustomers)
+      getAllConnections('connection_id','ASC')
     }
   }
 
 
   // Delete Record
-  const deleteCustomer = async (id) => {
+  const deleteConnection = async () => {
     // delete record from server using API
-    const url = `${host}customerapi/${id}`
+    const url = `${host}connectionapi/${connection.id}`
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -136,22 +126,21 @@ const CustomerState = (props) => {
         'Authorization': 'Token ' + localStorage.getItem('authtoken')
       },
     });
+    showAlert(response.status)
 
     // delete record from frontend
     if (response.ok) {
-      const customersLeft = customers.filter((customer) => { return customer.id !== id })
-      setCustomers(customersLeft)
-    } else {
-      showAlert(response.status)
+      const connectionsLeft = connections.filter((con) => { return con.id !== connection.id })
+      setConnections(connectionsLeft)
     }
   }
 
 
   return (
-    <CustomerContext.Provider value={{ blankFields, customers, customer, setCustomer, getAllCustomers, addCustomer, updateCustomer, deleteCustomer }}>
+    <ConnectionContext.Provider value={{ blankFields, connections, connection, getConnectionID, setConnection, getAllConnections, addConnection, updateConnection, deleteConnection }}>
       {props.children}
-    </CustomerContext.Provider>
+    </ConnectionContext.Provider>
   )
 }
 
-export default CustomerState;
+export default ConnectionState;

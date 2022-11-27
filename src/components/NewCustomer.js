@@ -1,4 +1,4 @@
-import '../assets/css/NewCustomer.css'
+import '../assets/css/Form.css'
 import React, { useContext, useEffect } from 'react'
 import CustomerContext from '../context/customer/CustomerContext'
 

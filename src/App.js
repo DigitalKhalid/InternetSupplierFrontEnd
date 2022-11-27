@@ -21,14 +21,16 @@ import applyTheme from './functions/Theme';
 import { useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actionCreators } from './state/index'
+import ConnectionState from './context/connection/ConnectionState';
 
 function App() {
   const dispatch = useDispatch();
   const { authenticate } = bindActionCreators(actionCreators, dispatch);
 
   useEffect(() => {
-    {localStorage.getItem('theme')? applyTheme(localStorage.getItem('theme')): applyTheme('light')}
+    localStorage.getItem('theme') ? applyTheme(localStorage.getItem('theme')) : applyTheme('light')
     authenticate(localStorage.getItem('authtoken'), localStorage.getItem('username'))
+    // eslint-disable-next-line
   }, [])
 
   return (
@@ -37,75 +39,80 @@ function App() {
         <LoginState>
           <PopupState>
             <CustomerState>
-              <Router>
-                <Routes>
-                  <Route path='/admin/login' element={<Login />} />
+              <ConnectionState>
+                <Router>
+                  <Routes>
+                    <Route path='/admin/login' element={<Login />} />
 
-                  {<Route path='/admin/*' element={
-                    <>
-                      <AdminHeader />
-                      <div className="main">
-                        <Sidebar />
-                        <Routes>
-                          <Route path='' element={
-                            <div className="container-content">
-                              <div className='content'>
-                                <div className="content-body">
-                                  <Dashboard />
-                                </div>
-                              </div>
-                            </div>} />
-
-                          <Route path='addcustomer' element={
-                            <div className="container-content">
-                              <div className='content'>
-                                <div className="content-header">
-                                  Add New Customer
-                                  <div className='alerts'>
-                                    <Alerts />
+                    {<Route path='/admin/*' element={
+                      <>
+                        <AdminHeader />
+                        <div className="main">
+                          <Sidebar />
+                          <Routes>
+                            <Route path='' element={
+                              <div className="container-content">
+                                <div className='content'>
+                                  <div className="content-body">
+                                    <Dashboard />
                                   </div>
                                 </div>
+                              </div>} />
 
-                                <div className="content-body">
-                                  <NewCustomer />
-                                </div>
-                              </div>
-                            </div>} />
+                            <Route path='addcustomer' element={
+                              <div className="container-content">
+                                <div className='content'>
+                                  <div className="content-header">
+                                    Add New Customer
+                                    <div className='alerts'>
+                                      <Alerts />
+                                    </div>
+                                  </div>
 
-                          <Route path='customerslist' element={
-                            <div className="container-content">
-                              <div className='content'>
-                                <div className="content-header">
-                                  Customers List
-
-                                  <div className='alerts'>
-                                    <Alerts />
+                                  <div className="content-body">
+                                    <NewCustomer />
                                   </div>
                                 </div>
-                                <div className="content-body">
-                                  <CustomersList />
-                                </div>
-                              </div>
-                            </div>} />
+                              </div>} />
 
-                          <Route path='connections' element={
-                            <div className="container-content">
-                              <div className='content'>
-                                <div className="content-header">
-                                  Connections
+                            <Route path='customerslist' element={
+                              <div className="container-content">
+                                <div className='content'>
+                                  <div className="content-header">
+                                    Customers List
+
+                                    <div className='alerts'>
+                                      <Alerts />
+                                    </div>
+                                  </div>
+                                  <div className="content-body">
+                                    <CustomersList />
+                                  </div>
                                 </div>
-                                <div className="content-body">
-                                  <Connections />
+                              </div>} />
+
+                            <Route path='connections' element={
+                              <div className="container-content">
+                                <div className='content'>
+                                  <div className="content-header">
+                                    Connections
+                                    <div className='alerts'>
+                                      <Alerts />
+                                    </div>
+                                  </div>
+                                  <div className="content-body">
+                                    <Connections />
+                                  </div>
                                 </div>
-                              </div>
-                            </div>} />
-                        </Routes>
-                      </div>
-                      <AdminFooter />
-                    </>
-                  } />}
-                </Routes>
-              </Router>
+                              </div>} />
+                          </Routes>
+                        </div>
+                        <AdminFooter />
+                      </>
+                    } />}
+                  </Routes>
+                </Router>
+              </ConnectionState>
             </CustomerState>
           </PopupState>
         </LoginState>

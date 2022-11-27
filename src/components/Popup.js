@@ -4,7 +4,7 @@ import PopupContext from '../context/popup/PopupContext'
 import Alert from '../components/Alerts'
 
 const Popup = (props) => {
-    let { header, body, btnCancel = '', btnOk = 'Ok', btnOkClick, autoClose = false } = props
+    let { header, body, btnCancel = '', btnOk = 'Ok', btnOkClick, autoClose = false, alerts = true } = props
 
     const context = useContext(PopupContext)
     const { isOpen, togglePopup } = context
@@ -39,9 +39,12 @@ const Popup = (props) => {
                         <button className='btn btn-primary btn-sm' onClick={btnOkClick} >{btnOk}</button>
                     </div>
 
-                    <div className='popup-alert'>
-                        <Alert />
-                    </div>
+                    {alerts && <div className='popup-alert'>
+                        <hr className='hr' />
+                        <div className="alert-content">
+                            <Alert /> 
+                        </div>
+                    </div>}
                 </div>
             </div>
         </>

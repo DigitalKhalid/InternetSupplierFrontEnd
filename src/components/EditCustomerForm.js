@@ -1,4 +1,4 @@
-import '../assets/css/NewCustomer.css'
+import '../assets/css/Form.css'
 import React, { useContext } from 'react'
 import CustomerContext from '../context/customer/CustomerContext'
 
@@ -51,10 +51,10 @@ const EditCustomerForm = () => {
 
                 <div className="col-md-5">
                     {/* <p className='title'><strong></strong></p> */}
-                    <select className="form-select" id='city' name='city' aria-label="Default select example" defaultValue={customer.city} onChange={handleOnChange}>
+                    <select className="form-select" id='city' name='city' aria-label="Default select example" value={customer.city} onChange={handleOnChange}>
                         <option defaultValue=''></option>
-                        <option defaultValue="Rawalpindi">Rawalpindi</option>
-                        <option defaultValue="Islamabad">Islamabad</option>
+                        <option value="Rawalpindi">Rawalpindi</option>
+                        <option value="Islamabad">Islamabad</option>
                     </select>
                     <p className='label'>City</p>
                 </div>

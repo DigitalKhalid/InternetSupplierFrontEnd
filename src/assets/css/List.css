@@ -1,0 +1,87 @@
+@import "./Themes.css";
+
+.list {
+  display: flex;
+  width: 100%;
+  top: 0;
+}
+
+table {
+  border: 0.5px solid var(--border-color);
+  width: 100%;
+}
+
+th {
+  border-bottom: 0.5px solid var(--border-color);
+  text-align: center;
+  line-height: 2.5em;
+}
+
+.left {
+  text-align: left;
+}
+
+td {
+  text-align: center;
+  padding: 0.5em;
+}
+
+.action-btn {
+  font-size: 0.8em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  border-radius: 100%;
+  background: var(--actions-bgcolor);
+  margin: 0.25em;
+  color: black;
+}
+
+.my-pagination {
+  margin-top: 1em;
+}
+
+.list-headers{
+  display: flex;
+  /* float: right; */
+  justify-content:space-between;
+  padding-bottom: 1em;
+}
+
+.connection-active {
+  background-color: var(--success);
+  border-radius: 100%;
+  height: 1em;
+  aspect-ratio: 1;
+  border: none;
+}
+
+.connection-inactive {
+  background-color: var(--error);
+  border-radius: 100%;
+  height: 1em;
+  aspect-ratio: 1;
+  border: none;
+}
+
+.status-light {
+  margin-top: 0.8em;
+  margin-left: 1em;
+  width: 1em;
+}
+
+.sort-btn {
+  font-size: 0.8em;
+  margin-left: 0.25em;
+  color: lightgray;
+}
+
+.sorting-head:hover {
+  cursor: pointer;
+}
+
+.search-control {
+  border-radius: 0.5em;
+  text-align: center;
+}

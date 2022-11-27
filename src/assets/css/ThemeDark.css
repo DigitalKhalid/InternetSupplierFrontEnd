@@ -16,7 +16,7 @@
     --sidebar-bgcolor: rgba(255, 255, 255, 0.1);
     --sidebar-hover-bgcolor: rgba(0, 0, 255, 1);
     --sidebar-active-bgcolor: rgba(255, 255, 255, 0.2);
-    --sidebar-close-color: red;
+    --sidebar-close-color: rgb(255, 0, 0);
     --sidebar-open-color: green;
   
     /* background image */

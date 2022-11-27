@@ -45,9 +45,9 @@
   {
     "title": "dark",
     "detail": {
-      "success": "green",
-      "warning": "orange",
-      "error": "red",
+      "success": "lightgreen",
+      "warning": "lightorange",
+      "error": "#FF3131",
 
       "adminHeaderBgcolor": "rgba(25, 50, 100, 1)",
       "adminHeaderColor": "white",

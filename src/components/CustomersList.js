@@ -1,11 +1,10 @@
-import '../assets/css/CustomerList.css'
+import '../assets/css/List.css'
 import React, { useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import CustomerContext from '../context/customer/CustomerContext'
 import PopupContext from '../context/popup/PopupContext'
 import Popup from './Popup'
 import EditCustomerForm from './EditCustomerForm'
-import AlertContext from '../context/alert/AlertContext'
 
 export const CustomersList = () => {
     const context = useContext(CustomerContext)
