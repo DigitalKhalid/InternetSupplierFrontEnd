@@ -10,13 +10,14 @@ const AreaForm = () => {
     const { cities, getAllCities } = useContext(CityContext)
 
     useEffect(() => {
-      getAllCountries('country', 'ASC', '')
-      getAllCities('city', 'ASC', area.country, 'country')
+        getAllCountries('country', 'ASC', '')
+        getAllCities('city', 'ASC', area.country, 'country')
+        // eslint-disable-next-line
     }, [area.country])
-    
+
     const handleOnChange = (event) => {
         setArea({ ...area, [event.target.name]: event.target.value })
-        if (event.target.name === 'country'){
+        if (event.target.name === 'country') {
             getAllCities('city', 'ASC', area.country, 'country')
             console.log(area.country)
         }
@@ -25,7 +26,7 @@ const AreaForm = () => {
     return (
         <div className='container form'>
             <form className="row g-2">
-            <div className="col-md-12">
+                <div className="col-md-12">
                     <p className='title'><strong>Country</strong></p>
                     <select className="form-select" id="country" name='country' placeholder="" value={area.country} onChange={handleOnChange}>
                         <option defaultValue=""></option>
@@ -38,7 +39,7 @@ const AreaForm = () => {
                     <p className='label'></p>
                 </div>
 
-            <div className="col-md-12">
+                <div className="col-md-12">
                     <p className='title'><strong>City</strong></p>
                     <select className="form-select" id="city" name='city' placeholder="" value={area.city} onChange={handleOnChange}>
                         <option defaultValue=""></option>

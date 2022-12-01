@@ -8,7 +8,7 @@ import AreaForm from './AreaForm'
 
 export const Areas = () => {
     const context = useContext(AreaContext)
-    const { blankFields, areas, area, setArea, getAllAreas, addArea, deleteArea, updateArea } = context
+    const { blankFields, areas, setArea, getAllAreas, addArea, deleteArea, updateArea } = context
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
     const [sort, setSort] = useState('ASC')

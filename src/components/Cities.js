@@ -8,7 +8,7 @@ import CityForm from './CityForm'
 
 export const Cities = () => {
     const context = useContext(CityContext)
-    const { blankFields, cities, city, setCity, getAllCities, addCity, deleteCity, updateCity } = context
+    const { blankFields, cities, setCity, getAllCities, addCity, deleteCity, updateCity } = context
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
     const [sort, setSort] = useState('ASC')
