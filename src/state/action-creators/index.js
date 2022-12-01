@@ -24,3 +24,12 @@ export const authenticate = (authtoken, username)=>{
         })
     } 
 }
+
+export const getCountry = (field, sort, search)=>{
+    return (dispatch) =>{
+        dispatch({
+            type: 'getCountry',
+            payload: {field, sort, search}
+        })
+    } 
+}

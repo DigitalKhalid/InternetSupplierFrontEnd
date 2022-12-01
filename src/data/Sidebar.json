@@ -52,6 +52,32 @@
         "path": "/admin/complaints"
     },
     {
+        "title": "Locations",
+        "icon": "fa fa-location",
+        "childrens": [
+            {
+                "title": "Country",
+                "icon":"fa-solid fa-flag",
+                "path": "/admin/countries"
+            },
+            {
+                "title": "City",
+                "icon":"fa-solid fa-city",
+                "path": "/admin/cities"
+            },
+            {
+                "title": "Area",
+                "icon":"fa-solid fa-map",
+                "path": "/admin/areas"
+            },
+            {
+                "title": "Sub Area",
+                "icon":"fa-solid fa-location-dot",
+                "path": "/admin/subareas"
+            }
+        ]
+    },
+    {
         "title": "My Account",
         "icon": "fa fa-user-tie",
         "path": "/admin/myaccount"

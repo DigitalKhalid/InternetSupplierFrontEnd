@@ -54,12 +54,21 @@ const ConnectionState = (props) => {
 
 
   // Get all Records
-  const getAllConnections = async (field, sort) => {
+  const getAllConnections = async (field, sort, search) => {
     if (sort === 'DESC') {
-      field = '-'+field
+      field = '-' + field
     }
-    const url = `${host}connectionapi/${field !==null ? '?ordering=' + field : ''}`
+    if (field !== null) {
+      sort = '?ordering=' + field
+    }
+    if (field === null & search !== '') {
+      search = '?search=' + search
+    } else if (field !== null && search !== '') {
+      search = '&search=' + search
+    }
 
+    const url = `${host}connectionapirelated/${sort+search}`
+    console.log(url)
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -86,7 +95,7 @@ const ConnectionState = (props) => {
 
       body: JSON.stringify(connection)
     });
-    getAllConnections()
+    getAllConnections('connection_id', 'ASC', '')
     showAlert(response.status)
   }
 
@@ -109,7 +118,7 @@ const ConnectionState = (props) => {
 
     // Update record in frontend
     if (response.ok) {
-      getAllConnections('connection_id','ASC')
+      getAllConnections('connection_id', 'ASC', '')
     }
   }
 

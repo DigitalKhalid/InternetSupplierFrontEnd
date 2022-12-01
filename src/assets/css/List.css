@@ -84,4 +84,5 @@ td {
 .search-control {
   border-radius: 0.5em;
   text-align: center;
+  border-width: 0.05em;
 }

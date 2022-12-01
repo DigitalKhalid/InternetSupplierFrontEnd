@@ -1,5 +1,5 @@
 import '../assets/css/Form.css'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import ConnectionContext from '../context/connection/ConnectionContext'
 import CustomerContext from '../context/customer/CustomerContext'
 
@@ -7,8 +7,13 @@ const ConnectionForm = () => {
     const context = useContext(ConnectionContext)
     const { connection, setConnection } = context
 
-    const { customers } = useContext(CustomerContext)
+    const { customers, getAllCustomers } = useContext(CustomerContext)
 
+    useEffect(() => {
+      getAllCustomers('first_name', 'ASC', '')
+      // eslint-disable-next-line
+    }, [])
+    
     const handleOnChange = (event) => {
         setConnection({ ...connection, [event.target.name]: event.target.value })
     }

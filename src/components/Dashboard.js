@@ -2,10 +2,12 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
+// import { useDispatch } from 'react-redux'
+// import { bindActionCreators } from 'redux'
+// import { actionCreators } from '../state/index'
 
 export const Dashboard = () => {
-  const amount = useSelector(state => state.amount)
 
   const navigate = useNavigate()
 
@@ -18,7 +20,14 @@ export const Dashboard = () => {
 
   return (
     <div>
-      <button className='btn btn-primary' disabled={true}>Your balance is {amount}</button>
+      {/* <ul> */}
+        {/* {country.map((item) => {
+          return (
+            <li>{item.id} - {item.country}</li>
+          )
+        })} */}
+      {/* </ul> */}
+
     </div>
   )
 }

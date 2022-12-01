@@ -5,22 +5,20 @@ import ConnectionContext from '../context/connection/ConnectionContext'
 import PopupContext from '../context/popup/PopupContext'
 import Popup from './Popup'
 import ConnectionForm from './ConnectionForm'
-import CustomerContext from '../context/customer/CustomerContext'
 
 export const Connections = () => {
     const context = useContext(ConnectionContext)
     const { blankFields, connections, setConnection, getAllConnections, addConnection, deleteConnection, updateConnection } = context
     const { togglePopup } = useContext(PopupContext)
-    const { customers, getAllCustomers } = useContext(CustomerContext)
     const [operation, setOperation] = useState(null)
     const [sort, setSort] = useState('ASC')
     const [column, setColumn] = useState('connection_id')
+    const [searchText, setSearchText] = useState('')
 
     useEffect(() => {
-        getAllConnections(column, sort)
-        getAllCustomers()
+        getAllConnections(column, sort, searchText)
         //   eslint-disable-next-line
-    }, [sort, column])
+    }, [sort, column, searchText])
 
     const openNewPopup = () => {
         setOperation('add')
@@ -29,8 +27,10 @@ export const Connections = () => {
     }
 
     const openEditPopup = (connection) => {
+        const connectionEdit = { ...connection, 'customer': connection.customer.id }
+
         setOperation('update')
-        setConnection(connection)
+        setConnection(connectionEdit)
         togglePopup()
     }
 
@@ -77,7 +77,7 @@ export const Connections = () => {
         <>
             {/* Headers */}
             <div className="list-headers">
-                <input type="text" className="search-control" id="search" name='search' placeholder="Search"></input>
+                <input type="text" className="search-control" id="search" name='search' placeholder="Search" onChange={(event) => setSearchText(event.target.value)}></input>
                 <button className="btn btn-primary" onClick={openNewPopup}>Add Connection</button>
             </div>
 
@@ -109,14 +109,7 @@ export const Connections = () => {
                                         <button className={`${connection.status === 'Active' ? 'connection-active' : 'connection-inactive'}`} onClick={() => openStatusPopup(connection)} ></button>
                                     </td>
                                     <td>{connection.connection_id}</td>
-                                    <td>
-                                        {customers.map((customer) => {
-                                            return (
-                                                connection.customer === customer.id && customer.first_name + ' ' + customer.last_name
-                                            )
-                                        })
-                                        }
-                                    </td>
+                                    <td>{connection.customer.first_name + ' ' + connection.customer.last_name}</td>
                                     <td>{connection.installation_date}</td>
                                     <td>{connection.package}</td>
                                     <td>{connection.status}</td>
