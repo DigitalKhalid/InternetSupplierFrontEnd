@@ -17,10 +17,6 @@ const AreaForm = () => {
 
     const handleOnChange = (event) => {
         setArea({ ...area, [event.target.name]: event.target.value })
-        if (event.target.name === 'country') {
-            getAllCities('city', 'ASC', area.country, 'country')
-            console.log(area.country)
-        }
     }
 
     return (

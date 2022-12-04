@@ -1,3 +1,4 @@
+import '../assets/css/Form.css'
 import React, {useContext, useEffect} from 'react'
 import LoginContext from '../context/login/LoginContext'
 
@@ -15,15 +16,15 @@ function LoginForm() {
   }
 
   return (
-      <div className='container'>
+      <div className='container form'>
           <form className="row g-2">
-              <div className="col-md-8">
+              <div className="col-md-10">
                   <p className='title'><strong>User Name</strong></p>
                   <input type="text" className="form-control" id="username" name='username' placeholder="" defaultValue={credentials.username} onChange={handleOnChange} ></input>
                   <p className='label'></p>
               </div>
 
-              <div className="col-md-8">
+              <div className="col-md-10">
                   <p className='title'><strong>Password</strong></p>
                   <input type="password" className="form-control" id="password" name='password' autoComplete='off' placeholder="" defaultValue={credentials.password} onChange={handleOnChange} ></input>
                   <p className='label'></p>

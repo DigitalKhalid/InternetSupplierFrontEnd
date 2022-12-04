@@ -74,7 +74,7 @@ td {
 .sort-btn {
   font-size: 0.8em;
   margin-left: 0.25em;
-  color: lightgray;
+  color: var(--sort-btn-color);
 }
 
 .sorting-head:hover {

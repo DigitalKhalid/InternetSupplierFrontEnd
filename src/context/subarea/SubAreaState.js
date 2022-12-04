@@ -1,28 +1,28 @@
 import React, { useContext, useState } from "react";
-import AreaContext from './AreaContext'
+import SubAreaContext from './SubAreaContext'
 import AlertContext from "../alert/AlertContext"
 
-const AreaState = (props) => {
+const SubAreaState = (props) => {
     const { toggleAlert } = useContext(AlertContext)
 
     const host = process.env.REACT_APP_HOST
-    const [areas, setAreas] = useState([])
+    const [subAreas, setSubAreas] = useState([])
 
     const blankFields = {
         id: '',
-        city: '',
         area: '',
+        subarea: '',
     }
 
-    const [area, setArea] = useState(blankFields)
+    const [subArea, setSubArea] = useState(blankFields)
 
     const showAlert = (status) => {
         if (status === 200) {
-            toggleAlert('success', 'Information of ' + area.area + ' is updated!')
+            toggleAlert('success', 'Information of ' + subArea.subarea + ' is updated!')
         } else if (status === 201) {
-            toggleAlert('success', 'New Area, ' + area.area + ' is added!')
+            toggleAlert('success', 'New SubArea, ' + subArea.subarea + ' is added!')
         } else if (status === 204) {
-            toggleAlert('success', area.area + ' has been deleted!')
+            toggleAlert('success', subArea.subarea + ' has been deleted!')
         } else if (status === 400) {
             toggleAlert('error', '(' + status + ') Invalid request or data.')
         } else if (status === 401) {
@@ -38,7 +38,7 @@ const AreaState = (props) => {
 
 
     // Get all Records
-    const getAllAreas = async (field = 'area', sort = 'ASC', search = '', filterField='') => {
+    const getAllSubAreas = async (field = 'Subarea', sort = 'ASC', search = '', filterField='') => {
         if (sort === 'DESC') {
             field = '-' + field
         }
@@ -62,7 +62,7 @@ const AreaState = (props) => {
             }
         }
 
-        const url = `${host}areaapirelated/${sort + search}`
+        const url = `${host}subareaapirelated/${sort + search + filterField}`
         console.log(url)
         const response = await fetch(url, {
             method: 'GET',
@@ -72,14 +72,14 @@ const AreaState = (props) => {
             },
         });
         const json = await response.json();
-        setAreas(json)
+        setSubAreas(json)
     }
 
 
     // Add Record
-    const addArea = async () => {
+    const addSubArea = async () => {
         // Add record to server
-        const url = `${host}areaapi/`
+        const url = `${host}subareaapi/`
 
         const response = await fetch(url, {
             method: 'POST',
@@ -88,17 +88,17 @@ const AreaState = (props) => {
                 'Authorization': 'Token ' + localStorage.getItem('authtoken')
             },
 
-            body: JSON.stringify(area)
+            body: JSON.stringify(subArea)
         });
-        getAllAreas('area', 'ASC', '')
+        getAllSubAreas('Subarea', 'ASC', '')
         showAlert(response.status)
     }
 
 
     // Update Record
-    const updateArea = async () => {
+    const updateSubArea = async () => {
         // Update record to server side
-        const url = `${host}areaapi/${area.id}/`
+        const url = `${host}subareaapi/${subArea.id}/`
 
         const response = await fetch(url, {
             method: 'PUT',
@@ -106,22 +106,22 @@ const AreaState = (props) => {
                 'Content-Type': 'application/json',
                 'Authorization': 'Token ' + localStorage.getItem('authtoken')
             },
-            body: JSON.stringify(area)
+            body: JSON.stringify(subArea)
         });
         // const json = await response.json();
         showAlert(response.status)
 
         // Update record in frontend
         if (response.ok) {
-            getAllAreas('area', 'ASC', '')
+            getAllSubAreas('Subarea', 'ASC', '')
         }
     }
 
 
     // Delete Record
-    const deleteArea = async () => {
+    const deleteSubArea = async () => {
         // delete record from server using API
-        const url = `${host}areaapi/${area.id}`
+        const url = `${host}subareaapi/${subArea.id}`
 
         const response = await fetch(url, {
             method: 'DELETE',
@@ -134,17 +134,17 @@ const AreaState = (props) => {
 
         // delete record from frontend
         if (response.ok) {
-            const areasLeft = areas.filter((con) => { return con.id !== area.id })
-            setAreas(areasLeft)
+            const SubareasLeft = subAreas.filter((con) => { return con.id !== subArea.id })
+            setSubAreas(SubareasLeft)
         }
     }
 
 
     return (
-        <AreaContext.Provider value={{ blankFields, areas, area, setArea, getAllAreas, addArea, updateArea, deleteArea }}>
+        <SubAreaContext.Provider value={{ blankFields, subAreas, subArea, setSubArea, getAllSubAreas, addSubArea, updateSubArea, deleteSubArea }}>
             {props.children}
-        </AreaContext.Provider>
+        </SubAreaContext.Provider>
     )
 }
 
-export default AreaState;
+export default SubAreaState;

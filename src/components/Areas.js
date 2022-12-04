@@ -85,9 +85,9 @@ export const Areas = () => {
 
                             <th className='sorting-head' onClick={() => sorting('area')}>Area <i className={`${column + sort === 'areaASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'areaDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
                             
-                            <th className='sorting-head' onClick={() => sorting('city')}>City <i className={`${column + sort === 'cityASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'cityDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                            <th className='sorting-head' onClick={() => sorting('city__city')}>City <i className={`${column + sort === 'city__cityASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'city__cityDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
-                            <th className='sorting-head' onClick={() => sorting('country')}>Country <i className={`${column + sort === 'countryASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'countryDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                            <th className='sorting-head' onClick={() => sorting('city__country__country')}>Country <i className={`${column + sort === 'city__country__countryASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'city__country__countryDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
                             
                             <th>Actions</th>
                         </tr>

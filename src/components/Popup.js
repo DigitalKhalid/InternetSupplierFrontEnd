@@ -22,7 +22,7 @@ const Popup = (props) => {
         <>
             <div className={isOpen ? 'overlay open' : 'overlay'} />
             <div className={isOpen ? 'popup open' : 'popup'}>
-                <button className='popup-close-btn' onClick={togglePopup} ><i className='fa fa-xmark'></i></button>
+                {btnCancel && <button className='popup-close-btn' onClick={togglePopup} ><i className='fa fa-xmark'></i></button>}
                 <div className="popup-content">
                     <div className="popup-header">
                         {header}
@@ -32,9 +32,9 @@ const Popup = (props) => {
                     <div className="popup-body">
                         {body}
                     </div>
-                    <hr className='hr' />
+                    {/* <hr className='hr' /> */}
 
-                    <div className="popup-footer">
+                    <div className="popup-footer col-md-11">
                         {btnCancel && <button className='btn btn-warning btn-sm' onClick={togglePopup}>{btnCancel}</button>}
                         <button className='btn btn-primary btn-sm' onClick={btnOkClick} >{btnOk}</button>
                     </div>

@@ -6,6 +6,8 @@
       "warning": "orange",
       "error": "red",
 
+      "sortBtnColor":"grey",
+
       "adminHeaderBgcolor": "rgba(50, 150, 200, 1)",
       "adminHeaderColor": "white",
 
@@ -48,6 +50,8 @@
       "success": "lightgreen",
       "warning": "lightorange",
       "error": "#FF3131",
+
+      "sortBtnColor":"silver",
 
       "adminHeaderBgcolor": "rgba(25, 50, 100, 1)",
       "adminHeaderColor": "white",

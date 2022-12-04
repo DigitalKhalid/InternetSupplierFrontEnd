@@ -28,6 +28,8 @@ import { Cities } from './components/Cities';
 import CityState from './context/city/CityState';
 import { Areas } from './components/Areas'
 import AreaState from './context/area/AreaState'
+import SubAreaState from './context/subarea/SubAreaState';
+import { SubAreas } from './components/SubAreas';
 
 function App() {
   const dispatch = useDispatch();
@@ -49,123 +51,140 @@ function App() {
                 <CountryState>
                   <CityState>
                     <AreaState>
-                      <Router>
-                        <Routes>
-                          <Route path='/admin/login' element={<Login />} />
+                      <SubAreaState>
+                        <Router>
+                          <Routes>
+                            <Route path='/admin/login' element={<Login />} />
 
-                          {<Route path='/admin/*' element={
-                            <>
-                              <AdminHeader />
-                              <div className="main">
-                                <Sidebar />
-                                <Routes>
-                                  <Route path='' element={
-                                    <div className="container-content">
-                                      <div className='content'>
-                                        <div className="content-body">
-                                          <Dashboard />
-                                        </div>
-                                      </div>
-                                    </div>} />
-
-                                  <Route path='addcustomer' element={
-                                    <div className="container-content">
-                                      <div className='content'>
-                                        <div className="content-header">
-                                          Add New Customer
-                                          <div className='alerts'>
-                                            <Alerts />
+                            {<Route path='/admin/*' element={
+                              <>
+                                <AdminHeader />
+                                <div className="main">
+                                  <Sidebar />
+                                  <Routes>
+                                    <Route path='' element={
+                                      <div className="container-content">
+                                        <div className='content'>
+                                          <div className="content-body">
+                                            <Dashboard />
                                           </div>
                                         </div>
+                                      </div>} />
 
-                                        <div className="content-body">
-                                          <NewCustomer />
-                                        </div>
-                                      </div>
-                                    </div>} />
+                                    <Route path='addcustomer' element={
+                                      <div className="container-content">
+                                        <div className='content'>
+                                          <div className="content-header">
+                                            Add New Customer
+                                            <div className='alerts'>
+                                              <Alerts />
+                                            </div>
+                                          </div>
 
-                                  <Route path='customerslist' element={
-                                    <div className="container-content">
-                                      <div className='content'>
-                                        <div className="content-header">
-                                          Customers List
-
-                                          <div className='alerts'>
-                                            <Alerts />
+                                          <div className="content-body">
+                                            <NewCustomer />
                                           </div>
                                         </div>
-                                        <div className="content-body">
-                                          <CustomersList />
-                                        </div>
-                                      </div>
-                                    </div>} />
+                                      </div>} />
 
-                                  <Route path='connections' element={
-                                    <div className="container-content">
-                                      <div className='content'>
-                                        <div className="content-header">
-                                          Connections
-                                          <div className='alerts'>
-                                            <Alerts />
+                                    <Route path='customerslist' element={
+                                      <div className="container-content">
+                                        <div className='content'>
+                                          <div className="content-header">
+                                            Customers List
+
+                                            <div className='alerts'>
+                                              <Alerts />
+                                            </div>
+                                          </div>
+                                          <div className="content-body">
+                                            <CustomersList />
                                           </div>
                                         </div>
-                                        <div className="content-body">
-                                          <Connections />
-                                        </div>
-                                      </div>
-                                    </div>} />
+                                      </div>} />
 
-                                  <Route path='countries' element={
-                                    <div className="container-content">
-                                      <div className='content'>
-                                        <div className="content-header">
-                                          Countries
-                                          <div className='alerts'>
-                                            <Alerts />
+                                    <Route path='connections' element={
+                                      <div className="container-content">
+                                        <div className='content'>
+                                          <div className="content-header">
+                                            Connections
+                                            <div className='alerts'>
+                                              <Alerts />
+                                            </div>
+                                          </div>
+                                          <div className="content-body">
+                                            <Connections />
                                           </div>
                                         </div>
-                                        <div className="content-body">
-                                          <Countries />
-                                        </div>
-                                      </div>
-                                    </div>} />
+                                      </div>} />
 
-                                  <Route path='cities' element={
-                                    <div className="container-content">
-                                      <div className='content'>
-                                        <div className="content-header">
-                                          Cities
-                                          <div className='alerts'>
-                                            <Alerts />
+                                    <Route path='countries' element={
+                                      <div className="container-content">
+                                        <div className='content'>
+                                          <div className="content-header">
+                                            Countries
+                                            <div className='alerts'>
+                                              <Alerts />
+                                            </div>
+                                          </div>
+                                          <div className="content-body">
+                                            <Countries />
                                           </div>
                                         </div>
-                                        <div className="content-body">
-                                          <Cities />
-                                        </div>
-                                      </div>
-                                    </div>} />
+                                      </div>} />
 
-                                  <Route path='areas' element={
-                                    <div className="container-content">
-                                      <div className='content'>
-                                        <div className="content-header">
-                                          Areas
-                                          <div className='alerts'>
-                                            <Alerts />
+                                    <Route path='cities' element={
+                                      <div className="container-content">
+                                        <div className='content'>
+                                          <div className="content-header">
+                                            Cities
+                                            <div className='alerts'>
+                                              <Alerts />
+                                            </div>
+                                          </div>
+                                          <div className="content-body">
+                                            <Cities />
                                           </div>
                                         </div>
-                                        <div className="content-body">
-                                          <Areas />
+                                      </div>} />
+
+                                    <Route path='areas' element={
+                                      <div className="container-content">
+                                        <div className='content'>
+                                          <div className="content-header">
+                                            Areas
+                                            <div className='alerts'>
+                                              <Alerts />
+                                            </div>
+                                          </div>
+                                          <div className="content-body">
+                                            <Areas />
+                                          </div>
                                         </div>
-                                      </div>
-                                    </div>} />
-                                </Routes>
-                              </div>
-                              <AdminFooter />
-                            </>
-                          } />}
-                        </Routes>
-                      </Router>
+                                      </div>} />
+
+                                    <Route path='subareas' element={
+                                      <div className="container-content">
+                                        <div className='content'>
+                                          <div className="content-header">
+                                            Sub Areas
+                                            <div className='alerts'>
+                                              <Alerts />
+                                            </div>
+                                          </div>
+                                          <div className="content-body">
+                                            <SubAreas />
+                                          </div>
+                                        </div>
+                                      </div>} />
+                                  </Routes>
+                                </div>
+                                <AdminFooter />
+                              </>
+                            } />}
+                          </Routes>
+                        </Router>
+                      </SubAreaState>
                     </AreaState>
                   </CityState>
                 </CountryState>

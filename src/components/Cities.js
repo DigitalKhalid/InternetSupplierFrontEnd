@@ -82,7 +82,7 @@ export const Cities = () => {
 
                             <th className='sorting-head' onClick={() => sorting('city')}>city <i className={`${column + sort === 'cityASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'cityDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
-                            <th className='sorting-head' onClick={() => sorting('country')}>Country <i className={`${column + sort === 'countryASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'countryDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                            <th className='sorting-head' onClick={() => sorting('country__country')}>Country <i className={`${column + sort === 'country__countryASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'country__countryDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
                             
                             <th>Actions</th>
                         </tr>

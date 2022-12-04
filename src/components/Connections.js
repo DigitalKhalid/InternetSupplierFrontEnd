@@ -90,6 +90,8 @@ export const Connections = () => {
 
                             <th className='sorting-head' onClick={() => sorting('connection_id')}>Connection ID <i className={`${column + sort === 'connection_idASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'connection_idDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
+                            <th className='sorting-head' onClick={() => sorting('subarea__subarea')}>Subarea <i className={`${column + sort === 'subarea__subareaASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'subarea__subareaDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                            
                             <th className='sorting-head' onClick={() => sorting('customer')}>Customer <i className={`${column + sort === 'customerASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'customerDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
                             <th className='sorting-head' onClick={() => sorting('installation_date')}>Installation Date <i className={`${column + sort === 'installation_dateASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'installation_dateDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
@@ -109,6 +111,7 @@ export const Connections = () => {
                                         <button className={`${connection.status === 'Active' ? 'connection-active' : 'connection-inactive'}`} onClick={() => openStatusPopup(connection)} ></button>
                                     </td>
                                     <td>{connection.connection_id}</td>
+                                    <td>{connection.subarea.subarea}</td>
                                     <td>{connection.customer.first_name + ' ' + connection.customer.last_name}</td>
                                     <td>{connection.installation_date}</td>
                                     <td>{connection.package}</td>

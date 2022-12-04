@@ -8,6 +8,8 @@ const applyTheme = (theme) => {
             document.documentElement.style.setProperty('--success', element.detail.success)
             document.documentElement.style.setProperty('--warning', element.detail.warning)
             document.documentElement.style.setProperty('--error', element.detail.error)
+            
+            document.documentElement.style.setProperty('--sort-btn-color', element.detail.sortBtnColor)
 
             document.documentElement.style.setProperty('--admin-header-bgcolor', element.detail.adminHeaderBgcolor)
             document.documentElement.style.setProperty('--admin-header-color', element.detail.adminHeaderColor)

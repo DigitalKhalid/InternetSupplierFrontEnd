@@ -70,8 +70,8 @@
 .popup-footer {
    text-align: right;
    margin-bottom: .75em;
-   margin-right: 0;
-   padding-top: .5em;
+   margin-right: 1.25em;
+   /* padding-top: .5em; */
 }
 
 .popup-alert {

@@ -31,7 +31,7 @@ const Login = () => {
     return (
         <>
             <div>
-                <Popup header='Login' body={<LoginForm />} btnCancel='Cancel' btnOk='Login' btnOkClick={authenticate} />
+                <Popup header='Login' body={<LoginForm />} btnOk='Login' btnOkClick={authenticate} />
             </div>
         </>
     )
