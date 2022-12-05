@@ -7,18 +7,7 @@
     {
         "title": "Customers",
         "icon": "fa fa-users",
-        "childrens": [
-            {
-                "title": "Add New",
-                "icon":"fa fa-user-plus",
-                "path": "/admin/addcustomer"
-            },
-            {
-                "title": "View List",
-                "icon":"fa fa-list",
-                "path": "/admin/customerslist"
-            }
-        ]
+        "path": "/admin/customers" 
     },
     {
         "title": "Sub Dealer",

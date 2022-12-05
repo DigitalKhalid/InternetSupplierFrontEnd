@@ -1,12 +1,15 @@
 import React, { useContext, useState } from "react";
 import SubAreaContext from './SubAreaContext'
 import AlertContext from "../alert/AlertContext"
+import getListURL from "../../functions/URLs";
 
 const SubAreaState = (props) => {
-    const { toggleAlert } = useContext(AlertContext)
+    const { showAlert } = useContext(AlertContext)
 
     const host = process.env.REACT_APP_HOST
     const [subAreas, setSubAreas] = useState([])
+    const [subAreasCount, setSubAreasCount] = useState(0)
+    const [subAreasNext, setSubAreasNext] = useState('')
 
     const blankFields = {
         id: '',
@@ -16,53 +19,10 @@ const SubAreaState = (props) => {
 
     const [subArea, setSubArea] = useState(blankFields)
 
-    const showAlert = (status) => {
-        if (status === 200) {
-            toggleAlert('success', 'Information of ' + subArea.subarea + ' is updated!')
-        } else if (status === 201) {
-            toggleAlert('success', 'New SubArea, ' + subArea.subarea + ' is added!')
-        } else if (status === 204) {
-            toggleAlert('success', subArea.subarea + ' has been deleted!')
-        } else if (status === 400) {
-            toggleAlert('error', '(' + status + ') Invalid request or data.')
-        } else if (status === 401) {
-            toggleAlert('error', '(' + status + ') Application is unable to recognize your identity. Please login through valid credentials.')
-        } else if (status === 403) {
-            toggleAlert('warning', '(' + status + ') You are not authorize to perform this action.')
-        } else if (status === 404) {
-            toggleAlert('error', '(' + status + ') Information not found. Unable to process your requested.')
-        } else if (status > 499) {
-            toggleAlert('error', '(' + status + ') Application is unable to connect to the server.')
-        }
-    }
-
 
     // Get all Records
-    const getAllSubAreas = async (field = 'Subarea', sort = 'ASC', search = '', filterField='') => {
-        if (sort === 'DESC') {
-            field = '-' + field
-        }
-
-        if (field !== null) {
-            sort = '?ordering=' + field
-        }
-
-        if (field === null & search !== '') {
-            if (filterField !== '') {
-                search = '?' + filterField + '=' + search
-            } else {
-                search = '?search=' + search
-            }
-
-        } else if (field !== null & search !== '') {
-            if (filterField !== '') {
-                search = '&' + filterField + '=' + search
-            } else {
-                search = '&search=' + search
-            }
-        }
-
-        const url = `${host}subareaapirelated/${sort + search + filterField}`
+    const getAllSubAreas = async (sortField = 'subarea', sort = 'ASC', search = '', filterField = '') => {
+        const url = getListURL('subareaapirelated', sortField, sort, search, filterField)
         console.log(url)
         const response = await fetch(url, {
             method: 'GET',
@@ -72,9 +32,25 @@ const SubAreaState = (props) => {
             },
         });
         const json = await response.json();
-        setSubAreas(json)
+        setSubAreasCount(json.count)
+        setSubAreas(json.results)
+        setSubAreasNext(json.next)
     }
 
+    // Append more records used for pagination
+    const getMoreSubAreas = async () => {
+        const url = subAreasNext
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + localStorage.getItem('authtoken')
+            },
+        });
+        const json = await response.json();
+        setSubAreas(subAreas.concat(json.results))
+        setSubAreasNext(json.next)
+    }
 
     // Add Record
     const addSubArea = async () => {
@@ -91,7 +67,7 @@ const SubAreaState = (props) => {
             body: JSON.stringify(subArea)
         });
         getAllSubAreas('Subarea', 'ASC', '')
-        showAlert(response.status)
+        showAlert(response.status, subArea.subarea)
     }
 
 
@@ -109,11 +85,11 @@ const SubAreaState = (props) => {
             body: JSON.stringify(subArea)
         });
         // const json = await response.json();
-        showAlert(response.status)
+        showAlert(response.status, subArea.subarea)
 
         // Update record in frontend
         if (response.ok) {
-            getAllSubAreas('Subarea', 'ASC', '')
+            getAllSubAreas()
         }
     }
 
@@ -130,7 +106,7 @@ const SubAreaState = (props) => {
                 'Authorization': 'Token ' + localStorage.getItem('authtoken')
             },
         });
-        showAlert(response.status)
+        showAlert(response.status, subArea.subarea)
 
         // delete record from frontend
         if (response.ok) {
@@ -141,7 +117,7 @@ const SubAreaState = (props) => {
 
 
     return (
-        <SubAreaContext.Provider value={{ blankFields, subAreas, subArea, setSubArea, getAllSubAreas, addSubArea, updateSubArea, deleteSubArea }}>
+        <SubAreaContext.Provider value={{ blankFields, subAreas, subArea, subAreasCount, subAreasNext, setSubArea, getAllSubAreas, getMoreSubAreas, addSubArea, updateSubArea, deleteSubArea }}>
             {props.children}
         </SubAreaContext.Provider>
     )

@@ -1,106 +1,118 @@
-@import './Themes.css';
+@import "./Themes.css";
 
 .overlay {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    background-color: var(--popup-overlay-bgcolor);
-    z-index: 1000;
-    border-radius: 0.5em;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: var(--popup-overlay-bgcolor);
+  z-index: 1000;
+  border-radius: 0.5em;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 .overlay.open {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }
 
 .popup {
-    position: fixed;
-    display: block;
-    left: 50%;
-    top: 25%;
-    transform: translate(-50%, -25%);
-    background-image: var(--main-bg);
-    background-position: center;
-    background-size: cover;
-    padding: .5em;
-    z-index: 1000;
-    color: var(--color);
-    border-radius: .75em;
-    box-shadow: 2px 2px 5px 1px var(--popup-shadow-color-1), 5px 5px 20px 0 var(--popup-shadow-color-1);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+  position: fixed;
+  display: flex;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-image: var(--main-bg);
+  background-position: center;
+  background-size: cover;
+  padding: 0.5em;
+  z-index: 1000;
+  color: var(--color);
+  border-radius: 0.75em;
+  box-shadow: 2px 2px 5px 1px var(--popup-shadow-color-1),
+    5px 5px 20px 0 var(--popup-shadow-color-1);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  max-height: 95%;
+  overflow-y: hidden;
 }
 
 .popup.open {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }
 
 .popup-content {
-    padding: .5em;
+  padding: 0.5em;
+}
+
+.popup-close {
+    /* float: right; */
+    display:block;
+    position: absolute;
+    right: 0.5em;
 }
 
 .popup-close-btn {
-    float: right;
-    border: none;
-    background-color: var(--popup-bgcolor);
-    color: var(--color);
+  border: none;
+  background-color: var(--popup-bgcolor);
+  color: var(--color);
 }
 
 .popup-close-btn:hover {
-    color: red;
-} 
+  color: red;
+}
 
 .popup-header {
-    font-weight: bold;
+  font-weight: bold;
+  display: flex;
+  justify-content:space-between;
 }
 
 .popup-body {
-    padding: 0.5em;
-
+  padding: 0.5em;
+  max-height: 80%;
+  overflow-y: auto;
 }
 
 .popup-footer {
-   text-align: right;
-   margin-bottom: .75em;
-   margin-right: 1.25em;
-   /* padding-top: .5em; */
+  text-align: right;
+  margin-bottom: 0.75em;
+  margin-right: 1.25em;
+  /* padding-top: .5em; */
 }
 
 .popup-alert {
-    font-weight: lighter;
-    font-size: 0.8em;
-    text-align: justify;
-    height: 2.25em;
+  font-weight: lighter;
+  font-size: 0.8em;
+  text-align: justify;
+  height: 2.25em;
 }
 
 .alert-content {
-    padding-top: 0;
-    padding-right: 1.25em;
-    position: fixed;
-    overflow: hidden;
+  padding-top: 0;
+  padding-right: 1.25em;
+  position: fixed;
+  overflow: hidden;
 }
 
 .btn-warning.btn-sm {
-    width: 5em;
+  width: 5em;
 }
 
 .btn-primary.btn-sm {
-    width: 5em;
-    margin-left: 1em;
+  width: 5em;
+  margin-left: 1em;
 }
 
 .hr {
-    /* padding: 0; */
-    margin-left: 0em;
-    margin-right: 0em;
-    margin-top: .25em;
-    margin-bottom: .25em;
+  /* padding: 0; */
+  margin-left: 0em;
+  margin-right: 0em;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
 }

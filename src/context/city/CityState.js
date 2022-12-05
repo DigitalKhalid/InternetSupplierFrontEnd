@@ -1,12 +1,15 @@
 import React, { useContext, useState } from "react";
 import CityContext from './CityContext'
 import AlertContext from "../alert/AlertContext"
+import getListURL from "../../functions/URLs";
 
 const CityState = (props) => {
-    const { toggleAlert } = useContext(AlertContext)
+    const { showAlert } = useContext(AlertContext)
 
     const host = process.env.REACT_APP_HOST
     const [cities, setCities] = useState([])
+    const [citiesCount, setCitiesCount] = useState(0)
+    const [citiesNext, setCitiesNext] = useState('')
 
     const blankFields = {
         id: '',
@@ -16,56 +19,10 @@ const CityState = (props) => {
 
     const [city, setCity] = useState(blankFields)
 
-    const showAlert = (status) => {
-        if (status === 200) {
-            toggleAlert('success', 'Information of ' + city.city + ' is updated!')
-        } else if (status === 201) {
-            toggleAlert('success', 'New city, ' + city.city + ' is added!')
-        } else if (status === 204) {
-            toggleAlert('success', city.city + ' has been deleted!')
-        } else if (status === 400) {
-            toggleAlert('error', '(' + status + ') Invalid request or data.')
-        } else if (status === 401) {
-            toggleAlert('error', '(' + status + ') Application is unable to recognize your identity. Please login through valid credentials.')
-        } else if (status === 403) {
-            toggleAlert('warning', '(' + status + ') You are not authorize to perform this action.')
-        } else if (status === 404) {
-            toggleAlert('error', '(' + status + ') Information not found. Unable to process your requested.')
-        } else if (status > 499) {
-            toggleAlert('error', '(' + status + ') Application is unable to connect to the server.')
-        }
-    }
-
-
     // Get all Records
-    const getAllCities = async (field = 'city', sort = 'ASC', search = '', filterField='') => {
-        console.log(field)
-        console.log(filterField)
-        if (sort === 'DESC') {
-            field = '-' + field
-        }
+    const getAllCities = async (sortField = 'city', sort = 'ASC', search = '', filterField = '') => {
+        const url = getListURL('cityapirelated', sortField, sort, search, filterField)
 
-        if (field !== null) {
-            sort = '?ordering=' + field
-        }
-
-        if (field === null & search !== '') {
-            if (filterField !== '') {
-                search = '?' + filterField + '=' + search
-            } else {
-                search = '?search=' + search
-            }
-
-        } else if (field !== null & search !== '') {
-            if (filterField !== '') {
-                search = '&' + filterField + '=' + search
-            } else {
-                search = '&search=' + search
-            }
-        }
-
-        const url = `${host}cityapirelated/${sort + search}`
-        console.log(url)
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -74,10 +31,25 @@ const CityState = (props) => {
             },
         });
         const json = await response.json();
-        console.log(json)
-        setCities(json)
+        setCitiesCount(json.count)
+        setCities(json.results)
+        setCitiesNext(json.next)
     }
 
+    // Append more records used for pagination
+    const getMoreCities = async () => {
+        const url = citiesNext
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + localStorage.getItem('authtoken')
+            },
+        });
+        const json = await response.json();
+        setCities(cities.concat(json.results))
+        setCitiesNext(json.next)
+    }
 
     // Add Record
     const addCity = async () => {
@@ -94,7 +66,7 @@ const CityState = (props) => {
             body: JSON.stringify(city)
         });
         getAllCities('city', 'ASC', '')
-        showAlert(response.status)
+        showAlert(response.status, city.city)
     }
 
 
@@ -112,7 +84,7 @@ const CityState = (props) => {
             body: JSON.stringify(city)
         });
         // const json = await response.json();
-        showAlert(response.status)
+        showAlert(response.status, city.city)
 
         // Update record in frontend
         if (response.ok) {
@@ -133,7 +105,7 @@ const CityState = (props) => {
                 'Authorization': 'Token ' + localStorage.getItem('authtoken')
             },
         });
-        showAlert(response.status)
+        showAlert(response.status, city.city)
 
         // delete record from frontend
         if (response.ok) {
@@ -144,7 +116,7 @@ const CityState = (props) => {
 
 
     return (
-        <CityContext.Provider value={{ blankFields, cities, city, setCity, getAllCities, addCity, updateCity, deleteCity }}>
+        <CityContext.Provider value={{ blankFields, cities, city, citiesCount, citiesNext, getMoreCities, setCity, getAllCities, addCity, updateCity, deleteCity }}>
             {props.children}
         </CityContext.Provider>
     )

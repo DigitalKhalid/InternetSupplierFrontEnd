@@ -5,10 +5,12 @@ import CityContext from '../context/city/CityContext'
 import PopupContext from '../context/popup/PopupContext'
 import Popup from './Popup'
 import CityForm from './CityForm'
+import Pagination from './Pagination'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 export const Cities = () => {
     const context = useContext(CityContext)
-    const { blankFields, cities, setCity, getAllCities, addCity, deleteCity, updateCity } = context
+    const { blankFields, cities, setCity, getAllCities, getMoreCities, citiesCount, citiesNext, addCity, deleteCity, updateCity } = context
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
     const [sort, setSort] = useState('ASC')
@@ -27,7 +29,7 @@ export const Cities = () => {
     }
 
     const openEditPopup = (city) => {
-        const cityEdit = {...city, 'country':city.country.id}
+        const cityEdit = { ...city, 'country': city.country.id }
         setOperation('update')
         setCity(cityEdit)
         togglePopup()
@@ -74,52 +76,47 @@ export const Cities = () => {
             </div>
 
             {/* List */}
-            <div className='list'>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
+            <InfiniteScroll
+                dataLength={citiesCount}
+                next={getMoreCities}
+                hasMore={citiesNext !== null}
+            // loader={<Spinner />}
+            >
+                <div className='list'>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
 
-                            <th className='sorting-head' onClick={() => sorting('city')}>city <i className={`${column + sort === 'cityASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'cityDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                                <th className='sorting-head' onClick={() => sorting('city')}>city <i className={`${column + sort === 'cityASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'cityDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
-                            <th className='sorting-head' onClick={() => sorting('country__country')}>Country <i className={`${column + sort === 'country__countryASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'country__countryDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
-                            
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {cities.map((city, index) => {
-                            return (
-                                <tr key={index}>
-                                    <td>{city.id}</td>
-                                    <td>{city.city}</td>
-                                    <td>{city.country.country}</td>
+                                <th className='sorting-head' onClick={() => sorting('country__country')}>Country <i className={`${column + sort === 'country__countryASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'country__countryDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
-                                    <td >
-                                        <Link className='action-btn' onClick={() => openDeletePopup(city)} ><i className='fa fa-trash-can'></i></Link>
-                                        <Link className='action-btn' onClick={() => openEditPopup(city)} ><i className='fa fa-pen-to-square'></i></Link>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
-            </div>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cities.map((city, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{city.id}</td>
+                                        <td>{city.city}</td>
+                                        <td>{city.country.country}</td>
+
+                                        <td >
+                                            <Link className='action-btn' onClick={() => openDeletePopup(city)} ><i className='fa fa-trash-can'></i></Link>
+                                            <Link className='action-btn' onClick={() => openEditPopup(city)} ><i className='fa fa-pen-to-square'></i></Link>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </InfiniteScroll>
 
             {/* Pagination */}
-            <div className="my-pagination">
-                <ul className="pagination justify-content-end">
-                    <li className="page-item disabled">
-                        <a className="page-link" href='/'>Previous</a>
-                    </li>
-                    <li className="page-item"><a className="page-link" href="/">1</a></li>
-                    <li className="page-item"><a className="page-link" href="/">2</a></li>
-                    <li className="page-item"><a className="page-link" href="/">3</a></li>
-                    <li className="page-item">
-                        <a className="page-link" href="/">Next</a>
-                    </li>
-                </ul>
-            </div>
+            <Pagination showedRecords={cities.length} totalRecords={citiesCount} nextPage={citiesNext} getMoreRecords={getMoreCities} />
 
             {/* Popup Forms */}
             <div>

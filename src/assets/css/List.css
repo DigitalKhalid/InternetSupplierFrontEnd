@@ -40,6 +40,12 @@ td {
 
 .my-pagination {
   margin-top: 1em;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pagination-btn:hover {
+  cursor: pointer;
 }
 
 .list-headers{

@@ -5,10 +5,12 @@ import AreaContext from '../context/area/AreaContext'
 import PopupContext from '../context/popup/PopupContext'
 import Popup from './Popup'
 import AreaForm from './AreaForm'
+import Pagination from '../components/Pagination'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 export const Areas = () => {
     const context = useContext(AreaContext)
-    const { blankFields, areas, setArea, getAllAreas, addArea, deleteArea, updateArea } = context
+    const { blankFields, areas, areasCount, areasNext, setArea, getAllAreas, getMoreAreas, addArea, deleteArea, updateArea } = context
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
     const [sort, setSort] = useState('ASC')
@@ -28,7 +30,7 @@ export const Areas = () => {
 
     const openEditPopup = (area) => {
         console.log(area)
-        const areaEdit = {...area, 'city':area.city.id, 'country':area.city.country.id}
+        const areaEdit = { ...area, 'city': area.city.id, 'country': area.city.country.id }
         console.log(areaEdit)
         setOperation('update')
         // setArea(area)
@@ -77,55 +79,50 @@ export const Areas = () => {
             </div>
 
             {/* List */}
-            <div className='list'>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
+            <InfiniteScroll
+                dataLength={areasCount}
+                next={getMoreAreas}
+                hasMore={areasNext !== null}
+            // loader={<Spinner />}
+            >
+                <div className='list'>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
 
-                            <th className='sorting-head' onClick={() => sorting('area')}>Area <i className={`${column + sort === 'areaASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'areaDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
-                            
-                            <th className='sorting-head' onClick={() => sorting('city__city')}>City <i className={`${column + sort === 'city__cityASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'city__cityDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                                <th className='sorting-head' onClick={() => sorting('area')}>Area <i className={`${column + sort === 'areaASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'areaDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
-                            <th className='sorting-head' onClick={() => sorting('city__country__country')}>Country <i className={`${column + sort === 'city__country__countryASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'city__country__countryDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
-                            
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {areas.map((area, index) => {
-                            return (
-                                <tr key={index}>
-                                    <td>{area.id}</td>
-                                    <td>{area.area}</td>
-                                    <td>{area.city.city}</td>
-                                    <td>{area.city.country.country}</td>
+                                <th className='sorting-head' onClick={() => sorting('city__city')}>City <i className={`${column + sort === 'city__cityASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'city__cityDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
-                                    <td >
-                                        <Link className='action-btn' onClick={() => openDeletePopup(area)} ><i className='fa fa-trash-can'></i></Link>
-                                        <Link className='action-btn' onClick={() => openEditPopup(area)} ><i className='fa fa-pen-to-square'></i></Link>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
-            </div>
+                                <th className='sorting-head' onClick={() => sorting('city__country__country')}>Country <i className={`${column + sort === 'city__country__countryASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'city__country__countryDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {areas.map((area, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{area.id}</td>
+                                        <td>{area.area}</td>
+                                        <td>{area.city.city}</td>
+                                        <td>{area.city.country.country}</td>
+
+                                        <td >
+                                            <Link className='action-btn' onClick={() => openDeletePopup(area)} ><i className='fa fa-trash-can'></i></Link>
+                                            <Link className='action-btn' onClick={() => openEditPopup(area)} ><i className='fa fa-pen-to-square'></i></Link>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </InfiniteScroll>
 
             {/* Pagination */}
-            <div className="my-pagination">
-                <ul className="pagination justify-content-end">
-                    <li className="page-item disabled">
-                        <a className="page-link" href='/'>Previous</a>
-                    </li>
-                    <li className="page-item"><a className="page-link" href="/">1</a></li>
-                    <li className="page-item"><a className="page-link" href="/">2</a></li>
-                    <li className="page-item"><a className="page-link" href="/">3</a></li>
-                    <li className="page-item">
-                        <a className="page-link" href="/">Next</a>
-                    </li>
-                </ul>
-            </div>
+            <Pagination showedRecords={areas.length} totalRecords={areasCount} nextPage={areasNext} getMoreRecords={getMoreAreas} />
 
             {/* Popup Forms */}
             <div>

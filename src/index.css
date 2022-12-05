@@ -1,4 +1,4 @@
-@import './assets/css/Themes.css';
+@import "./assets/css/Themes.css";
 /* * {
     margin: 0;
     padding: 0;
@@ -10,17 +10,55 @@
 } */
 
 body {
-    font-family:var(--font-family);
-    font-size: 16px;
-    color: var(--color);
-    background: var(--main-bg);
-    /* background-position: center; */
-    background-size: cover;
+  font-family: var(--font-family);
+  font-size: 16px;
+  color: var(--color);
+  background: var(--main-bg);
+  /* background-position: center; */
+  background-size: cover;
 }
 
 hr {
-    margin-left: 1em;
-    margin-right: 1em;
-    margin-top: .25em;
-    margin-bottom: .25em;
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+/* Tooltip container */
+.tooltips {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* .tooltips .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: grey transparent transparent transparent;
+} */
+
+/* Tooltip text */
+.tooltips .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: grey;
+  color: white;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  right: 105%;
+
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltips:hover .tooltiptext {
+  visibility: visible;
 }

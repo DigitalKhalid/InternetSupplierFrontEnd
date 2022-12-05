@@ -5,10 +5,12 @@ import ConnectionContext from '../context/connection/ConnectionContext'
 import PopupContext from '../context/popup/PopupContext'
 import Popup from './Popup'
 import ConnectionForm from './ConnectionForm'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import Pagination from './Pagination'
 
 export const Connections = () => {
     const context = useContext(ConnectionContext)
-    const { blankFields, connections, setConnection, getAllConnections, addConnection, deleteConnection, updateConnection } = context
+    const { blankFields, connections, connectionsCount, connectionsNext, setConnection, getAllConnections, getMoreConnections, addConnection, deleteConnection, updateConnection } = context
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
     const [sort, setSort] = useState('ASC')
@@ -69,7 +71,6 @@ export const Connections = () => {
         } else if (sort === 'DESC') {
             setSort('ASC')
         }
-        console.log(column + sort)
     }
 
 
@@ -82,65 +83,60 @@ export const Connections = () => {
             </div>
 
             {/* List */}
-            <div className='list'>
-                <table className='sortable'>
-                    <thead>
-                        <tr>
-                            <th></th>
+            <InfiniteScroll
+                dataLength={connectionsCount}
+                next={getMoreConnections}
+                hasMore={connectionsNext !== null}
+            // loader={<Spinner />}
+            >
+                <div className='list'>
+                    <table className='sortable'>
+                        <thead>
+                            <tr>
+                                <th></th>
 
-                            <th className='sorting-head' onClick={() => sorting('connection_id')}>Connection ID <i className={`${column + sort === 'connection_idASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'connection_idDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                                <th className='sorting-head' onClick={() => sorting('connection_id')}>Connection ID <i className={`${column + sort === 'connection_idASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'connection_idDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
-                            <th className='sorting-head' onClick={() => sorting('subarea__subarea')}>Subarea <i className={`${column + sort === 'subarea__subareaASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'subarea__subareaDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
-                            
-                            <th className='sorting-head' onClick={() => sorting('customer')}>Customer <i className={`${column + sort === 'customerASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'customerDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                                <th className='sorting-head' onClick={() => sorting('subarea__subarea')}>Subarea <i className={`${column + sort === 'subarea__subareaASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'subarea__subareaDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
-                            <th className='sorting-head' onClick={() => sorting('installation_date')}>Installation Date <i className={`${column + sort === 'installation_dateASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'installation_dateDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                                <th className='sorting-head' onClick={() => sorting('customer')}>Customer <i className={`${column + sort === 'customerASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'customerDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
-                            <th className='sorting-head' onClick={() => sorting('package')}>Package <i className={`${column + sort === 'packageASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'packageDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                                <th className='sorting-head' onClick={() => sorting('installation_date')}>Installation Date <i className={`${column + sort === 'installation_dateASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'installation_dateDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
-                            <th className='sorting-head' onClick={() => sorting('status')}>Status <i className={`${column + sort === 'statusASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'statusDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                                <th className='sorting-head' onClick={() => sorting('package')}>Package <i className={`${column + sort === 'packageASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'packageDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {connections.map((connection, index) => {
-                            return (
-                                <tr key={index}>
-                                    <td className="status-light">
-                                        <button className={`${connection.status === 'Active' ? 'connection-active' : 'connection-inactive'}`} onClick={() => openStatusPopup(connection)} ></button>
-                                    </td>
-                                    <td>{connection.connection_id}</td>
-                                    <td>{connection.subarea.subarea}</td>
-                                    <td>{connection.customer.first_name + ' ' + connection.customer.last_name}</td>
-                                    <td>{connection.installation_date}</td>
-                                    <td>{connection.package}</td>
-                                    <td>{connection.status}</td>
-                                    <td >
-                                        <Link className='action-btn' onClick={() => openDeletePopup(connection)} ><i className='fa fa-trash-can'></i></Link>
-                                        <Link className='action-btn' onClick={() => openEditPopup(connection)} ><i className='fa fa-pen-to-square'></i></Link>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
-            </div>
+                                <th className='sorting-head' onClick={() => sorting('status')}>Status <i className={`${column + sort === 'statusASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'statusDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {connections.map((connection, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td className="status-light">
+                                            <button className={`${connection.status === 'Active' ? 'connection-active' : 'connection-inactive'}`} onClick={() => openStatusPopup(connection)} ></button>
+                                        </td>
+                                        <td>{connection.connection_id}</td>
+                                        <td>{connection.subarea.subarea}</td>
+                                        <td>{connection.customer.first_name + ' ' + connection.customer.last_name}</td>
+                                        <td>{connection.installation_date}</td>
+                                        <td>{connection.package}</td>
+                                        <td>{connection.status}</td>
+                                        <td >
+                                            <Link className='action-btn' onClick={() => openDeletePopup(connection)} ><i className='fa fa-trash-can'></i></Link>
+                                            <Link className='action-btn' onClick={() => openEditPopup(connection)} ><i className='fa fa-pen-to-square'></i></Link>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </InfiniteScroll>
 
             {/* Pagination */}
-            <div className="my-pagination">
-                <ul className="pagination justify-content-end">
-                    <li className="page-item disabled">
-                        <a className="page-link" href='/'>Previous</a>
-                    </li>
-                    <li className="page-item"><a className="page-link" href="/">1</a></li>
-                    <li className="page-item"><a className="page-link" href="/">2</a></li>
-                    <li className="page-item"><a className="page-link" href="/">3</a></li>
-                    <li className="page-item">
-                        <a className="page-link" href="/">Next</a>
-                    </li>
-                </ul>
-            </div>
+            <Pagination showedRecords={connections.length} totalRecords={connectionsCount} nextPage={connectionsNext} getMoreRecords={getMoreConnections} />
 
             {/* Popup Forms */}
             <div>

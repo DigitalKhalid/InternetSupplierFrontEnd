@@ -1,12 +1,15 @@
 import React, { useContext, useState } from "react";
 import AreaContext from './AreaContext'
 import AlertContext from "../alert/AlertContext"
+import getListURL from '../../functions/URLs'
 
 const AreaState = (props) => {
-    const { toggleAlert } = useContext(AlertContext)
+    const { showAlert } = useContext(AlertContext)
 
     const host = process.env.REACT_APP_HOST
     const [areas, setAreas] = useState([])
+    const [areasCount, setAreasCount] = useState(0)
+    const [areasNext, setAreasNext] = useState('')
 
     const blankFields = {
         id: '',
@@ -16,54 +19,11 @@ const AreaState = (props) => {
 
     const [area, setArea] = useState(blankFields)
 
-    const showAlert = (status) => {
-        if (status === 200) {
-            toggleAlert('success', 'Information of ' + area.area + ' is updated!')
-        } else if (status === 201) {
-            toggleAlert('success', 'New Area, ' + area.area + ' is added!')
-        } else if (status === 204) {
-            toggleAlert('success', area.area + ' has been deleted!')
-        } else if (status === 400) {
-            toggleAlert('error', '(' + status + ') Invalid request or data.')
-        } else if (status === 401) {
-            toggleAlert('error', '(' + status + ') Application is unable to recognize your identity. Please login through valid credentials.')
-        } else if (status === 403) {
-            toggleAlert('warning', '(' + status + ') You are not authorize to perform this action.')
-        } else if (status === 404) {
-            toggleAlert('error', '(' + status + ') Information not found. Unable to process your requested.')
-        } else if (status > 499) {
-            toggleAlert('error', '(' + status + ') Application is unable to connect to the server.')
-        }
-    }
-
 
     // Get all Records
-    const getAllAreas = async (field = 'area', sort = 'ASC', search = '', filterField='') => {
-        if (sort === 'DESC') {
-            field = '-' + field
-        }
+    const getAllAreas = async (sortField = 'area', sort = 'ASC', search = '', filterField = '') => {
+        const url = getListURL('areaapirelated', sortField, sort, search, filterField)
 
-        if (field !== null) {
-            sort = '?ordering=' + field
-        }
-
-        if (field === null & search !== '') {
-            if (filterField !== '') {
-                search = '?' + filterField + '=' + search
-            } else {
-                search = '?search=' + search
-            }
-
-        } else if (field !== null & search !== '') {
-            if (filterField !== '') {
-                search = '&' + filterField + '=' + search
-            } else {
-                search = '&search=' + search
-            }
-        }
-
-        const url = `${host}areaapirelated/${sort + search}`
-        console.log(url)
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -72,9 +32,25 @@ const AreaState = (props) => {
             },
         });
         const json = await response.json();
-        setAreas(json)
+        setAreasCount(json.count)
+        setAreas(json.results)
+        setAreasNext(json.next)
     }
 
+    // Append more records used for pagination
+    const getMoreAreas = async () => {
+        const url = areasNext
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + localStorage.getItem('authtoken')
+            },
+        });
+        const json = await response.json();
+        setAreas(areas.concat(json.results))
+        setAreasNext(json.next)
+    }
 
     // Add Record
     const addArea = async () => {
@@ -141,7 +117,7 @@ const AreaState = (props) => {
 
 
     return (
-        <AreaContext.Provider value={{ blankFields, areas, area, setArea, getAllAreas, addArea, updateArea, deleteArea }}>
+        <AreaContext.Provider value={{ blankFields, areas, area, areasCount, areasNext, setArea, getAllAreas, getMoreAreas, addArea, updateArea, deleteArea }}>
             {props.children}
         </AreaContext.Provider>
     )

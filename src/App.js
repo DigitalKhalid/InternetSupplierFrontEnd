@@ -8,7 +8,7 @@ import LoginState from './context/login/LoginState';
 
 import { Sidebar } from './components/Sidebar'
 import { NewCustomer } from './components/NewCustomer'
-import { CustomersList } from './components/CustomersList.js'
+import { Customers } from './components/Customers.js'
 import { Dashboard } from './components/Dashboard.js'
 import { Connections } from './components/Connections.js'
 import AdminHeader from './components/AdminHeader'
@@ -87,7 +87,7 @@ function App() {
                                         </div>
                                       </div>} />
 
-                                    <Route path='customerslist' element={
+                                    <Route path='customers' element={
                                       <div className="container-content">
                                         <div className='content'>
                                           <div className="content-header">
@@ -98,7 +98,7 @@ function App() {
                                             </div>
                                           </div>
                                           <div className="content-body">
-                                            <CustomersList />
+                                            <Customers />
                                           </div>
                                         </div>
                                       </div>} />

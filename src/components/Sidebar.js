@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import '../assets/css/Sidebar.css'
 import { SidebarItem } from './SidebarItem'
 import items from '../data/Sidebar.json'
-import logo from '../assets/images/logo.png'
+// import logo from '../assets/images/logo.png'
 import avatar from '../assets/images/avatar.jpg'
 
 

@@ -1,12 +1,16 @@
 import React, { useContext, useState } from "react";
 import CustomerContext from './CustomerContext'
 import AlertContext from "../alert/AlertContext"
+import getListURL from '../../functions/URLs'
 
 const CustomerState = (props) => {
-  const { toggleAlert } = useContext(AlertContext)
+  const { showAlert } = useContext(AlertContext)
 
   const host = process.env.REACT_APP_HOST
   const [customers, setCustomers] = useState([])
+  const [customersCount, setCustomersCount] = useState(0)
+  const [customersNext, setCustomersNext] = useState('')
+
   const blankFields = {
     id: '',
     first_name: '',
@@ -15,41 +19,14 @@ const CustomerState = (props) => {
     email: '',
     biography: '',
     street_address: '',
-    area: '',
-    city: '',
-    image: ''
+    subarea: ''
   }
 
   const [customer, setCustomer] = useState(blankFields)
 
-  const removeKeys = (key) => {
-    const copy = customer // make a copy of dictionary
-    delete copy[key] // remove id and image fields (keys of dictionary)
-    setCustomer(copy)
-  }
-
-  const showAlert = (status) => {
-    if (status === 200) {
-      toggleAlert('success', 'Information of ' + customer.first_name + ' ' + customer.last_name + ' is updated!')
-    } else if (status === 201) {
-      toggleAlert('success', 'New customer, ' + customer.first_name + ' ' + customer.last_name + ' is added!')
-    } else if (status === 400) {
-      toggleAlert('error', '(' + status + ') Unable to recognize your action. Please contact vendor.')
-    } else if (status === 401) {
-      toggleAlert('error', '(' + status + ') Application is unable to recognize your identity. Please login through valid credentials.')
-    } else if (status === 403) {
-      toggleAlert('warning', '(' + status + ') You are not authorize to perform this action.')
-    } else if (status === 404) {
-      toggleAlert('error', '(' + status + ') Information not found. Unable to process your requested.')
-    } else if (status > 499) {
-      toggleAlert('error', '(' + status + ') Application is unable to connect to the server.')
-    }
-  }
-
-
   // Get all Records
-  const getAllCustomers = async () => {
-    const url = `${host}customerapi/`
+  const getAllCustomers = async (sortField = 'first_name', sort = 'ASC', search = '', filterField = '') => {
+    const url = getListURL('customerapirelated', sortField, sort, search, filterField)
 
     const response = await fetch(url, {
       method: 'GET',
@@ -59,14 +36,28 @@ const CustomerState = (props) => {
       },
     });
     const json = await response.json();
-    setCustomers(json)
+    setCustomersCount(json.count)
+    setCustomers(json.results)
+    setCustomersNext(json.next)
   }
 
+  // Append more records used for pagination
+  const getMoreCustomers = async () => {
+    const url = customersNext
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Token ' + localStorage.getItem('authtoken')
+      },
+    });
+    const json = await response.json();
+    setCustomers(customers.concat(json.results))
+    setCustomersNext(json.next)
+  }
 
   // Add Record
   const addCustomer = async () => {
-    removeKeys('image')
-
     // Add record to server
     const url = `${host}customerapi/`
 
@@ -79,7 +70,7 @@ const CustomerState = (props) => {
 
       body: JSON.stringify(customer)
     });
-    showAlert(response.status)
+    showAlert(response.status, customer.first_name + ' ' + customer.last_name)
 
     // Add record to frontend
     if (response.ok) {
@@ -91,8 +82,6 @@ const CustomerState = (props) => {
 
   // Update Record
   const updateCustomer = async () => {
-    removeKeys('image')
-
     // Update record to server side
     const url = `${host}customerapi/${customer.id}/`
 
@@ -105,8 +94,7 @@ const CustomerState = (props) => {
       body: JSON.stringify(customer)
     });
     // const json = await response.json();
-    console.log(customer)
-    showAlert(response.status)
+    showAlert(response.status, customer.first_name + ' ' + customer.last_name)
 
 
     // Update record in frontend
@@ -142,13 +130,13 @@ const CustomerState = (props) => {
       const customersLeft = customers.filter((customer) => { return customer.id !== id })
       setCustomers(customersLeft)
     } else {
-      showAlert(response.status)
+      showAlert(response.status, customer.first_name + ' ' + customer.last_name)
     }
   }
 
 
   return (
-    <CustomerContext.Provider value={{ blankFields, customers, customer, setCustomer, getAllCustomers, addCustomer, updateCustomer, deleteCustomer }}>
+    <CustomerContext.Provider value={{ blankFields, customers, customer, customersCount, customersNext, setCustomer, getAllCustomers, getMoreCustomers, addCustomer, updateCustomer, deleteCustomer }}>
       {props.children}
     </CustomerContext.Provider>
   )

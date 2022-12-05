@@ -1,5 +1,5 @@
 import '../assets/css/Form.css'
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useEffect } from 'react'
 import CountryContext from '../context/country/CountryContext'
 import CityContext from '../context/city/CityContext'
 import AreaContext from '../context/area/AreaContext'
@@ -7,11 +7,9 @@ import SubAreaContext from '../context/subarea/SubAreaContext'
 
 const SubAreaForm = () => {
     const { subArea, setSubArea } = useContext(SubAreaContext)
-    const { areas, area, getAllAreas } = useContext(AreaContext)
+    const { areas, getAllAreas } = useContext(AreaContext)
     const { countries, getAllCountries } = useContext(CountryContext)
     const { cities, getAllCities } = useContext(CityContext)
-
-    const inputField = useRef(null)
 
     useEffect(() => {
         getAllCountries('country', 'ASC', '')
@@ -42,7 +40,7 @@ const SubAreaForm = () => {
 
                 <div className="col-md-12">
                     <p className='title'><strong>City</strong></p>
-                    <select className="form-select" ref={inputField} id="city" name='city' placeholder="" value={subArea.city} onChange={handleOnChange}>
+                    <select className="form-select" id="city" name='city' placeholder="" value={subArea.city} onChange={handleOnChange}>
                         <option defaultValue=""></option>
                         {cities.map((city) => {
                             return (
