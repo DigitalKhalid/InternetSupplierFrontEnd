@@ -6,12 +6,12 @@ import AreaContext from '../context/area/AreaContext'
 
 const AreaForm = () => {
     const { area, setArea } = useContext(AreaContext)
-    const { countries, getAllCountries } = useContext(CountryContext)
-    const { cities, getAllCities } = useContext(CityContext)
+    const { countries, getCountriesList } = useContext(CountryContext)
+    const { cities, getCitiesList } = useContext(CityContext)
 
     useEffect(() => {
-        getAllCountries('country', 'ASC', '')
-        getAllCities('city', 'ASC', area.country, 'country')
+        getCountriesList('country', 'ASC', '')
+        getCitiesList('city', 'ASC', area.country, 'country')
         // eslint-disable-next-line
     }, [area.country])
 

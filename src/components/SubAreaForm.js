@@ -7,16 +7,21 @@ import SubAreaContext from '../context/subarea/SubAreaContext'
 
 const SubAreaForm = () => {
     const { subArea, setSubArea } = useContext(SubAreaContext)
-    const { areas, getAllAreas } = useContext(AreaContext)
-    const { countries, getAllCountries } = useContext(CountryContext)
-    const { cities, getAllCities } = useContext(CityContext)
+    const { countries, getCountriesList } = useContext(CountryContext)
+    const { cities, getCitiesList } = useContext(CityContext)
+    const { areas, getAreasList } = useContext(AreaContext)
 
     useEffect(() => {
-        getAllCountries('country', 'ASC', '')
-        getAllCities('city', 'ASC', subArea.country, 'country')
-        getAllAreas('area', 'ASC', subArea.city, 'city')
+        getCountriesList()
+        if (subArea.country > 0) {
+            getCitiesList('city', 'ASC', subArea.country, 'country')
+        }
+
+        if (subArea.city > 0) {
+            getAreasList('area', 'ASC', subArea.city, 'city')
+        }
         // eslint-disable-next-line
-    }, [subArea.country, subArea.city])
+    }, [subArea.country, subArea.city, subArea.area])
 
     const handleOnChange = (event) => {
         setSubArea({ ...subArea, [event.target.name]: event.target.value })

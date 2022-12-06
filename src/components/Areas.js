@@ -29,11 +29,8 @@ export const Areas = () => {
     }
 
     const openEditPopup = (area) => {
-        console.log(area)
         const areaEdit = { ...area, 'city': area.city.id, 'country': area.city.country.id }
-        console.log(areaEdit)
         setOperation('update')
-        // setArea(area)
         setArea(areaEdit)
         togglePopup()
     }

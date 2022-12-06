@@ -8,16 +8,24 @@ import SubAreaContext from '../context/subarea/SubAreaContext'
 
 const CustomerForm = () => {
     const { customer, setCustomer } = useContext(CustomerContext)
-    const { countries, getAllCountries, getMoreCountries } = useContext(CountryContext)
-    const { cities, getAllCities } = useContext(CityContext)
-    const { areas, getAllAreas } = useContext(AreaContext)
-    const { subAreas, getAllSubAreas } = useContext(SubAreaContext)
+    const { countries, getCountriesList } = useContext(CountryContext)
+    const { cities, getCitiesList } = useContext(CityContext)
+    const { areas, getAreasList } = useContext(AreaContext)
+    const { subAreas, getSubAreasList } = useContext(SubAreaContext)
 
     useEffect(() => {
-        getAllCountries('country', 'ASC')
-        getAllCities('city', 'ASC', customer.country, 'country')
-        getAllAreas('area', 'ASC', customer.city, 'city')
-        getAllSubAreas('subarea', 'ASC', customer.area, 'area')
+        getCountriesList()
+        if (customer.country > 0) {
+            getCitiesList('city', 'ASC', customer.country, 'country')
+        }
+
+        if (customer.city > 0) {
+            getAreasList('area', 'ASC', customer.city, 'city')
+        }
+
+        if (customer.area > 0) {
+            getSubAreasList('subarea', 'ASC', customer.area, 'area')
+        }
         // eslint-disable-next-line
     }, [customer.country, customer.city, customer.area])
 
@@ -67,7 +75,6 @@ const CustomerForm = () => {
                                 <option key={country.id} value={country.id}>{country.country}</option>
                             )
                         })}
-                        <option value="" onSelect={()=>getMoreCountries()}>more...</option>
                     </select>
                     <p className='label'>Country</p>
                 </div>

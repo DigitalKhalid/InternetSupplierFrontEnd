@@ -36,6 +36,21 @@ const CityState = (props) => {
         setCitiesNext(json.next)
     }
 
+    // Get List
+    const getCitiesList = async (sortField = 'city', sort = 'ASC', search = '', filterField = '') => {
+        const url = getListURL('citylistapi', sortField, sort, search, filterField)
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + localStorage.getItem('authtoken')
+            },
+        });
+        const json = await response.json();
+        setCities(json)
+    }
+
     // Append more records used for pagination
     const getMoreCities = async () => {
         const url = citiesNext
@@ -116,7 +131,7 @@ const CityState = (props) => {
 
 
     return (
-        <CityContext.Provider value={{ blankFields, cities, city, citiesCount, citiesNext, getMoreCities, setCity, getAllCities, addCity, updateCity, deleteCity }}>
+        <CityContext.Provider value={{ blankFields, cities, city, citiesCount, citiesNext, getMoreCities, setCity, getAllCities, getCitiesList, addCity, updateCity, deleteCity }}>
             {props.children}
         </CityContext.Provider>
     )

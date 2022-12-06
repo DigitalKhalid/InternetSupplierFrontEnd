@@ -30,6 +30,7 @@ import { Areas } from './components/Areas'
 import AreaState from './context/area/AreaState'
 import SubAreaState from './context/subarea/SubAreaState';
 import { SubAreas } from './components/SubAreas';
+import Error from './components/Error';
 
 function App() {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ function App() {
                         <Router>
                           <Routes>
                             <Route path='/admin/login' element={<Login />} />
+                            <Route path='/error' element={<Error/>} />
 
                             {<Route path='/admin/*' element={
                               <>

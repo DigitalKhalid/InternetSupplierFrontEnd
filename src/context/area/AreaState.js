@@ -23,6 +23,27 @@ const AreaState = (props) => {
     // Get all Records
     const getAllAreas = async (sortField = 'area', sort = 'ASC', search = '', filterField = '') => {
         const url = getListURL('areaapirelated', sortField, sort, search, filterField)
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+            });
+            const json = await response.json();
+            setAreasCount(json.count)
+            setAreas(json.results)
+            setAreasNext(json.next)
+
+        } catch (error) {
+            showAlert(error, 'error')
+        }
+    }
+
+    // Get List
+    const getAreasList = async (sortField = 'area', sort = 'ASC', search = '', filterField = '') => {
+        const url = getListURL('arealistapi', sortField, sort, search, filterField)
 
         const response = await fetch(url, {
             method: 'GET',
@@ -32,9 +53,7 @@ const AreaState = (props) => {
             },
         });
         const json = await response.json();
-        setAreasCount(json.count)
-        setAreas(json.results)
-        setAreasNext(json.next)
+        setAreas(json)
     }
 
     // Append more records used for pagination
@@ -67,7 +86,7 @@ const AreaState = (props) => {
             body: JSON.stringify(area)
         });
         getAllAreas('area', 'ASC', '')
-        showAlert(response.status)
+        showAlert(response.status, area.area)
     }
 
 
@@ -85,7 +104,7 @@ const AreaState = (props) => {
             body: JSON.stringify(area)
         });
         // const json = await response.json();
-        showAlert(response.status)
+        showAlert(response.status, area.area)
 
         // Update record in frontend
         if (response.ok) {
@@ -117,7 +136,7 @@ const AreaState = (props) => {
 
 
     return (
-        <AreaContext.Provider value={{ blankFields, areas, area, areasCount, areasNext, setArea, getAllAreas, getMoreAreas, addArea, updateArea, deleteArea }}>
+        <AreaContext.Provider value={{ blankFields, areas, area, areasCount, areasNext, setArea, getAllAreas, getAreasList, getMoreAreas, addArea, updateArea, deleteArea }}>
             {props.children}
         </AreaContext.Provider>
     )

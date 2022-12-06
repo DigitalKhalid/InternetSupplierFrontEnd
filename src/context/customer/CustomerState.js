@@ -99,15 +99,7 @@ const CustomerState = (props) => {
 
     // Update record in frontend
     if (response.ok) {
-      let newCustomers = JSON.parse(JSON.stringify(customers))
-      for (let index = 0; index < customers.length; index++) {
-        const element = newCustomers[index];
-        if (element.id === customer.id) {
-          newCustomers[index] = customer
-          break
-        }
-      }
-      setCustomers(newCustomers)
+      getAllCustomers()
     }
   }
 

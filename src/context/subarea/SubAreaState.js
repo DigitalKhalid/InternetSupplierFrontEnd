@@ -37,6 +37,21 @@ const SubAreaState = (props) => {
         setSubAreasNext(json.next)
     }
 
+    // Get List
+    const getSubAreasList = async (sortField = 'subarea', sort = 'ASC', search = '', filterField = '') => {
+        const url = getListURL('subarealistapi', sortField, sort, search, filterField)
+        console.log(url)
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + localStorage.getItem('authtoken')
+            },
+        });
+        const json = await response.json();
+        setSubAreas(json)
+    }
+
     // Append more records used for pagination
     const getMoreSubAreas = async () => {
         const url = subAreasNext
@@ -117,7 +132,7 @@ const SubAreaState = (props) => {
 
 
     return (
-        <SubAreaContext.Provider value={{ blankFields, subAreas, subArea, subAreasCount, subAreasNext, setSubArea, getAllSubAreas, getMoreSubAreas, addSubArea, updateSubArea, deleteSubArea }}>
+        <SubAreaContext.Provider value={{ blankFields, subAreas, subArea, subAreasCount, subAreasNext, setSubArea, getAllSubAreas, getSubAreasList, getMoreSubAreas, addSubArea, updateSubArea, deleteSubArea }}>
             {props.children}
         </SubAreaContext.Provider>
     )

@@ -28,8 +28,8 @@ export const Customers = () => {
     }
 
     const openEditPopup = (customer) => {
-        const customerEdit = { ...customer, 'subarea': customer.subarea }
-
+        const customerEdit = {...customer,'country':customer.subarea.area.city.country.id, 'city':customer.subarea.area.city.id, 'area':customer.subarea.area.id, 'subarea':customer.subarea.id}
+        console.log(customerEdit)
         setOperation('update')
         setCustomer(customerEdit)
         togglePopup()
@@ -85,6 +85,7 @@ export const Customers = () => {
                     <table>
                         <thead>
                             <tr>
+                                <th></th>
                                 <th className='sorting-head' onClick={() => sorting('first_name')}>Name <i className={`${column + sort === 'first_nameASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'first_nameDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
                                 <th>Contact</th>
@@ -103,6 +104,7 @@ export const Customers = () => {
                             {customers.map((customer, index) => {
                                 return (
                                     <tr key={index}>
+                                        <td className={`${customer.connections>0?'wifi-active':'wifi-inactive'}`}><i className='fa fa-wifi'></i></td>
                                         <td>{customer.first_name + ' ' + customer.last_name}</td>
                                         <td>{customer.contact}</td>
                                         <td>{customer.email}</td>

@@ -21,7 +21,7 @@ const CountryState = (props) => {
     // Get all Records
     const getAllCountries = async (sortField = 'country', sort = 'ASC', search = '', filterField = '') => {
         const url = getListURL('countryapi', sortField, sort, search, filterField)
-        console.log(url)
+
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -33,6 +33,21 @@ const CountryState = (props) => {
         setCountriesCount(json.count)
         setCountries(json.results)
         setCountriesNext(json.next)
+    }
+
+    // Get List
+    const getCountriesList = async (sortField = 'country', sort = 'ASC', search = '', filterField = '') => {
+        const url = getListURL('countrylistapi', sortField, sort, search, filterField)
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + localStorage.getItem('authtoken')
+            },
+        });
+        const json = await response.json();
+        setCountries(json)
     }
 
     // Append more records used for pagination
@@ -115,7 +130,7 @@ const CountryState = (props) => {
 
 
     return (
-        <CountryContext.Provider value={{ blankFields, countries, countriesCount, countriesNext, country, setCountry, getAllCountries, getMoreCountries, addCountry, updateCountry, deleteCountry }}>
+        <CountryContext.Provider value={{ blankFields, countries, countriesCount, countriesNext, country, setCountry, getAllCountries, getCountriesList, getMoreCountries, addCountry, updateCountry, deleteCountry }}>
             {props.children}
         </CountryContext.Provider>
     )

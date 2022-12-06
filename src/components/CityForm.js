@@ -5,10 +5,10 @@ import CityContext from '../context/city/CityContext'
 
 const CityForm = () => {
     const { city, setCity } = useContext(CityContext)
-    const { countries, getAllCountries } = useContext(CountryContext)
+    const { countries, getCountriesList } = useContext(CountryContext)
 
     useEffect(() => {
-      getAllCountries('country', 'ASC', '')
+        getCountriesList('country', 'ASC', '')
       // eslint-disable-next-line
     }, [])
     
