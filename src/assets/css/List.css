@@ -94,9 +94,17 @@ td {
 }
 
 .wifi-active {
-  color: darkgoldenrod;
+  color: var(--success);
 }
 
 .wifi-inactive {
-  color: gray;
+  color: var(--error)
+}
+
+.wifi-null {
+  color: grey;
+}
+
+.wifi-null:hover {
+  cursor: pointer;
 }

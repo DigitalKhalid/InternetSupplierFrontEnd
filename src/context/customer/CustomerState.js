@@ -74,7 +74,8 @@ const CustomerState = (props) => {
 
     // Add record to frontend
     if (response.ok) {
-      // const json = await response.json();
+      const json = await response.json();
+      setCustomer(json)
       setCustomers(customers.concat(customer))
     }
   }

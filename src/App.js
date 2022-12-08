@@ -47,8 +47,8 @@ function App() {
       <AlertState>
         <LoginState>
           <PopupState>
-            <CustomerState>
-              <ConnectionState>
+            <ConnectionState>
+              <CustomerState>
                 <CountryState>
                   <CityState>
                     <AreaState>
@@ -56,7 +56,7 @@ function App() {
                         <Router>
                           <Routes>
                             <Route path='/admin/login' element={<Login />} />
-                            <Route path='/error' element={<Error/>} />
+                            <Route path='/error' element={<Error />} />
 
                             {<Route path='/admin/*' element={
                               <>
@@ -190,8 +190,8 @@ function App() {
                     </AreaState>
                   </CityState>
                 </CountryState>
-              </ConnectionState>
-            </CustomerState>
+              </CustomerState>
+            </ConnectionState>
           </PopupState>
         </LoginState>
       </AlertState>

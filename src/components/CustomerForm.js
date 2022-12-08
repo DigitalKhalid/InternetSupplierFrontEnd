@@ -26,12 +26,17 @@ const CustomerForm = () => {
         if (customer.area > 0) {
             getSubAreasList('subarea', 'ASC', customer.area, 'area')
         }
+
         // eslint-disable-next-line
     }, [customer.country, customer.city, customer.area])
 
     const handleOnChange = (event) => {
         setCustomer({ ...customer, [event.target.name]: event.target.value })
     }
+
+    // const handleOnCheck = (event) => {
+    //     setCustomer({ ...customer, [event.target.name]: event.target.checked })
+    // }
 
     return (
         <div className='container form'>
@@ -62,7 +67,7 @@ const CustomerForm = () => {
 
                 <div className="col-md-10">
                     <p className='title required'><strong>Address</strong></p>
-                    <input type="text" className="form-control" id="address" name='street_address' placeholder="" value={customer.street_address} onChange={handleOnChange} ></input>
+                    <input type="text" className="form-control" id="street_address" name='street_address' placeholder="" value={customer.street_address} onChange={handleOnChange} ></input>
                     <p className='label'>Street Address</p>
                 </div>
 
@@ -117,6 +122,11 @@ const CustomerForm = () => {
                     </select>
                     <p className='label'>Subarea</p>
                 </div>
+
+                {/* <div className="form-check col-md-10">
+                    <input className="form-check-input" type="checkbox" value="true" id="createconnection" name='createconnection' onChange={handleOnCheck}></input>
+                    <label className="form-check-label" htmlFor="flexCheckDefault">Create Connection</label>
+                </div> */}
             </form>
         </div>
     )

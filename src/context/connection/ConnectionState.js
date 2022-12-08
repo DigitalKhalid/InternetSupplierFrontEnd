@@ -78,6 +78,11 @@ const ConnectionState = (props) => {
     });
     getAllConnections('connection_id', 'ASC', '')
     showAlert(response.status, connection.connection_id)
+
+    if (response.ok){
+      const json = await response.json();
+      setConnection(json)
+    }
   }
 
 

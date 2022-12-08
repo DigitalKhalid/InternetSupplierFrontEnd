@@ -7,9 +7,11 @@ import Popup from './Popup'
 import CustomerForm from './CustomerForm'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Pagination from './Pagination'
+import ConnectionContext from '../context/connection/ConnectionContext'
 
 export const Customers = () => {
-    const { blankFields, customers, setCustomer, customersNext, customersCount, getMoreCustomers, getAllCustomers, updateCustomer, addCustomer, deleteCustomer} = useContext(CustomerContext)
+    const { blankFields, customers, setCustomer, customersNext, customersCount, getMoreCustomers, getAllCustomers, updateCustomer, addCustomer, deleteCustomer } = useContext(CustomerContext)
+    const { connection, setConnection, addConnection, getAllConnections } = useContext(ConnectionContext)
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
     const [sort, setSort] = useState('ASC')
@@ -28,8 +30,7 @@ export const Customers = () => {
     }
 
     const openEditPopup = (customer) => {
-        const customerEdit = {...customer,'country':customer.subarea.area.city.country.id, 'city':customer.subarea.area.city.id, 'area':customer.subarea.area.id, 'subarea':customer.subarea.id}
-        console.log(customerEdit)
+        const customerEdit = { ...customer, 'country': customer.subarea.area.city.country.id, 'city': customer.subarea.area.city.id, 'area': customer.subarea.area.id, 'subarea': customer.subarea.id }
         setOperation('update')
         setCustomer(customerEdit)
         togglePopup()
@@ -38,6 +39,13 @@ export const Customers = () => {
     const openDeletePopup = (customer) => {
         setOperation('delete')
         setCustomer(customer)
+        togglePopup()
+    }
+
+    const openAddConnectionPopup = (customer) => {
+        setOperation('addConnection')
+        getAllConnections()
+        setConnection({ ...connection, 'customer': customer.id, 'subarea': customer.subarea.id })
         togglePopup()
     }
 
@@ -54,6 +62,12 @@ export const Customers = () => {
     const deleteRecord = () => {
         deleteCustomer()
         togglePopup()
+    }
+
+    const addNewConnection = () => {
+        addConnection()
+        togglePopup()
+        getAllCustomers()
     }
 
     const sorting = (col) => {
@@ -96,7 +110,7 @@ export const Customers = () => {
                                 <th className='sorting-head' onClick={() => sorting('subarea__area__area')}>Area <i className={`${column + sort === 'subarea__area__areaASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'subarea__area__areaDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
                                 <th className='sorting-head' onClick={() => sorting('city')}>City <i className={`${column + sort === 'cityASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'cityDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
-                                
+
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -104,7 +118,7 @@ export const Customers = () => {
                             {customers.map((customer, index) => {
                                 return (
                                     <tr key={index}>
-                                        <td className={`${customer.connections>0?'wifi-active':'wifi-inactive'}`}><i className='fa fa-wifi'></i></td>
+                                        {customer.connections ? <td className={`${customer.connections.status === 'Active' ? 'wifi-active' : 'wifi-inactive'}`}><i className='fa fa-wifi'></i></td> : <td className='wifi-null' onClick={() => openAddConnectionPopup(customer)}><i className='fa fa-wifi'></i></td>}
                                         <td>{customer.first_name + ' ' + customer.last_name}</td>
                                         <td>{customer.contact}</td>
                                         <td>{customer.email}</td>
@@ -128,11 +142,13 @@ export const Customers = () => {
 
             {/* Popup Forms */}
             <div>
-                {operation === 'update' && <Popup header='Edit Connection' body={<CustomerForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={updateRecord} />}
+                {operation === 'update' && <Popup header='Edit Customer' body={<CustomerForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={updateRecord} />}
 
-                {operation === 'add' && <Popup header='Add New Connection' body={<CustomerForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={addRecord} />}
+                {operation === 'add' && <Popup header='Add New Customer' body={<CustomerForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={addRecord} />}
 
-                {operation === 'delete' && <Popup header='Delete Connection' body='Are you sure to delete this customer?' btnCancel='No' btnOk='Yes' btnOkClick={deleteRecord} alerts={false} />}
+                {operation === 'delete' && <Popup header='Delete Customer' body='Are you sure to delete this customer?' btnCancel='No' btnOk='Yes' btnOkClick={deleteRecord} alerts={false} />}
+
+                {operation === 'addConnection' && <Popup header='Add Connection' body='Are you sure to add connection for this customer?' btnCancel='No' btnOk='Yes' btnOkClick={addNewConnection} alerts={false} />}
             </div>
         </>
     )
