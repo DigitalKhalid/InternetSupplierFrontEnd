@@ -7,6 +7,7 @@ import Popup from './Popup'
 import CountryForm from './CountryForm'
 import Pagination from './Pagination'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import Spinner from '../components/Spinner'
 
 export const Countries = () => {
     const context = useContext(CountryContext)
@@ -75,13 +76,14 @@ export const Countries = () => {
             </div>
 
             {/* List */}
-            <InfiniteScroll
-                dataLength={countriesCount}
-                next={getMoreCountries}
-                hasMore={countriesNext !== null}
-            // loader={<Spinner />}
-            >
-                <div className='list'>
+            <div className='list' id='list'>
+                <InfiniteScroll
+                    scrollableTarget='list'
+                    dataLength={countries.length}
+                    next={getMoreCountries}
+                    hasMore={countries.length < countriesCount}
+                    loader={<Spinner/>}
+                >
                     <table>
                         <thead>
                             <tr>
@@ -108,8 +110,8 @@ export const Countries = () => {
                             })}
                         </tbody>
                     </table>
-                </div>
-            </InfiniteScroll>
+                </InfiniteScroll>
+            </div>
 
             {/* Pagination */}
             <Pagination showedRecords={countries.length} totalRecords={countriesCount} nextPage={countriesNext} getMoreRecords={getMoreCountries} />

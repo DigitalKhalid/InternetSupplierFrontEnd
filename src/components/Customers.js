@@ -8,10 +8,11 @@ import CustomerForm from './CustomerForm'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Pagination from './Pagination'
 import ConnectionContext from '../context/connection/ConnectionContext'
+import Spinner from '../components/Spinner'
 
 export const Customers = () => {
     const { blankFields, customers, setCustomer, customersNext, customersCount, getMoreCustomers, getAllCustomers, updateCustomer, addCustomer, deleteCustomer } = useContext(CustomerContext)
-    const { connection, setConnection, addConnection, getAllConnections } = useContext(ConnectionContext)
+    const { connection, setConnection, getConnectionID, addConnection, getAllConnections } = useContext(ConnectionContext)
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
     const [sort, setSort] = useState('ASC')
@@ -20,6 +21,7 @@ export const Customers = () => {
 
     useEffect(() => {
         getAllCustomers(column, sort, searchText)
+        getAllConnections()
         //   eslint-disable-next-line
     }, [sort, column, searchText])
 
@@ -43,9 +45,10 @@ export const Customers = () => {
     }
 
     const openAddConnectionPopup = (customer) => {
+        const connectionID = getConnectionID()
+        console.log(connectionID)
         setOperation('addConnection')
-        getAllConnections()
-        setConnection({ ...connection, 'customer': customer.id, 'subarea': customer.subarea.id })
+        setConnection({ ...connection, 'connection_id':connectionID, 'customer': customer.id, 'subarea': customer.subarea.id })
         togglePopup()
     }
 
@@ -89,15 +92,16 @@ export const Customers = () => {
             </div>
 
             {/* List */}
-            <InfiniteScroll
-                dataLength={customersCount}
-                next={getMoreCustomers}
-                hasMore={customersNext !== null}
-            // loader={<Spinner />}
-            >
-                <div className='list'>
+            <div className='list' id='list'>
+                <InfiniteScroll
+                    scrollableTarget='list'
+                    dataLength={customers.length}
+                    next={getMoreCustomers}
+                    hasMore={customers.length < customersCount}
+                    loader={<Spinner/>}
+                >
                     <table>
-                        <thead>
+                        <thead className='list-head'>
                             <tr>
                                 <th></th>
                                 <th className='sorting-head' onClick={() => sorting('first_name')}>Name <i className={`${column + sort === 'first_nameASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'first_nameDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
@@ -114,7 +118,7 @@ export const Customers = () => {
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className='list-body'>
                             {customers.map((customer, index) => {
                                 return (
                                     <tr key={index}>
@@ -134,8 +138,8 @@ export const Customers = () => {
                             })}
                         </tbody>
                     </table>
-                </div>
-            </InfiniteScroll>
+                </InfiniteScroll>
+            </div>
 
             {/* Pagination */}
             <Pagination showedRecords={customers.length} totalRecords={customersCount} nextPage={customersNext} getMoreRecords={getMoreCustomers} />

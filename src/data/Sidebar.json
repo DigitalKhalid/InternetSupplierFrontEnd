@@ -1,84 +1,110 @@
 [
-    {
-        "title": "Dashboard",
-        "icon": "fa fa-desktop",
-        "path": "/admin"
-    },
-    {
-        "title": "Customers",
-        "icon": "fa fa-users",
-        "path": "/admin/customers" 
-    },
-    {
-        "title": "Sub Dealer",
-        "icon": "fa fa-user",
-        "childrens": [
-            {
-                "title": "Add New",
-                "icon":"fa-solid fa-person-circle-plus",
-                "path": "/admin/addsubdealer"
-            },
-            {
-                "title": "View List",
-                "icon":"fa-solid fa-list",
-                "path": "/admin/subdealerslist"
-            }
-        ]
-    },
-    {
-        "title": "Connections",
-        "icon": "fa fa-wifi",
-        "path":"/admin/connections"
-    },
-    {
+  {
+    "title": "Dashboard",
+    "icon": "fa fa-desktop",
+    "path": "/admin"
+  },
+  {
+    "title": "Customers",
+    "icon": "fa fa-users",
+    "path": "/admin/customers"
+  },
+  {
+    "title": "Connections",
+    "icon": "fa fa-wifi",
+    "path": "/admin/connections"
+  },
+  {
+    "title": "Products",
+    "icon": "fa fa-layer-group",
+    "childrens": [
+      {
         "title": "Packages",
         "icon": "fa fa-cube",
         "path": "/admin/packages"
-    },
-    {
-        "title": "Complaints",
-        "icon": "fa fa-message",
-        "path": "/admin/complaints"
-    },
-    {
+      },
+      {
+        "title": "Accessories",
+        "icon": "fa fa-box",
+        "path": "/admin/accessories"
+      },
+      {
+        "title": "Services",
+        "icon": "fa fa-network-wired",
+        "path": "/admin/services"
+      }
+    ]
+  },
+  {
+    "title": "Sub-Dealers",
+    "icon": "fa fa-user",
+    "path": "admin/subdealers"
+  },
+  {
+    "title": "Complaints",
+    "icon": "fa fa-message",
+    "path": "/admin/complaints"
+  },
+  {
+    "title": "Library",
+    "icon": "fa fa-book",
+    "childrens": [
+      {
         "title": "Locations",
         "icon": "fa fa-location",
         "childrens": [
-            {
-                "title": "Country",
-                "icon":"fa-solid fa-flag",
-                "path": "/admin/countries"
-            },
-            {
-                "title": "City",
-                "icon":"fa-solid fa-city",
-                "path": "/admin/cities"
-            },
-            {
-                "title": "Area",
-                "icon":"fa-solid fa-map",
-                "path": "/admin/areas"
-            },
-            {
-                "title": "Sub Area",
-                "icon":"fa-solid fa-location-dot",
-                "path": "/admin/subareas"
-            }
+          {
+            "title": "Country",
+            "icon": "fa-solid fa-flag",
+            "path": "/admin/countries"
+          },
+          {
+            "title": "City",
+            "icon": "fa-solid fa-city",
+            "path": "/admin/cities"
+          },
+          {
+            "title": "Area",
+            "icon": "fa-solid fa-map",
+            "path": "/admin/areas"
+          },
+          {
+            "title": "Sub Area",
+            "icon": "fa-solid fa-location-dot",
+            "path": "/admin/subareas"
+          }
         ]
-    },
-    {
-        "title": "My Account",
-        "icon": "fa fa-user-tie",
-        "path": "/admin/myaccount"
-    },
-    {
-        "title": "Settings",
-        "icon": "fa fa-sliders",
-        "path": "/admin/settings"
-    },
-    {
-        "title": "About",
-        "icon": "fa fa-circle-info",
-        "path": "/admin/about"
-    }
+      },
+      {
+        "title": "Product Types",
+        "icon": "fa-solid fa-object-ungroup",
+        "path": "/admin/producttypes"
+      },
+      {
+        "title": "Catagories",
+        "icon": "fa-solid fa-object-group",
+        "path": "/admin/productcatagories"
+      },
+      {
+        "title": "Units",
+        "icon": "fa-solid fa-scale-balanced",
+        "path": "/admin/units"
+      }
+    ]
+  },
+  {
+    "title": "My Account",
+    "icon": "fa fa-user-tie",
+    "path": "/admin/myaccount"
+  },
+  {
+    "title": "Settings",
+    "icon": "fa fa-sliders",
+    "path": "/admin/settings"
+  },
+  {
+    "title": "About",
+    "icon": "fa fa-circle-info",
+    "path": "/admin/about"
+  }
 ]

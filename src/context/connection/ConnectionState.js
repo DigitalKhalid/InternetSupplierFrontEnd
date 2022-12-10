@@ -45,6 +45,7 @@ const ConnectionState = (props) => {
     setConnectionsCount(json.count)
     setConnections(json.results)
     setConnectionsNext(json.next)
+    console.log(json.results)
   }
 
   // Append more records used for pagination

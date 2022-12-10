@@ -7,6 +7,7 @@ import Popup from './Popup'
 import AreaForm from './AreaForm'
 import Pagination from '../components/Pagination'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import Spinner from '../components/Spinner'
 
 export const Areas = () => {
     const context = useContext(AreaContext)
@@ -76,13 +77,14 @@ export const Areas = () => {
             </div>
 
             {/* List */}
-            <InfiniteScroll
-                dataLength={areasCount}
-                next={getMoreAreas}
-                hasMore={areasNext !== null}
-            // loader={<Spinner />}
-            >
-                <div className='list'>
+            <div className='list' id='list'>
+                <InfiniteScroll
+                    scrollableTarget='list'
+                    dataLength={areas.length}
+                    next={getMoreAreas}
+                    hasMore={areas.length < areasCount}
+                    loader={<Spinner/>}
+                >
                     <table>
                         <thead>
                             <tr>
@@ -115,8 +117,8 @@ export const Areas = () => {
                             })}
                         </tbody>
                     </table>
-                </div>
-            </InfiniteScroll>
+                </InfiniteScroll>
+            </div>
 
             {/* Pagination */}
             <Pagination showedRecords={areas.length} totalRecords={areasCount} nextPage={areasNext} getMoreRecords={getMoreAreas} />

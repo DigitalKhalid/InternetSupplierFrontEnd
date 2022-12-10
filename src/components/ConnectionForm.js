@@ -2,20 +2,37 @@ import '../assets/css/Form.css'
 import React, { useContext, useEffect } from 'react'
 import ConnectionContext from '../context/connection/ConnectionContext'
 import CustomerContext from '../context/customer/CustomerContext'
+import ProductContext from '../context/product/ProductContext'
+import AlertContext from '../context/alert/AlertContext'
 
 const ConnectionForm = () => {
     const context = useContext(ConnectionContext)
     const { connection, setConnection } = context
+    const { toggleAlert } = useContext(AlertContext)
 
+    const { getPackageList, packageList } = useContext(ProductContext)
     const { customers, getAllCustomers } = useContext(CustomerContext)
 
     useEffect(() => {
-      getAllCustomers('first_name', 'ASC', '')
-      // eslint-disable-next-line
+        getAllCustomers('first_name', 'ASC', '')
+        getPackageList()
+        // eslint-disable-next-line
     }, [])
-    
+
     const handleOnChange = (event) => {
         setConnection({ ...connection, [event.target.name]: event.target.value })
+        if (event.target.name === 'package' && event.target.value === '') {
+            setConnection({ ...connection, 'status': 'Inactive' })
+        }
+
+        if (event.target.name === 'status' && event.target.value === 'Active') {
+            console.log(connection.package)
+            if (connection.package === null) {
+                toggleAlert('error', 'Unable to activate, please subscribe for a package first!')
+                setConnection({ ...connection, 'status': 'Inactive' })
+            }
+        }
+
     }
 
     return (
@@ -47,8 +64,15 @@ const ConnectionForm = () => {
                 </div>
 
                 <div className="col-md-10">
-                    <p className='title required'><strong>Package</strong></p>
-                    <input type="text" className="form-control" id="package" name='package' placeholder="" value={connection.package} onChange={handleOnChange} ></input>
+                    <p className='title'><strong>Package</strong></p>
+                    <select className="form-select" id="package" name='package' placeholder="" value={connection.package} onChange={handleOnChange}>
+                        <option value=""></option>
+                        {packageList.map((pack) => {
+                            return (
+                                <option key={pack.id} value={pack.id}>{pack.title} | Rs. {pack.sale_price}</option>
+                            )
+                        })}
+                    </select>
                     <p className='label'></p>
                 </div>
 

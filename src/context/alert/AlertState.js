@@ -13,7 +13,7 @@ const AlertState = (props) => {
         if (status === 200) {
             toggleAlert('success', 'Information of ' + recordTitle + ' is updated!')
         } else if (status === 201) {
-            toggleAlert('success', 'New Area, ' + recordTitle + ' is added!')
+            toggleAlert('success', 'New record, ' + recordTitle + ' is added!')
         } else if (status === 204) {
             toggleAlert('success', recordTitle + ' has been deleted!')
         } else if (status === 400) {

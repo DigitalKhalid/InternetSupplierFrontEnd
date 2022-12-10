@@ -29,7 +29,7 @@
       "sidebarActiveBgcolor": "rgba(50, 150, 200, 1)",
       "sidebarActiveColor": "white",
       "sidebarCloseColor": "red",
-      "sidebaOopenColor": "lightgreen",
+      "sidebarOpenColor": "green",
 
       "gradiantColor1": "rgba(255, 255, 255, 0.1)",
       "gradiantColor2": "rgba(255, 255, 255, 0.4)",
@@ -74,7 +74,7 @@
       "sidebarActiveBgcolor": "rgba(255, 255, 255, 0.2)",
       "sidebarActiveColor": "white",
       "sidebarCloseColor": "red",
-      "sidebaOopenColor": "green",
+      "sidebarOpenColor": "lightgreen",
 
       "gradiantColor1": "rgba(0, 0, 0, 0.1)",
       "gradiantColor2": "rgba(0, 0, 0, 0.4)",

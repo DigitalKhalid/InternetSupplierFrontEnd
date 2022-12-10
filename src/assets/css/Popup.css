@@ -23,7 +23,7 @@
   position: fixed;
   display: flex;
   left: 50%;
-  top: 50%;
+  top: 49%;
   transform: translate(-50%, -50%);
   background-image: var(--main-bg);
   background-position: center;
@@ -37,7 +37,7 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.5s ease, visibility 0.5s ease;
-  max-height: 95%;
+  max-height: 97%;
   overflow-y: hidden;
 }
 
@@ -51,7 +51,6 @@
 }
 
 .popup-close {
-    /* float: right; */
     display:block;
     position: absolute;
     right: 0.5em;
@@ -61,6 +60,7 @@
   border: none;
   background-color: var(--popup-bgcolor);
   color: var(--color);
+  padding-right: 0.5em;
 }
 
 .popup-close-btn:hover {
@@ -83,7 +83,7 @@
   text-align: right;
   margin-bottom: 0.75em;
   margin-right: 1.25em;
-  /* padding-top: .5em; */
+  padding-top: 1em;
 }
 
 .popup-alert {

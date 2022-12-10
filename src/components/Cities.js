@@ -7,6 +7,7 @@ import Popup from './Popup'
 import CityForm from './CityForm'
 import Pagination from './Pagination'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import Spinner from '../components/Spinner'
 
 export const Cities = () => {
     const context = useContext(CityContext)
@@ -76,13 +77,14 @@ export const Cities = () => {
             </div>
 
             {/* List */}
-            <InfiniteScroll
-                dataLength={citiesCount}
-                next={getMoreCities}
-                hasMore={citiesNext !== null}
-            // loader={<Spinner />}
-            >
-                <div className='list'>
+            <div className='list' id='list'>
+                <InfiniteScroll
+                    scrollableTarget='list'
+                    dataLength={cities.length}
+                    next={getMoreCities}
+                    hasMore={cities.length < citiesCount}
+                    loader={<Spinner/>}
+                >
                     <table>
                         <thead>
                             <tr>
@@ -112,8 +114,8 @@ export const Cities = () => {
                             })}
                         </tbody>
                     </table>
-                </div>
-            </InfiniteScroll>
+                </InfiniteScroll>
+            </div>
 
             {/* Pagination */}
             <Pagination showedRecords={cities.length} totalRecords={citiesCount} nextPage={citiesNext} getMoreRecords={getMoreCities} />

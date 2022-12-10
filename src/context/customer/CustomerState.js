@@ -106,9 +106,9 @@ const CustomerState = (props) => {
 
 
   // Delete Record
-  const deleteCustomer = async (id) => {
+  const deleteCustomer = async () => {
     // delete record from server using API
-    const url = `${host}customerapi/${id}`
+    const url = `${host}customerapi/${customer.id}`
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -120,7 +120,7 @@ const CustomerState = (props) => {
 
     // delete record from frontend
     if (response.ok) {
-      const customersLeft = customers.filter((customer) => { return customer.id !== id })
+      const customersLeft = customers.filter((Customer) => { return Customer.id !== customer.id })
       setCustomers(customersLeft)
     } else {
       showAlert(response.status, customer.first_name + ' ' + customer.last_name)

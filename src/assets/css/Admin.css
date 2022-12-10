@@ -3,13 +3,12 @@
 .main {
   display: flex;
   flex-direction: wrap;
-  height: 91vh;
+  height: 92vh;
 }
 
 .container-content {
   transform: translateX(0%);
   transition: 1s ease;
-
   position: relative;
   flex-grow: 1;
   display: flex;
@@ -17,7 +16,8 @@
   margin-top: 1em;
   margin-left: 2em;
   margin-right: 2em;
-  overflow-y: auto;
+  max-height: 100%;
+  overflow-y: hidden;
 }
 
 .container-content.expand {
@@ -26,6 +26,8 @@
 }
 
 .content-header {
+  display: flex;
+  justify-content: space-between;
   padding-bottom: 0.2em;
   padding-left: 1em;
   background: var(--header-bgcolor);
@@ -43,18 +45,25 @@
 }
 
 .content-body {
+  height: 77vh;
   margin-top: 1em;
-  padding: 2em;
+  padding-top: 1em;
+  padding-left: 2em;
+  padding-right: 2em;
   background: var(--body-bgcolor);
   border-radius: 10px;
   justify-content: center;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 .admin-header {
+  display: flex;
+  justify-content:space-between;
   background-color: var(--admin-header-bgcolor);
   color: var(--admin-header-color);
-  height: 5vh;
+  position: sticky;
+  top: 0;
+  height: 2.25em;
 }
 
 .org {
@@ -66,7 +75,6 @@
 }
 
 .admin-header-content {
-  float: right;
   padding: 0.25em;
   padding-right: 1.5em;
 }
@@ -81,10 +89,14 @@
 }
 
 .admin-footer {
+  display: flex;
+  justify-content:center;
   background-color: var(--admin-footer-bgcolor);
   color: var(--admin-footer-color);
-  height: 4vh;
+  position: sticky;
+  bottom: 0;
   text-align: center;
+  height: 1.75em;
 }
 
 .admin-footer a:link {

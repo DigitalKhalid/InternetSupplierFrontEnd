@@ -72,7 +72,7 @@ const CustomerForm = () => {
                 </div>
 
                 <div className="col-md-10">
-                    {/* <p className='title'><strong>Country</strong></p> */}
+                    <p className='title required'><strong>Location</strong></p>
                     <select className="form-select" id="country" name='country' placeholder="" value={customer.country} onChange={handleOnChange}>
                         <option defaultValue=""></option>
                         {countries.map((country) => {

@@ -1,20 +1,20 @@
 @import "./assets/css/Themes.css";
-/* * {
+* {
     margin: 0;
     padding: 0;
     box-sizing:border-box;
-} */
+}
 
-/* html, body {
+html, body {
     height: 100vh;
-} */
+    overflow-y: hidden;
+}
 
 body {
   font-family: var(--font-family);
   font-size: 16px;
   color: var(--color);
   background: var(--main-bg);
-  /* background-position: center; */
   background-size: cover;
 }
 
@@ -29,7 +29,6 @@ hr {
 .tooltips {
   position: relative;
   display: inline-block;
-  /* border-bottom: 1px dotted black; */
 }
 
 /* .tooltips .tooltiptext::after {

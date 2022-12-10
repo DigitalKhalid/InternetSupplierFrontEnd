@@ -7,10 +7,13 @@ import Popup from './Popup'
 import ConnectionForm from './ConnectionForm'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Pagination from './Pagination'
+import Spinner from '../components/Spinner'
+import AlertContext from '../context/alert/AlertContext'
 
 export const Connections = () => {
     const context = useContext(ConnectionContext)
     const { blankFields, connections, connectionsCount, connectionsNext, setConnection, getAllConnections, getMoreConnections, addConnection, deleteConnection, updateConnection } = context
+    const { toggleAlert } = useContext(AlertContext)
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
     const [sort, setSort] = useState('ASC')
@@ -29,7 +32,7 @@ export const Connections = () => {
     }
 
     const openEditPopup = (connection) => {
-        const connectionEdit = { ...connection, 'customer': connection.customer.id }
+        const connectionEdit = { ...connection, 'customer': connection.customer.id, 'package': connection.package?connection.package.id:connection.package, 'subarea': connection.subarea.id }
 
         setOperation('update')
         setConnection(connectionEdit)
@@ -44,8 +47,13 @@ export const Connections = () => {
 
     const openStatusPopup = (connection) => {
         setOperation('status')
-        setConnection({ ...connection, 'status': connection.status === 'Active' ? 'Inactive' : 'Active' })
-        togglePopup()
+        if (connection.package) {
+            setConnection({ ...connection, 'status': connection.status === 'Active' ? 'Inactive' : 'Active', 'customer': connection.customer.id, 'package': connection.package.id, 'subarea': connection.subarea.id })
+            togglePopup()
+            
+        } else {
+            toggleAlert('error', 'Unable to activate, please subscribe for a package first!')
+        }
     }
 
     const addRecord = () => {
@@ -83,13 +91,14 @@ export const Connections = () => {
             </div>
 
             {/* List */}
-            <InfiniteScroll
-                dataLength={connectionsCount}
-                next={getMoreConnections}
-                hasMore={connectionsNext !== null}
-            // loader={<Spinner />}
-            >
-                <div className='list'>
+            <div className='list' id='list'>
+                <InfiniteScroll
+                    scrollableTarget='list'
+                    dataLength={connections.length}
+                    next={getMoreConnections}
+                    hasMore={connections.length < connectionsCount}
+                    loader={<Spinner />}
+                >
                     <table className='sortable'>
                         <thead>
                             <tr>
@@ -104,6 +113,8 @@ export const Connections = () => {
                                 <th className='sorting-head' onClick={() => sorting('installation_date')}>Installation Date <i className={`${column + sort === 'installation_dateASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'installation_dateDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
                                 <th className='sorting-head' onClick={() => sorting('package')}>Package <i className={`${column + sort === 'packageASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'packageDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                                
+                                <th className='sorting-head' onClick={() => sorting('expiry_date')}>Expiry <i className={`${column + sort === 'expiry_dateASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'expiry_dateDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
                                 <th className='sorting-head' onClick={() => sorting('status')}>Status <i className={`${column + sort === 'statusASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'statusDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
@@ -121,7 +132,8 @@ export const Connections = () => {
                                         <td>{connection.subarea.subarea}</td>
                                         <td>{connection.customer.first_name + ' ' + connection.customer.last_name}</td>
                                         <td>{connection.installation_date}</td>
-                                        <td>{connection.package}</td>
+                                        {connection.package ? <td>{connection.package.title}</td> : <td>{connection.package}</td>}
+                                        {connection.subscriptions ? <td>{connection.subscriptions.expiry_date}</td> : <td>{connection.subscriptions}</td>}
                                         <td>{connection.status}</td>
                                         <td >
                                             <Link className='action-btn' onClick={() => openDeletePopup(connection)} ><i className='fa fa-trash-can'></i></Link>
@@ -132,8 +144,8 @@ export const Connections = () => {
                             })}
                         </tbody>
                     </table>
-                </div>
-            </InfiniteScroll>
+                </InfiniteScroll>
+            </div>
 
             {/* Pagination */}
             <Pagination showedRecords={connections.length} totalRecords={connectionsCount} nextPage={connectionsNext} getMoreRecords={getMoreConnections} />

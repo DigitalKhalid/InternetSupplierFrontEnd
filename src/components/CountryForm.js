@@ -16,7 +16,7 @@ const CountryForm = () => {
                 <div className="col-md-12">
                     <p className='title required'><strong>Country</strong></p>
                     <input type="text" className="form-control" id="country" name='country' placeholder="" value={country.country} onChange={handleOnChange} ></input>
-                    <p className='label'></p>
+                    {/* <p className='label'></p> */}
                 </div>
             </form>
         </div>

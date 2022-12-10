@@ -1,9 +1,9 @@
 @import "./Themes.css";
 
 .list {
-  display: flex;
   width: 100%;
-  top: 0;
+  max-height: 60vh;
+  overflow-y: auto;
 }
 
 table {
@@ -50,7 +50,6 @@ td {
 
 .list-headers{
   display: flex;
-  /* float: right; */
   justify-content:space-between;
   padding-bottom: 1em;
 }

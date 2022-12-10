@@ -7,6 +7,7 @@ import Popup from './Popup'
 import SubAreaForm from './SubAreaForm'
 import Pagination from '../components/Pagination'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import Spinner from '../components/Spinner'
 
 export const SubAreas = () => {
     const context = useContext(SubAreaContext)
@@ -77,13 +78,14 @@ export const SubAreas = () => {
             </div>
 
             {/* List */}
-            <InfiniteScroll
-                dataLength={subAreasCount}
-                next={getMoreSubAreas}
-                hasMore={subAreasNext !== null}
-            // loader={<Spinner />}
-            >
-                <div className='list'>
+            <div className='list' id='list'>
+                <InfiniteScroll
+                    scrollableTarget='list'
+                    dataLength={subAreas.length}
+                    next={getMoreSubAreas}
+                    hasMore={subAreas.length < subAreasCount}
+                    loader={<Spinner />}
+                >
                     <table>
                         <thead>
                             <tr>
@@ -119,8 +121,8 @@ export const SubAreas = () => {
                             })}
                         </tbody>
                     </table>
-                </div>
-            </InfiniteScroll>
+                </InfiniteScroll>
+            </div>
 
             {/* Pagination */}
             <Pagination showedRecords={subAreas.length} totalRecords={subAreasCount} nextPage={subAreasNext} getMoreRecords={getMoreSubAreas} />
