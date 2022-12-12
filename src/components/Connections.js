@@ -45,6 +45,10 @@ export const Connections = () => {
         togglePopup()
     }
 
+    const openInvoicePopup = ()=>{
+        console.log('Invoice')
+    }
+
     const openStatusPopup = (connection) => {
         setOperation('status')
         if (connection.package) {
@@ -133,11 +137,12 @@ export const Connections = () => {
                                         <td>{connection.customer.first_name + ' ' + connection.customer.last_name}</td>
                                         <td>{connection.installation_date}</td>
                                         {connection.package ? <td>{connection.package.title}</td> : <td>{connection.package}</td>}
-                                        {connection.subscriptions ? <td>{connection.subscriptions.expiry_date}</td> : <td>{connection.subscriptions}</td>}
+                                        <td>{connection.expiry_date}</td>
                                         <td>{connection.status}</td>
                                         <td >
                                             <Link className='action-btn' onClick={() => openDeletePopup(connection)} ><i className='fa fa-trash-can'></i></Link>
                                             <Link className='action-btn' onClick={() => openEditPopup(connection)} ><i className='fa fa-pen-to-square'></i></Link>
+                                            <Link className='action-btn' onClick={() => openInvoicePopup(connection)} ><i className='fa fa-cart-plus'></i></Link>
                                         </td>
                                     </tr>
                                 )

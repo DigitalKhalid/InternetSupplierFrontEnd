@@ -15,8 +15,8 @@
     "path": "/admin/connections"
   },
   {
-    "title": "Products",
-    "icon": "fa fa-layer-group",
+    "title": "Store",
+    "icon": "fa fa-store",
     "childrens": [
       {
         "title": "Packages",
@@ -24,14 +24,30 @@
         "path": "/admin/packages"
       },
       {
-        "title": "Accessories",
+        "title": "Products",
         "icon": "fa fa-box",
-        "path": "/admin/accessories"
+        "path": "/admin/products"
       },
       {
         "title": "Services",
         "icon": "fa fa-network-wired",
         "path": "/admin/services"
+      }
+    ]
+  },
+  {
+    "title": "Orders",
+    "icon": "fa fa-basket-shopping",
+    "childrens": [
+      {
+        "title": "Invoices",
+        "icon": "fa-solid fa-file-invoice",
+        "path": "/admin/invoices"
+      },
+      {
+        "title": "Payments",
+        "icon": "fa fa-money-bills",
+        "path": "/admin/payments"
       }
     ]
   },
