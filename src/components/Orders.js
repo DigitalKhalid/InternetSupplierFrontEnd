@@ -1,6 +1,6 @@
 import '../assets/css/List.css'
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import OrderContext from '../context/order/OrderContext'
 import PopupContext from '../context/popup/PopupContext'
 import Popup from './Popup'
@@ -20,6 +20,8 @@ export const Orders = () => {
     const [column, setColumn] = useState('order_id')
     const [searchText, setSearchText] = useState('')
 
+    const navigate = useNavigate()
+
     useEffect(() => {
         getAllOrders(column, sort, searchText)
         //   eslint-disable-next-line
@@ -38,6 +40,12 @@ export const Orders = () => {
         togglePopup()
     }
 
+    const openDetail = (order) => {
+        setOperation('detail')
+        console.log('detail')
+        setOrder(order)
+    }
+
     const openDeletePopup = (order) => {
         setOperation('delete')
         setOrder(order)
@@ -47,6 +55,7 @@ export const Orders = () => {
     const addRecord = () => {
         addOrder()
         togglePopup()
+        navigate('/admin/invoicedetails')
     }
 
     const updateRecord = () => {
@@ -115,6 +124,7 @@ export const Orders = () => {
                                         <td >
                                             <Link className='action-btn' onClick={() => openDeletePopup(order)} ><i className='fa fa-trash-can'></i></Link>
                                             <Link className='action-btn' onClick={() => openEditPopup(order)} ><i className='fa fa-pen-to-square'></i></Link>
+                                            <Link className='action-btn' onClick={() => openDetail(order)} to='/admin/invoicedetails' ><i className='fa fa-rectangle-list'></i></Link>
                                         </td>
                                     </tr>
                                 )
