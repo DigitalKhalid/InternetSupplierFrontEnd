@@ -46,6 +46,12 @@ export const Orders = () => {
         setOrder(order)
     }
 
+    const openPaymentPopup = (order) => {
+        setOperation('payment')
+        setOrder(order)
+        togglePopup()
+    }
+
     const openDeletePopup = (order) => {
         setOperation('delete')
         setOrder(order)
@@ -93,7 +99,7 @@ export const Orders = () => {
                     dataLength={orders.length}
                     next={getMoreOrders}
                     hasMore={orders.length < ordersCount}
-                    loader={<Spinner/>}
+                    loader={<Spinner />}
                 >
                     <table>
                         <thead className='list-head'>
@@ -104,9 +110,8 @@ export const Orders = () => {
 
                                 <th className='sorting-head' onClick={() => sorting('connection__connection_id')}>Connection <i className={`${column + sort === 'connection__connection_idASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'connection__connection_idDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
-                                <th className='sorting-head' onClick={() => sorting('value')}>Value <i className={`${column + sort === 'valueASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'valueDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
-                                
-                                <th className='sorting-head' onClick={() => sorting('status')}>Status <i className={`${column + sort === 'statusASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'statusDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                                <th>Value</th>
+                                <th>Status</th>
 
                                 <th>Actions</th>
                             </tr>
@@ -117,14 +122,14 @@ export const Orders = () => {
                                     <tr key={index}>
                                         <td>{order.order_id}</td>
                                         <td>{format(new Date(order.date_created), 'dd-MM-yyyy')}</td>
-                                        {/* <td>{order.date_created}</td> */}
                                         <td>{order.connection.connection_id}</td>
-                                        <td>{order.value}</td>
+                                        <td>{order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)}</td>
                                         <td>{order.status}</td>
                                         <td >
                                             <Link className='action-btn' onClick={() => openDeletePopup(order)} ><i className='fa fa-trash-can'></i></Link>
                                             <Link className='action-btn' onClick={() => openEditPopup(order)} ><i className='fa fa-pen-to-square'></i></Link>
                                             <Link className='action-btn' onClick={() => openDetail(order)} to='/admin/invoicedetails' ><i className='fa fa-rectangle-list'></i></Link>
+                                            <Link className='action-btn green' onClick={() => openPaymentPopup(order)}><i className='fa fa-money-bill'></i></Link>
                                         </td>
                                     </tr>
                                 )
@@ -144,6 +149,8 @@ export const Orders = () => {
                 {operation === 'add' && <Popup header='Add New Order' body={<OrderForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={addRecord} />}
 
                 {operation === 'delete' && <Popup header='Delete Order' body='Are you sure to delete this order?' btnCancel='No' btnOk='Yes' btnOkClick={deleteRecord} alerts={false} />}
+
+                {/* {operation === 'payment' && <Popup header='Payment' body={<OrderForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={addRecord} />} */}
             </div>
         </>
     )

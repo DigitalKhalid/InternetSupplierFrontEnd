@@ -1,11 +1,12 @@
 import React, { useContext, useState } from "react";
 import OrderDetailContext from './OrderDetailContext'
+import OrderContext from "../order/OrderContext";
 import AlertContext from "../alert/AlertContext"
 import getListURL from '../../functions/URLs'
 
 const OrderDetailState = (props) => {
   const { showAlert } = useContext(AlertContext)
-
+  const { order } = useContext(OrderContext)
   const host = process.env.REACT_APP_HOST
   const [orderDetails, setOrderDetails] = useState([])
   const [orderDetailsCount, setOrderDetailsCount] = useState(0)
@@ -15,7 +16,7 @@ const OrderDetailState = (props) => {
     id: '',
     orderDetail: '',
     product: '',
-    qty: '',
+    qty: '1',
     sale_price: '0'
   }
 
@@ -24,7 +25,7 @@ const OrderDetailState = (props) => {
   // Get all Records
   const getAllOrderDetails = async (sortField = 'product__title', sort = 'ASC', search = '', filterField = '') => {
     const url = getListURL('orderdetailapirelated', sortField, sort, search, filterField)
-    console.log(url)
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -34,8 +35,8 @@ const OrderDetailState = (props) => {
     });
     const json = await response.json();
     setOrderDetails(json)
-    console.log(json)
   }
+
 
   // Add Record
   const addOrderDetail = async () => {
@@ -57,7 +58,8 @@ const OrderDetailState = (props) => {
     if (response.ok) {
       const json = await response.json();
       setOrderDetail(json)
-      setOrderDetails(orderDetails.concat(orderDetail))
+      // setOrderDetails(orderDetails.concat(orderDetail))
+      getAllOrderDetails('product__title', 'ASC', order.id, 'order')
     }
   }
 

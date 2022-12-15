@@ -33,9 +33,8 @@ td {
   padding-top: 0.25em;
   padding-bottom: 0.25em;
   border-radius: 100%;
-  background: var(--actions-bgcolor);
   margin: 0.25em;
-  color: black;
+  color: var(--color);
 }
 
 .my-pagination {
@@ -106,4 +105,16 @@ td {
 
 .wifi-null:hover {
   cursor: pointer;
+}
+
+.red {
+  color: var(--error);
+}
+
+.green {
+  color: var(--success);
+}
+
+.yellow {
+  color: var(--warning);
 }

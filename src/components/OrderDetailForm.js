@@ -1,39 +1,47 @@
 import '../assets/css/Form.css'
 import React, { useContext, useEffect } from 'react'
+import OrderDetailContext from '../context/orderdetail/OrderDetailContext'
+import ProductContext from '../context/product/ProductContext'
 import OrderContext from '../context/order/OrderContext'
-import ConnectionContext from '../context/connection/ConnectionContext'
 
-const OrderForm = () => {
+const OrderDetailForm = () => {
+    const { orderDetail, setOrderDetail, orderDetails } = useContext(OrderDetailContext)
     const { order, setOrder } = useContext(OrderContext)
-    const { connections, getAllConnections } = useContext(ConnectionContext)
+    const { products, getAllProducts } = useContext(ProductContext)
 
     useEffect(() => {
-      getAllConnections()
-      console.log(connections)
-      // eslint-disable-next-line
+        getAllProducts()
+        // eslint-disable-next-line
     }, [])
-    
+
 
     const handleOnChange = (event) => {
-        setOrder({ ...order, [event.target.name]: event.target.value })
+        if (event.target.name === 'product') {
+            for (let index = 0; index < products.length; index++) {
+                const product = products[index];
+                if (parseInt(product.id) === parseInt(event.target.value)) {
+                    setOrderDetail({ ...orderDetail, 'sale_price': product.sale_price, 'product': event.target.value })
+                    break
+                }
+            }
+        } else {
+            setOrderDetail({ ...orderDetail, [event.target.name]: event.target.value })
+            setOrder({...order, 'value':orderDetails.reduce((total, value) => total = total + (value.sale_price * value.qty), document.getElementById('sale_price').value*document.getElementById('qty').value)})
+        }
     }
 
     return (
         <div className='container form'>
             <form className="row g-2">
-                <div className="col-md-10">
-                    <p className='title required'><strong>Order ID</strong></p>
-                    <input type="text" className="form-control" id="order_id" name='order_id' placeholder="" value={order.order_id} onChange={handleOnChange} ></input>
-                    <p className='label'></p>
-                </div>
+
 
                 <div className="col-md-10">
-                    <p className='title'><strong>Connection</strong></p>
-                    <select className="form-select" id="connection" name='connection' placeholder="" value={order.connection} onChange={handleOnChange}>
+                    <p className='title required'><strong>Product</strong></p>
+                    <select className="form-select" id="product" name='product' placeholder="" value={orderDetail.product} onChange={handleOnChange}>
                         <option defaultValue=""></option>
-                        {connections.map((connection) => {
+                        {products.map((product) => {
                             return (
-                                <option key={connection.id} value={connection.id}>{connection.connection_id}</option>
+                                <option key={product.id} value={product.id}>{product.title} | {product.sku} ({product.catagory.title})</option>
                             )
                         })}
                     </select>
@@ -41,12 +49,14 @@ const OrderForm = () => {
                 </div>
 
                 <div className="col-md-10">
-                    <p className='title'><strong>Status</strong></p>
-                    <select className="form-select" id='status' name='status' value={order.status} onChange={handleOnChange}>
-                        <option defaultValue="Pending">Pending</option>
-                        <option value="Partial">Partial</option>
-                        <option value="Completed">Completed</option>
-                    </select>
+                    <p className='title required'><strong>Quantity</strong></p>
+                    <input type="text" className="form-control" id="qty" name='qty' placeholder="" value={orderDetail.qty} onChange={handleOnChange} ></input>
+                    <p className='label'></p>
+                </div>
+
+                <div className="col-md-10">
+                    <p className='title required'><strong>Sale Price</strong></p>
+                    <input type="text" className="form-control" id="sale_price" name='sale_price' placeholder="" value={orderDetail.sale_price} onChange={handleOnChange} ></input>
                     <p className='label'></p>
                 </div>
             </form>
@@ -54,4 +64,4 @@ const OrderForm = () => {
     )
 }
 
-export default OrderForm
+export default OrderDetailForm
