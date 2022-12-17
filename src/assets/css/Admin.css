@@ -1,5 +1,14 @@
 @import "./Themes.css";
 
+.admin {
+  height: 100vh;
+  overflow-y: hidden;
+
+  color: var(--color);
+  background: var(--main-bg);
+  background-size: cover;
+}
+
 .main {
   display: flex;
   flex-direction: wrap;

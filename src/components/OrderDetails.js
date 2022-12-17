@@ -6,14 +6,14 @@ import OrderContext from '../context/order/OrderContext'
 import PopupContext from '../context/popup/PopupContext'
 import Popup from './Popup'
 import OrderDetailForm from './OrderDetailForm'
-import InfiniteScroll from 'react-infinite-scroll-component'
-import Pagination from './Pagination'
-import Spinner from './Spinner'
 import { format } from 'date-fns'
+import PaymentContext from '../context/payment/PaymentContext'
+import PaymentForm from './PaymentForm'
 
 export const OrderDetails = () => {
     const { blankFields, orderDetails, setOrderDetail, getAllOrderDetails, updateOrderDetail, addOrderDetail, deleteOrderDetail } = useContext(OrderDetailContext)
-    const { order } = useContext(OrderContext)
+    const { addPayment, payment, setPayment } = useContext(PaymentContext)
+    const { order, setOrder } = useContext(OrderContext)
     const navigate = useNavigate()
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
@@ -48,6 +48,17 @@ export const OrderDetails = () => {
         togglePopup()
     }
 
+    const openPaymentPopup = (order) => {
+        setOperation('payment')
+
+        setPayment({ ...payment, 'order': order.id, 'payment_type': 'Debit', 'amount': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0) - order.payments.reduce((total, value) => total = total + value.amount, 0) })
+
+        const orderEdit = { ...order, 'connection': order.connection.id, 'status': 'Completed', 'value': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0), 'balance': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0) - order.payments.reduce((total, value) => total = total + value.amount, 0) }
+
+        setOrder(orderEdit)
+        togglePopup()
+    }
+
     const addRecord = () => {
         addOrderDetail()
         togglePopup()
@@ -60,6 +71,11 @@ export const OrderDetails = () => {
 
     const deleteRecord = () => {
         deleteOrderDetail()
+        togglePopup()
+    }
+
+    const addPaymentRecord = () => {
+        addPayment()
         togglePopup()
     }
 
@@ -82,9 +98,14 @@ export const OrderDetails = () => {
                 Dated: <strong>{format(new Date(order.date_created), 'dd-MM-yyyy')}</strong>
                 <br />
                 Total Amount: <strong>{orderDetails.reduce((total, value) => total = total + (value.sale_price * value.qty), 0)}</strong>
+                <br />
+                Status: <strong>{order.status}</strong>
             </p>
             <div className="list-headers">
-                <button className="btn btn-warning" onClick={()=>navigate(-1)}><i className='fa fa-arrow-left'></i></button>
+                <div>
+                    <button className="btn btn-warning" onClick={() => navigate(-1)}><i className='fa fa-arrow-left'></i></button>
+                    {order.status !== 'Completed' && <button className="btn btn-success mx-3" onClick={openPaymentPopup}><i className='fa fa-money-bill'></i></button>}
+                </div>
                 <button className="btn btn-primary" onClick={openNewPopup}>Add Item</button>
             </div>
 
@@ -121,9 +142,6 @@ export const OrderDetails = () => {
                 </table>
             </div>
 
-            {/* Pagination */}
-            {/* <Pagination showedRecords={orderDetails.length} totalRecords={orderDetailsCount} nextPage={orderDetailsNext} getMoreRecords={getMoreOrderDetails} /> */}
-
             {/* Popup Forms */}
             <div>
                 {operation === 'update' && <Popup header='Edit OrderDetail' body={<OrderDetailForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={updateRecord} />}
@@ -131,6 +149,8 @@ export const OrderDetails = () => {
                 {operation === 'add' && <Popup header='Add New OrderDetail' body={<OrderDetailForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={addRecord} />}
 
                 {operation === 'delete' && <Popup header='Delete OrderDetail' body='Are you sure to delete this item from the order?' btnCancel='No' btnOk='Yes' btnOkClick={deleteRecord} alerts={false} />}
+
+                {operation === 'payment' && <Popup header='Payment' body={<PaymentForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={addPaymentRecord} />}
             </div>
         </>
     )

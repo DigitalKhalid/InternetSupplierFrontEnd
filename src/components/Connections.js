@@ -142,7 +142,7 @@ export const Connections = () => {
                                         <td >
                                             <Link className='action-btn' onClick={() => openDeletePopup(connection)} ><i className='fa fa-trash-can'></i></Link>
                                             <Link className='action-btn' onClick={() => openEditPopup(connection)} ><i className='fa fa-pen-to-square'></i></Link>
-                                            <Link className='action-btn' onClick={() => openInvoicePopup(connection)} ><i className='fa fa-cart-plus'></i></Link>
+                                            <Link className='action-btn' onClick={() => openInvoicePopup(connection)} ><i className='fa fa-file-invoice'></i></Link>
                                         </td>
                                     </tr>
                                 )

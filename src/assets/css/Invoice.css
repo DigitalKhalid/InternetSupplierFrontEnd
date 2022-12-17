@@ -1,0 +1,98 @@
+.invoice {
+  width: 21cm;
+  min-height: 29.7cm;
+  padding: 1cm;
+  margin: 1cm auto;
+  border: 1px #d3d3d3 solid;
+  border-radius: 5px;
+  background: white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.page {
+  padding: 0.5cm;
+  height: 276mm;
+}
+
+.invoice-header {
+  height: 5em;
+}
+
+.brand {
+  text-align: left;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.brand-address {
+  text-align: left;
+  font-size: 0.75em;
+}
+
+.header-title {
+  text-align: right;
+  font-size: 2em;
+  font-weight: bold;
+  vertical-align: top;
+}
+
+.invoice-number {
+  text-align: right;
+  font-size: 1em;
+}
+.invoice-body {
+  padding-top: 1em;
+}
+
+.invoice-to {
+  text-align: left;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.invoice-to-address {
+  text-align: left;
+  font-size: 0.75em;
+}
+
+.invoice-list {
+  padding-top: 1em;
+}
+
+.table-header {
+  border-bottom: 0.5px solid gray;
+  text-align: center;
+  line-height: 2.5em;
+}
+
+.invoice-notes {
+  margin-top: 1em;
+  padding: 0.5em;
+  font-style: italic;
+  border: 0.5px solid gray;
+}
+
+.invoice-footer {
+  padding-top: 1em;
+  text-align: center;
+  font-size: 0.75em;
+  font-weight: bold;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  .invoice {
+    margin: 0;
+    border: initial;
+    border-radius: initial;
+    width: initial;
+    min-height: initial;
+    box-shadow: initial;
+    background: initial;
+    page-break-after: always;
+  }
+}

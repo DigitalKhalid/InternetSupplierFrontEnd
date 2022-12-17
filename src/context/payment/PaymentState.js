@@ -1,31 +1,30 @@
 import React, { useContext, useState } from "react";
-import OrderContext from './OrderContext'
+import PaymentContext from './PaymentContext'
 import AlertContext from "../alert/AlertContext"
 import getListURL from '../../functions/URLs'
 
-const OrderState = (props) => {
+const PaymentState = (props) => {
   const { showAlert } = useContext(AlertContext)
 
   const host = process.env.REACT_APP_HOST
-  const [orders, setOrders] = useState([])
-  const [ordersCount, setOrdersCount] = useState(0)
-  const [ordersNext, setOrdersNext] = useState('')
+  const [payments, setPayments] = useState([])
+  const [paymentsCount, setPaymentsCount] = useState(0)
+  const [paymentsNext, setPaymentsNext] = useState('')
 
   const blankFields = {
     id: '',
     date_created: '',
-    order_id: '',
-    connection: '',
-    value: '0',
-    status: 'Pending'
+    Payment_type: 'Debit',
+    order: '',
+    amount: '0'
   }
 
-  const [order, setOrder] = useState(blankFields)
+  const [payment, setPayment] = useState(blankFields)
 
   // Get all Records
-  const getAllOrders = async (sortField = 'order_id', sort = 'ASC', search = '', filterField = '') => {
-    const url = getListURL('orderapirelated', sortField, sort, search, filterField)
-    console.log(url)
+  const getAllPayments = async (sortField = 'order', sort = 'ASC', search = '', filterField = '') => {
+    const url = getListURL('paymentapirelated', sortField, sort, search, filterField)
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -34,19 +33,14 @@ const OrderState = (props) => {
       },
     });
     const json = await response.json();
-    setOrdersCount(json.count)
-    setOrders(json.results)
-    setOrdersNext(json.next)
-
-    // For delete relative payment
-    let paymentOrder = json.results[0]
-    paymentOrder = {...paymentOrder, 'status': paymentOrder.payment_count === 1 ? 'Pending' : 'Partial', 'connection': paymentOrder.connection.id}
-    setOrder(paymentOrder)
+    setPaymentsCount(json.count)
+    setPayments(json.results)
+    setPaymentsNext(json.next)
   }
 
   // Append more records used for pagination
-  const getMoreOrders = async () => {
-    const url = ordersNext
+  const getMorePayments = async () => {
+    const url = paymentsNext
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -55,14 +49,14 @@ const OrderState = (props) => {
       },
     });
     const json = await response.json();
-    setOrders(orders.concat(json.results))
-    setOrdersNext(json.next)
+    setPayments(payments.concat(json.results))
+    setPaymentsNext(json.next)
   }
 
   // Add Record
-  const addOrder = async () => {
+  const addPayment = async () => {
     // Add record to server
-    const url = `${host}orderapi/`
+    const url = `${host}paymentapi/`
 
     const response = await fetch(url, {
       method: 'POST',
@@ -71,23 +65,23 @@ const OrderState = (props) => {
         'Authorization': 'Token ' + localStorage.getItem('authtoken')
       },
 
-      body: JSON.stringify(order)
+      body: JSON.stringify(payment)
     });
-    showAlert(response.status, order.order_id)
+    showAlert(response.status, '')
 
     // Add record to frontend
     if (response.ok) {
       const json = await response.json();
-      setOrder(json)
-      setOrders(orders.concat(order))
+      setPayment(json)
+      setPayments(payments.concat(payment))
     }
   }
 
 
   // Update Record
-  const updateOrder = async () => {
+  const updatePayment = async () => {
     // Update record to server side
-    const url = `${host}orderapi/${order.id}/`
+    const url = `${host}paymentapi/${payment.id}/`
 
     const response = await fetch(url, {
       method: 'PUT',
@@ -95,22 +89,22 @@ const OrderState = (props) => {
         'Content-Type': 'application/json',
         'Authorization': 'Token ' + localStorage.getItem('authtoken')
       },
-      body: JSON.stringify(order)
+      body: JSON.stringify(payment)
     });
-    showAlert(response.status, order.order_id)
+    showAlert(response.status, '')
 
 
     // Update record in frontend
     if (response.ok) {
-      getAllOrders()
+      getAllPayments()
     }
   }
 
 
   // Delete Record
-  const deleteOrder = async () => {
+  const deletePayment = async () => {
     // delete record from server using API
-    const url = `${host}orderapi/${order.id}`
+    const url = `${host}paymentapi/${payment.id}`
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -122,20 +116,20 @@ const OrderState = (props) => {
 
     // delete record from frontend
     if (response.ok) {
-      const OrdersLeft = orders.filter((Order) => { return Order.id !== order.id })
-      setOrders(OrdersLeft)
-      setOrdersCount(ordersCount-1)
+      const PaymentsLeft = payments.filter((Payment) => { return Payment.id !== payment.id })
+      setPayments(PaymentsLeft)
+      setPaymentsCount(paymentsCount-1)
     } else {
-      showAlert(response.status, order.order_id)
+      showAlert(response.status, '')
     }
   }
 
 
   return (
-    <OrderContext.Provider value={{ blankFields, orders, order, ordersCount, ordersNext, setOrder, getAllOrders, getMoreOrders, addOrder, updateOrder, deleteOrder }}>
+    <PaymentContext.Provider value={{ blankFields, payments, payment, paymentsCount, paymentsNext, setPayment, getAllPayments, getMorePayments, addPayment, updatePayment, deletePayment }}>
       {props.children}
-    </OrderContext.Provider>
+    </PaymentContext.Provider>
   )
 }
 
-export default OrderState;
+export default PaymentState;

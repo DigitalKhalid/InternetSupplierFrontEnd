@@ -10,10 +10,12 @@ import Pagination from './Pagination'
 // import ConnectionContext from '../context/connection/ConnectionContext'
 import Spinner from './Spinner'
 import { format } from 'date-fns'
+import PaymentForm from './PaymentForm'
+import PaymentContext from '../context/payment/PaymentContext'
 
 export const Orders = () => {
     const { blankFields, orders, setOrder, ordersNext, ordersCount, getMoreOrders, getAllOrders, updateOrder, addOrder, deleteOrder } = useContext(OrderContext)
-    // const { connection, setConnection, getConnectionID, addConnection, getAllConnections } = useContext(ConnectionContext)
+    const { payment, setPayment, addPayment } = useContext(PaymentContext)
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
     const [sort, setSort] = useState('ASC')
@@ -34,21 +36,25 @@ export const Orders = () => {
     }
 
     const openEditPopup = (order) => {
-        const OrderEdit = { ...order, 'connection': order.connection.id }
+        const orderEdit = { ...order, 'connection': order.connection.id }
         setOperation('update')
-        setOrder(OrderEdit)
+        setOrder(orderEdit)
         togglePopup()
     }
 
     const openDetail = (order) => {
         setOperation('detail')
-        console.log('detail')
         setOrder(order)
     }
 
     const openPaymentPopup = (order) => {
         setOperation('payment')
-        setOrder(order)
+        
+        setPayment({ ...payment, 'order': order.id, 'amount': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)-order.payments.reduce((total, value) => total = total + value.amount, 0)})
+        
+        const orderEdit = { ...order, 'connection': order.connection.id, 'status': 'Completed', 'value':order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0), 'balance':order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)-order.payments.reduce((total, value) => total = total + value.amount, 0)}
+        
+        setOrder(orderEdit)
         togglePopup()
     }
 
@@ -71,6 +77,14 @@ export const Orders = () => {
 
     const deleteRecord = () => {
         deleteOrder()
+        togglePopup()
+    }
+
+    const addPaymentRecord = () => {
+        if (payment.amount > 0) {
+            addPayment()
+            updateOrder()
+        }
         togglePopup()
     }
 
@@ -111,6 +125,7 @@ export const Orders = () => {
                                 <th className='sorting-head' onClick={() => sorting('connection__connection_id')}>Connection <i className={`${column + sort === 'connection__connection_idASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'connection__connection_idDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
                                 <th>Value</th>
+                                <th>Balance</th>
                                 <th>Status</th>
 
                                 <th>Actions</th>
@@ -124,12 +139,13 @@ export const Orders = () => {
                                         <td>{format(new Date(order.date_created), 'dd-MM-yyyy')}</td>
                                         <td>{order.connection.connection_id}</td>
                                         <td>{order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)}</td>
+                                        <td>{order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)-order.payments.reduce((total, value) => total = total + value.amount, 0)}</td>
                                         <td>{order.status}</td>
                                         <td >
                                             <Link className='action-btn' onClick={() => openDeletePopup(order)} ><i className='fa fa-trash-can'></i></Link>
                                             <Link className='action-btn' onClick={() => openEditPopup(order)} ><i className='fa fa-pen-to-square'></i></Link>
                                             <Link className='action-btn' onClick={() => openDetail(order)} to='/admin/invoicedetails' ><i className='fa fa-rectangle-list'></i></Link>
-                                            <Link className='action-btn green' onClick={() => openPaymentPopup(order)}><i className='fa fa-money-bill'></i></Link>
+                                            <Link className={`${order.status !== 'Completed' ? 'action-btn green' : 'action-btn disable'}`} onClick={() => openPaymentPopup(order)}><i className='fa fa-money-bill'></i></Link>
                                         </td>
                                     </tr>
                                 )
@@ -150,7 +166,7 @@ export const Orders = () => {
 
                 {operation === 'delete' && <Popup header='Delete Order' body='Are you sure to delete this order?' btnCancel='No' btnOk='Yes' btnOkClick={deleteRecord} alerts={false} />}
 
-                {/* {operation === 'payment' && <Popup header='Payment' body={<OrderForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={addRecord} />} */}
+                {operation === 'payment' && <Popup header='Payment' body={<PaymentForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={addPaymentRecord} />}
             </div>
         </>
     )
