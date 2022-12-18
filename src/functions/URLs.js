@@ -1,6 +1,6 @@
 const host = process.env.REACT_APP_HOST
 
-const getListURL = (urlEndPoint, sortField, sort = 'ASC', search = '', filterField = '') => {
+const getListURL = (urlEndPoint, sortField='', sort = 'ASC', search = '', filterField = '') => {
     if (sort === 'DESC') {
         sortField = '-' + sortField
     }

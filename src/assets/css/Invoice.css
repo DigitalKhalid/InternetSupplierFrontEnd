@@ -79,6 +79,10 @@
   font-weight: bold;
 }
 
+.invoice-summary {
+  border-top: 0.5px solid gray;
+}
+
 @page {
   size: A4;
   margin: 0;

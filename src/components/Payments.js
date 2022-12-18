@@ -1,6 +1,6 @@
 import '../assets/css/List.css'
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import PaymentContext from '../context/payment/PaymentContext'
 import PopupContext from '../context/popup/PopupContext'
 import Popup from './Popup'
@@ -19,6 +19,7 @@ export const Payments = () => {
     const [sort, setSort] = useState('ASC')
     const [column, setColumn] = useState('order__order_id')
     const [searchText, setSearchText] = useState('')
+
 
     useEffect(() => {
         getAllPayments(column, sort, searchText)
@@ -102,7 +103,7 @@ export const Payments = () => {
                                         <td >
                                             <Link className='action-btn' onClick={() => openDeletePopup(payment)} ><i className='fa fa-trash-can'></i></Link>
                                             <Link className='action-btn' onClick={() => openEditPopup(payment)} ><i className='fa fa-pen-to-square'></i></Link>
-                                            <Link className='action-btn' to={'/admin/invoice'} target="_blank" rel="noopener noreferrer" ><i className='fa fa-print'></i></Link>
+                                            <Link className='action-btn' to={'/admin/invoice'} onClick={() => localStorage.setItem('paymentid', payment.id)} target='_blank' rel="noopener noreferrer"><i className='fa fa-print'></i></Link>
                                         </td>
                                     </tr>
                                 )
