@@ -11,10 +11,16 @@ const OrderState = (props) => {
   const [ordersCount, setOrdersCount] = useState(0)
   const [ordersNext, setOrdersNext] = useState('')
 
+  const getOrderID = () => {
+    let serial = Math.max(...orders.map(o => (o.id))) + 1
+    const orderID = 'CPCL-' + serial.toString().padStart(5, '0')
+    return orderID
+  }
+
   const blankFields = {
     id: '',
     date_created: '',
-    order_id: '',
+    order_id: getOrderID(),
     connection: '',
     value: '0',
     status: 'Pending'
@@ -23,9 +29,9 @@ const OrderState = (props) => {
   const [order, setOrder] = useState(blankFields)
 
   // Get all Records
-  const getAllOrders = async (sortField = 'order_id', sort = 'ASC', search = '', filterField = '') => {
+  const getAllOrders = async (sortField = 'order_id', sort = 'DESC', search = '', filterField = '') => {
     const url = getListURL('orderapirelated', sortField, sort, search, filterField)
-    console.log(url)
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -79,7 +85,8 @@ const OrderState = (props) => {
     if (response.ok) {
       const json = await response.json();
       setOrder(json)
-      setOrders(orders.concat(order))
+      // setOrders(orders.concat(order))
+      getAllOrders()
     }
   }
 
@@ -132,7 +139,7 @@ const OrderState = (props) => {
 
 
   return (
-    <OrderContext.Provider value={{ blankFields, orders, order, ordersCount, ordersNext, setOrder, getAllOrders, getMoreOrders, addOrder, updateOrder, deleteOrder }}>
+    <OrderContext.Provider value={{ blankFields, orders, order, ordersCount, ordersNext, setOrder, getOrderID, getAllOrders, getMoreOrders, addOrder, updateOrder, deleteOrder }}>
       {props.children}
     </OrderContext.Provider>
   )

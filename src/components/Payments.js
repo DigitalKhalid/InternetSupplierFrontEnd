@@ -16,7 +16,7 @@ export const Payments = () => {
     const { updateOrder, getAllOrders } = useContext(OrderContext)
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
-    const [sort, setSort] = useState('ASC')
+    const [sort, setSort] = useState('DESC')
     const [column, setColumn] = useState('order__order_id')
     const [searchText, setSearchText] = useState('')
 
@@ -83,7 +83,7 @@ export const Payments = () => {
                             <tr>
                                 <th className='sorting-head' onClick={() => sorting('order__order_id')}>Order No. <i className={`${column + sort === 'order__order_idASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'order__order_idDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
-                                <th className='sorting-head' onClick={() => sorting('date_created')}>Date <i className={`${column + sort === 'date_createdASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'date_createdDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                                <th className='sorting-head' onClick={() => sorting('date_created')}>Date/ Time <i className={`${column + sort === 'date_createdASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'date_createdDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
                                 <th className='sorting-head' onClick={() => sorting('payment_type')}>Payment Type <i className={`${column + sort === 'payment_typeASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'payment_typeDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
@@ -97,13 +97,12 @@ export const Payments = () => {
                                 return (
                                     <tr key={index}>
                                         <td>{payment.order.order_id}</td>
-                                        <td>{format(new Date(payment.date_created), 'dd-MM-yyyy')}</td>
+                                        <td>{format(new Date(payment.date_created), 'dd-MM-yyyy - hh:mm a')}</td>
                                         <td>{payment.payment_type}</td>
                                         <td>{payment.amount}</td>
                                         <td >
                                             <Link className='action-btn' onClick={() => openDeletePopup(payment)} ><i className='fa fa-trash-can'></i></Link>
-                                            <Link className='action-btn' onClick={() => openEditPopup(payment)} ><i className='fa fa-pen-to-square'></i></Link>
-                                            <Link className='action-btn' to={'/admin/invoice'} onClick={() => localStorage.setItem('paymentid', payment.id)} target='_blank' rel="noopener noreferrer"><i className='fa fa-print'></i></Link>
+                                            <Link className='action-btn disable' onClick={() => openEditPopup(payment)} ><i className='fa fa-pen-to-square'></i></Link>
                                         </td>
                                     </tr>
                                 )

@@ -7,7 +7,6 @@ import Popup from './Popup'
 import OrderForm from './OrderForm'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Pagination from './Pagination'
-// import ConnectionContext from '../context/connection/ConnectionContext'
 import Spinner from './Spinner'
 import { format } from 'date-fns'
 import PaymentForm from './PaymentForm'
@@ -18,7 +17,7 @@ export const Orders = () => {
     const { payment, setPayment, addPayment } = useContext(PaymentContext)
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
-    const [sort, setSort] = useState('ASC')
+    const [sort, setSort] = useState('DESC')
     const [column, setColumn] = useState('order_id')
     const [searchText, setSearchText] = useState('')
 
@@ -44,7 +43,8 @@ export const Orders = () => {
 
     const openDetail = (order) => {
         setOperation('detail')
-        setOrder(order)
+        setOrder({...order, 'value':order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0), 'connection':order.connection.id})
+        localStorage.setItem('orderid', order.id)
     }
 
     const openPaymentPopup = (order) => {
@@ -67,7 +67,7 @@ export const Orders = () => {
     const addRecord = () => {
         addOrder()
         togglePopup()
-        navigate('/admin/invoicedetails')
+        // navigate('/admin/invoicedetails')
     }
 
     const updateRecord = () => {
@@ -120,7 +120,7 @@ export const Orders = () => {
                             <tr>
                                 <th className='sorting-head' onClick={() => sorting('order_id')}>Bill No <i className={`${column + sort === 'order_idASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'order_idDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
-                                <th className='sorting-head' onClick={() => sorting('date_created')}>Date <i className={`${column + sort === 'date_createdASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'date_createdDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                                <th className='sorting-head' onClick={() => sorting('date_created')}>Date/ Time <i className={`${column + sort === 'date_createdASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'date_createdDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
                                 <th className='sorting-head' onClick={() => sorting('connection__connection_id')}>Connection <i className={`${column + sort === 'connection__connection_idASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'connection__connection_idDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
@@ -136,16 +136,21 @@ export const Orders = () => {
                                 return (
                                     <tr key={index}>
                                         <td>{order.order_id}</td>
-                                        <td>{format(new Date(order.date_created), 'dd-MM-yyyy')}</td>
+                                        <td>{format(new Date(order.date_created), 'dd-MM-yyyy - hh:mm a')}</td>
                                         <td>{order.connection.connection_id}</td>
                                         <td>{order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)}</td>
                                         <td>{order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)-order.payments.reduce((total, value) => total = total + value.amount, 0)}</td>
                                         <td>{order.status}</td>
                                         <td >
                                             <Link className='action-btn' onClick={() => openDeletePopup(order)} ><i className='fa fa-trash-can'></i></Link>
+                                            
                                             <Link className='action-btn' onClick={() => openEditPopup(order)} ><i className='fa fa-pen-to-square'></i></Link>
+                                            
                                             <Link className='action-btn' onClick={() => openDetail(order)} to='/admin/invoicedetails' ><i className='fa fa-rectangle-list'></i></Link>
+                                            
                                             <Link className={`${order.status !== 'Completed' ? 'action-btn green' : 'action-btn disable'}`} onClick={() => openPaymentPopup(order)}><i className='fa fa-money-bill'></i></Link>
+                                            
+                                            <Link className='action-btn' to={'/admin/invoice'} onClick={() => localStorage.setItem('orderid', order.id)} target='_blank' rel="noopener noreferrer"><i className='fa fa-print'></i></Link>
                                         </td>
                                     </tr>
                                 )

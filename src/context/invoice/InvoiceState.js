@@ -7,7 +7,7 @@ const InvoiceState = (props) => {
 
     // Get Invoice
     const getInvoice = async (paymentID) => {
-        const url = getListURL('paymentinvoiceapi', '', '', paymentID, 'id')
+        const url = getListURL('invoiceapi', '', '', paymentID, 'id')
         console.log(url)
         const response = await fetch(url, {
             method: 'GET',
@@ -18,6 +18,7 @@ const InvoiceState = (props) => {
         });
         const json = await response.json();
         setInvoice(json[0])
+        console.log(json[0])
     }
 
 

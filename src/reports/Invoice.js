@@ -7,7 +7,7 @@ const Invoice = () => {
     const { invoice, getInvoice } = useContext(InvoiceContext)
 
     useEffect(() => {
-        getInvoice(localStorage.getItem('paymentid'))
+        getInvoice(localStorage.getItem('orderid'))
         console.log(invoice)
         //   eslint-disable-next-line
     }, [])
@@ -33,23 +33,23 @@ const Invoice = () => {
                         <div className="row">
                             <div className="col-md-5">
                                 Invoice to:
-                                <div className="invoice-to">{invoice.order.connection.customer.first_name} {invoice.order.connection.customer.last_name}</div>
-                                <div className="invoice-to-address">{invoice.order.connection.customer.street_address}, {invoice.order.connection.customer.subarea.subarea}, {invoice.order.connection.customer.subarea.area.area}, {invoice.order.connection.customer.subarea.area.city.city} </div>
-                                <div className="invoice-to-address"><strong>Contact:</strong> {invoice.order.connection.customer.contact}</div>
+                                <div className="invoice-to">{invoice.connection.customer.first_name} {invoice.connection.customer.last_name}</div>
+                                <div className="invoice-to-address">{invoice.connection.customer.street_address}, {invoice.connection.customer.subarea.subarea}, {invoice.connection.customer.subarea.area.area}, {invoice.connection.customer.subarea.area.city.city} </div>
+                                <div className="invoice-to-address"><strong>Contact:</strong> {invoice.connection.customer.contact}</div>
                             </div>
                             <div className="col-md-4">
                                 Connection Info:
-                                <div className="invoice-to">{invoice.order.connection.connection_id}</div>
-                                <div className="invoice-to-address"><strong>Package:</strong> {invoice.order.connection.package.title}</div>
-                                <div className="invoice-to-address"><strong>Package Price:</strong> Rs.{invoice.order.connection.package.sale_price}</div>
-                                <div className="invoice-to-address"><strong>Subarea:</strong> {invoice.order.connection.subarea.subarea}</div>
+                                <div className="invoice-to">{invoice.connection.connection_id}</div>
+                                <div className="invoice-to-address"><strong>Package:</strong> {invoice.connection.package.title}</div>
+                                <div className="invoice-to-address"><strong>Package Price:</strong> Rs.{invoice.connection.package.sale_price}</div>
+                                <div className="invoice-to-address"><strong>Subarea:</strong> {invoice.connection.subarea.subarea}</div>
                             </div>
                             <div className="col-md-3">
                                 Received By:
                                 <div className="invoice-to">ClickPick</div>
-                                <div className="invoice-to-address"><strong>Receipt Date:</strong> {format(new Date(invoice.date_created), 'dd-MM-yyyy')}</div>
-                                <div className="invoice-to-address"><strong>Order ID:</strong> {invoice.order.order_id}</div>
-                                <div className="invoice-to-address"><strong>Order Status:</strong> {invoice.order.status}</div>
+                                <div className="invoice-to-address"><strong>Order ID:</strong> {invoice.order_id}</div>
+                                <div className="invoice-to-address"><strong>Dated:</strong> {format(new Date(invoice.date_created), 'dd-MM-yyyy')}</div>
+                                <div className="invoice-to-address"><strong>Status:</strong> {invoice.status}</div>
                             </div>
                         </div>
                         <div className="row invoice-list">
@@ -64,13 +64,13 @@ const Invoice = () => {
                                         </tr>
                                     </thead>
                                     <tbody className='list-body'>
-                                        {invoice.order.details.map((item, key) => {
+                                        {invoice.details.map((item, key) => {
                                             return (
                                                 <tr key={key}>
-                                                    <td className='left'>{item.product}</td>
+                                                    <td className='left'>{item.product.title} ({item.product.sku}) - {item.product.catagory.title}</td>
                                                     <td>{item.qty}</td>
                                                     <td>{item.sale_price}</td>
-                                                    <td>{item.qty * item.sale_price}</td>
+                                                    <td>{(item.qty * item.sale_price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</td>
                                                 </tr>
                                             )
                                         })}
@@ -78,19 +78,19 @@ const Invoice = () => {
                                             <td className='invoice-summary'></td>
                                             <td className='invoice-summary'></td>
                                             <td className='invoice-summary'><strong>Total Amount</strong></td>
-                                            <td className='invoice-summary'>{invoice.order.value}</td>
+                                            <td className='invoice-summary'>{invoice.details.reduce((total, value) => total = total + (value.sale_price * value.qty), 0).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</td>
                                         </tr>
                                         <tr>
                                             <td className='left'></td>
                                             <td className='left'></td>
                                             <td><strong>Received</strong></td>
-                                            <td>{invoice.amount}</td>
+                                            {invoice.payment_received !==null ? <td>{invoice.payment_received.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</td> : <td>0.00</td>}
                                         </tr>
                                         <tr>
                                             <td className='left'></td>
                                             <td className='left'></td>
                                             <td><strong>Balance</strong></td>
-                                            <td>0.00</td>
+                                            <td>{(invoice.details.reduce((total, value) => total = total + (value.sale_price * value.qty), 0) - invoice.payment_received).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -16,7 +16,7 @@ export const Connections = () => {
     const { toggleAlert } = useContext(AlertContext)
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
-    const [sort, setSort] = useState('ASC')
+    const [sort, setSort] = useState('DESC')
     const [column, setColumn] = useState('connection_id')
     const [searchText, setSearchText] = useState('')
 

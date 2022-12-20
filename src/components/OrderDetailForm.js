@@ -26,7 +26,6 @@ const OrderDetailForm = () => {
             }
         } else {
             setOrderDetail({ ...orderDetail, [event.target.name]: event.target.value })
-            setOrder({...order, 'value':orderDetails.reduce((total, value) => total = total + (value.sale_price * value.qty), document.getElementById('sale_price').value*document.getElementById('qty').value)})
         }
     }
 

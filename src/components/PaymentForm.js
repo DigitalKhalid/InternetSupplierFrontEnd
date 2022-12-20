@@ -25,7 +25,7 @@ const PaymentForm = () => {
             <form className="row g-2">
                 <div className="col-md-10">
                     <p className='title'><strong>Payment Type</strong></p>
-                    <select className="form-select" disabled='true' id="payment_type" name='payment_type' placeholder="" value={payment.payment_type} onChange={handleOnChange}>
+                    <select className="form-select" disabled={true} id="payment_type" name='payment_type' placeholder="" value={payment.payment_type} onChange={handleOnChange}>
                         <option value="Debit">Receive</option>
                         <option value="Credit">Pay</option>
                     </select>

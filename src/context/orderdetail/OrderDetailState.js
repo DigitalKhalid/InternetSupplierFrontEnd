@@ -1,16 +1,12 @@
 import React, { useContext, useState } from "react";
 import OrderDetailContext from './OrderDetailContext'
-import OrderContext from "../order/OrderContext";
 import AlertContext from "../alert/AlertContext"
 import getListURL from '../../functions/URLs'
 
 const OrderDetailState = (props) => {
   const { showAlert } = useContext(AlertContext)
-  const { order } = useContext(OrderContext)
   const host = process.env.REACT_APP_HOST
   const [orderDetails, setOrderDetails] = useState([])
-  const [orderDetailsCount, setOrderDetailsCount] = useState(0)
-  const [orderDetailsNext, setOrderDetailsNext] = useState('')
 
   const blankFields = {
     id: '',
@@ -58,8 +54,7 @@ const OrderDetailState = (props) => {
     if (response.ok) {
       const json = await response.json();
       setOrderDetail(json)
-      // setOrderDetails(orderDetails.concat(orderDetail))
-      getAllOrderDetails('product__title', 'ASC', order.id, 'order')
+      getAllOrderDetails('', 'ASC', localStorage.getItem('orderid'), 'order')
     }
   }
 
@@ -77,12 +72,11 @@ const OrderDetailState = (props) => {
       },
       body: JSON.stringify(orderDetail)
     });
-    showAlert(response.status, orderDetail.product)
-
+    showAlert(response.status, 'item')
 
     // Update record in frontend
     if (response.ok) {
-      getAllOrderDetails()
+      getAllOrderDetails('product__title', 'ASC', localStorage.getItem('orderid'), 'order')
     }
   }
 
@@ -105,7 +99,7 @@ const OrderDetailState = (props) => {
       const OrderDetailsLeft = orderDetails.filter((OrderDetail) => { return OrderDetail.id !== orderDetail.id })
       setOrderDetails(OrderDetailsLeft)
     } else {
-      showAlert(response.status, orderDetail.product)
+      showAlert(response.status)
     }
   }
 

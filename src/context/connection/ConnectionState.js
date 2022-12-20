@@ -31,7 +31,7 @@ const ConnectionState = (props) => {
   const [connection, setConnection] = useState(blankFields)
 
   // Get all Records
-  const getAllConnections = async (sortField = 'city', sort = 'ASC', search = '', filterField = '') => {
+  const getAllConnections = async (sortField = 'connection_id', sort = 'DESC', search = '', filterField = '') => {
     const url = getListURL('connectionapirelated', sortField, sort, search, filterField)
 
     const response = await fetch(url, {
@@ -45,7 +45,6 @@ const ConnectionState = (props) => {
     setConnectionsCount(json.count)
     setConnections(json.results)
     setConnectionsNext(json.next)
-    console.log(json.results)
   }
 
   // Append more records used for pagination

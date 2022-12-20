@@ -14,7 +14,7 @@ const PaymentState = (props) => {
   const blankFields = {
     id: '',
     date_created: '',
-    Payment_type: 'Debit',
+    payment_type: 'Debit',
     order: '',
     amount: '0'
   }
@@ -22,7 +22,7 @@ const PaymentState = (props) => {
   const [payment, setPayment] = useState(blankFields)
 
   // Get all Records
-  const getAllPayments = async (sortField = 'order', sort = 'ASC', search = '', filterField = '') => {
+  const getAllPayments = async (sortField = 'order', sort = 'DESC', search = '', filterField = '') => {
     const url = getListURL('paymentapirelated', sortField, sort, search, filterField)
 
     const response = await fetch(url, {

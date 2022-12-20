@@ -97,6 +97,22 @@
     min-height: initial;
     box-shadow: initial;
     background: initial;
-    page-break-after: always;
+    page-break-after:auto;
+  }
+
+  .col-md-3{
+    width: 25%;
+  }
+  
+  .col-md-4{
+    width: 33.32%;
+  }
+  
+  .col-md-5{
+    width: 41.65%;
+  }
+  
+  .col-md-6{
+    width: 50%;
   }
 }
