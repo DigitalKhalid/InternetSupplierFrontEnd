@@ -66,7 +66,7 @@ const OrderState = (props) => {
   }
 
   // Add Record
-  const addOrder = async () => {
+  const addOrder = async (newOrder = order) => {
     // Add record to server
     const url = `${host}orderapi/`
 
@@ -77,9 +77,9 @@ const OrderState = (props) => {
         'Authorization': 'Token ' + localStorage.getItem('authtoken')
       },
 
-      body: JSON.stringify(order)
+      body: JSON.stringify(newOrder)
     });
-    showAlert(response.status, order.order_id)
+    showAlert(response.status, newOrder.order_id)
 
     // Add record to frontend
     if (response.ok) {

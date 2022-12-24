@@ -5,10 +5,12 @@ import PopupContext from '../context/popup/PopupContext'
 import LoginContext from '../context/login/LoginContext'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import ConnectionContext from '../context/connection/ConnectionContext'
 
 const Login = () => {
     const login = useSelector(state => state.authenticate)
     const context = useContext(PopupContext)
+    const {updateConnectionStatus} = useContext(ConnectionContext)
     const { togglePopup } = context
 
     const { getToken } = useContext(LoginContext)
@@ -25,6 +27,7 @@ const Login = () => {
         if (login.authtoken !== null) {
             togglePopup()
             navigate('/admin')
+            updateConnectionStatus()
         }
     }
 

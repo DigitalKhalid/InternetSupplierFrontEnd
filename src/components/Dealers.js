@@ -8,10 +8,10 @@ import CustomerForm from './CustomerForm'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Pagination from './Pagination'
 import ConnectionContext from '../context/connection/ConnectionContext'
-import Spinner from '../components/Spinner'
+import Spinner from './Spinner'
 
-export const Customers = () => {
-    const { blankFields, customers, setCustomer, customersNext, customersCount, getMoreCustomers, getAllCustomers, updateCustomer, addCustomer, deleteCustomer } = useContext(CustomerContext)
+export const Dealers = () => {
+    const { blankFields, dealers, setCustomer, dealersNext, dealersCount, getMoreDealers, getAllDealers, updateCustomer, addCustomer, deleteCustomer } = useContext(CustomerContext)
     const { connection, setConnection, getConnectionID, addConnection, getAllConnections } = useContext(ConnectionContext)
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
@@ -20,14 +20,14 @@ export const Customers = () => {
     const [searchText, setSearchText] = useState('')
 
     useEffect(() => {
-        getAllCustomers(column, sort, searchText)
+        getAllDealers(column, sort, searchText)
         getAllConnections()
         //   eslint-disable-next-line
     }, [sort, column, searchText])
 
     const openNewPopup = () => {
         setOperation('add')
-        setCustomer({ ...blankFields, 'customer_type': 'Individual' })
+        setCustomer({ ...blankFields, 'customer_type': 'Dealer' })
         togglePopup()
     }
 
@@ -48,12 +48,12 @@ export const Customers = () => {
         const connectionID = getConnectionID()
         console.log(connectionID)
         setOperation('addConnection')
-        setConnection({ ...connection, 'connection_id': connectionID, 'customer': customer.id, 'subarea': customer.subarea.id })
+        setConnection({ ...connection, 'connection_id':connectionID, 'customer': customer.id, 'subarea': customer.subarea.id })
         togglePopup()
     }
 
     const addRecord = () => {
-        addCustomer('Individual')
+        addCustomer('Dealer')
         togglePopup()
     }
 
@@ -63,14 +63,14 @@ export const Customers = () => {
     }
 
     const deleteRecord = () => {
-        deleteCustomer('Individual')
+        deleteCustomer('Dealer')
         togglePopup()
     }
 
     const addNewConnection = () => {
-        addConnection('Individual')
+        addConnection('Dealer')
         togglePopup()
-        getAllCustomers()
+        getAllDealers()
     }
 
     const sorting = (col) => {
@@ -88,17 +88,17 @@ export const Customers = () => {
             {/* Headers */}
             <div className="list-headers">
                 <input type="text" className="search-control" id="search" name='search' placeholder="Search" onChange={(event) => setSearchText(event.target.value)}></input>
-                <button className="btn btn-primary" onClick={openNewPopup}>Add Customer</button>
+                <button className="btn btn-primary" onClick={openNewPopup}>Add Dealer</button>
             </div>
 
             {/* List */}
             <div className='list' id='list'>
                 <InfiniteScroll
                     scrollableTarget='list'
-                    dataLength={customers.length}
-                    next={getMoreCustomers}
-                    hasMore={customers.length < customersCount}
-                    loader={<Spinner />}
+                    dataLength={dealers.length}
+                    next={getMoreDealers}
+                    hasMore={dealers.length < dealersCount}
+                    loader={<Spinner/>}
                 >
                     <table>
                         <thead className='list-head'>
@@ -119,19 +119,19 @@ export const Customers = () => {
                             </tr>
                         </thead>
                         <tbody className='list-body'>
-                            {customers.map((customer, index) => {
+                            {dealers.map((dealer, index) => {
                                 return (
                                     <tr key={index}>
-                                        {customer.connections ? <td className={`${customer.connections.status === 'Active' ? 'wifi-active' : 'wifi-inactive'}`}><i className='fa fa-wifi'></i></td> : <td className='wifi-null' onClick={() => openAddConnectionPopup(customer)}><i className='fa fa-wifi'></i></td>}
-                                        <td>{customer.first_name + ' ' + customer.last_name}</td>
-                                        <td>{customer.contact}</td>
-                                        <td>{customer.email}</td>
-                                        <td>{customer.subarea.subarea}</td>
-                                        <td>{customer.subarea.area.area}</td>
-                                        <td>{customer.subarea.area.city.city}</td>
+                                        {dealer.connections ? <td className={`${dealer.connections.status === 'Active' ? 'wifi-active' : 'wifi-inactive'}`}><i className='fa fa-wifi'></i></td> : <td className='wifi-null' onClick={() => openAddConnectionPopup(dealer)}><i className='fa fa-wifi'></i></td>}
+                                        <td>{dealer.first_name + ' ' + dealer.last_name}</td>
+                                        <td>{dealer.contact}</td>
+                                        <td>{dealer.email}</td>
+                                        <td>{dealer.subarea.subarea}</td>
+                                        <td>{dealer.subarea.area.area}</td>
+                                        <td>{dealer.subarea.area.city.city}</td>
                                         <td >
-                                            <Link className='action-btn' onClick={() => openDeletePopup(customer)} ><i className='fa fa-trash-can'></i></Link>
-                                            <Link className='action-btn' onClick={() => openEditPopup(customer)} ><i className='fa fa-pen-to-square'></i></Link>
+                                            <Link className='action-btn' onClick={() => openDeletePopup(dealer)} ><i className='fa fa-trash-can'></i></Link>
+                                            <Link className='action-btn' onClick={() => openEditPopup(dealer)} ><i className='fa fa-pen-to-square'></i></Link>
                                         </td>
                                     </tr>
                                 )
@@ -142,20 +142,20 @@ export const Customers = () => {
             </div>
 
             {/* Pagination */}
-            <Pagination showedRecords={customers.length} totalRecords={customersCount} nextPage={customersNext} getMoreRecords={getMoreCustomers} />
+            <Pagination showedRecords={dealers.length} totalRecords={dealersCount} nextPage={dealersNext} getMoreRecords={getMoreDealers} />
 
             {/* Popup Forms */}
             <div>
-                {operation === 'update' && <Popup header='Edit Customer' body={<CustomerForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={updateRecord} />}
+                {operation === 'update' && <Popup header='Edit Dealer' body={<CustomerForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={updateRecord} />}
 
-                {operation === 'add' && <Popup header='Add New Customer' body={<CustomerForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={addRecord} />}
+                {operation === 'add' && <Popup header='Add New Dealer' body={<CustomerForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={addRecord} />}
 
-                {operation === 'delete' && <Popup header='Delete Customer' body='Are you sure to delete this customer?' btnCancel='No' btnOk='Yes' btnOkClick={deleteRecord} alerts={false} />}
+                {operation === 'delete' && <Popup header='Delete Delete' body='Are you sure to delete this dealer?' btnCancel='No' btnOk='Yes' btnOkClick={deleteRecord} alerts={false} />}
 
-                {operation === 'addConnection' && <Popup header='Add Connection' body='Are you sure to add connection for this customer?' btnCancel='No' btnOk='Yes' btnOkClick={addNewConnection} alerts={false} />}
+                {operation === 'addConnection' && <Popup header='Add Connection' body='Are you sure to add connection for this dealer?' btnCancel='No' btnOk='Yes' btnOkClick={addNewConnection} alerts={false} />}
             </div>
         </>
     )
 }
 
-export default Customers;
+export default Dealers;

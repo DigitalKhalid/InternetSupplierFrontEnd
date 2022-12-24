@@ -22,6 +22,7 @@ export const Connections = () => {
 
     useEffect(() => {
         getAllConnections(column, sort, searchText)
+        document.getElementById('flexRadioDefault1').checked = true
         //   eslint-disable-next-line
     }, [sort, column, searchText])
 
@@ -32,8 +33,7 @@ export const Connections = () => {
     }
 
     const openEditPopup = (connection) => {
-        const connectionEdit = { ...connection, 'customer': connection.customer.id, 'package': connection.package?connection.package.id:connection.package, 'subarea': connection.subarea.id }
-
+        const connectionEdit = { ...connection, 'customer': connection.customer.id, 'package': connection.package !== null ? connection.package.id : '', 'subarea': connection.subarea.id, 'customer_type': connection.customer.customer_type }
         setOperation('update')
         setConnection(connectionEdit)
         togglePopup()
@@ -45,7 +45,7 @@ export const Connections = () => {
         togglePopup()
     }
 
-    const openInvoicePopup = ()=>{
+    const openInvoicePopup = () => {
         console.log('Invoice')
     }
 
@@ -54,7 +54,7 @@ export const Connections = () => {
         if (connection.package) {
             setConnection({ ...connection, 'status': connection.status === 'Active' ? 'Inactive' : 'Active', 'customer': connection.customer.id, 'package': connection.package.id, 'subarea': connection.subarea.id })
             togglePopup()
-            
+
         } else {
             toggleAlert('error', 'Unable to activate, please subscribe for a package first!')
         }
@@ -66,7 +66,16 @@ export const Connections = () => {
     }
 
     const updateRecord = () => {
-        updateConnection()
+        let connectionCheck = ''
+        if (document.getElementById('flexRadioDefault1').checked === true) {
+            connectionCheck = 'All'
+        } if (document.getElementById('flexRadioDefault2').checked === true) {
+            connectionCheck = 'Individual'
+        } if (document.getElementById('flexRadioDefault3').checked === true) {
+            connectionCheck = 'Dealer'
+        }
+
+        updateConnection(connectionCheck)
         togglePopup()
     }
 
@@ -91,7 +100,26 @@ export const Connections = () => {
             {/* Headers */}
             <div className="list-headers">
                 <input type="text" className="search-control" id="search" name='search' placeholder="Search" onChange={(event) => setSearchText(event.target.value)}></input>
-                <button className="btn btn-primary" onClick={openNewPopup}>Add Connection</button>
+                {/* <button className="btn btn-primary" onClick={openNewPopup}>Add Connection</button> */}
+
+                <div className="form-check">
+                    <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onClick={() => getAllConnections('connection_id', 'DESC')}></input>
+                    <label className="form-check-label" htmlFor="flexRadioDefault1">
+                        All Connections
+                    </label>
+                </div>
+                <div className="form-check">
+                    <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onClick={() => getAllConnections('connection_id', 'DESC', 'Individual', 'customer__customer_type')}></input>
+                    <label className="form-check-label" htmlFor="flexRadioDefault2">
+                        Customer Connections
+                    </label>
+                </div>
+                <div className="form-check">
+                    <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" onClick={() => getAllConnections('connection_id', 'DESC', 'Dealer', 'customer__customer_type')}></input>
+                    <label className="form-check-label" htmlFor="flexRadioDefault3">
+                        Dealer Connections
+                    </label>
+                </div>
             </div>
 
             {/* List */}
@@ -117,7 +145,7 @@ export const Connections = () => {
                                 <th className='sorting-head' onClick={() => sorting('installation_date')}>Installation Date <i className={`${column + sort === 'installation_dateASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'installation_dateDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
                                 <th className='sorting-head' onClick={() => sorting('package')}>Package <i className={`${column + sort === 'packageASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'packageDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
-                                
+
                                 <th className='sorting-head' onClick={() => sorting('expiry_date')}>Expiry <i className={`${column + sort === 'expiry_dateASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'expiry_dateDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
                                 <th className='sorting-head' onClick={() => sorting('status')}>Status <i className={`${column + sort === 'statusASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'statusDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
@@ -133,8 +161,8 @@ export const Connections = () => {
                                             <button className={`${connection.status === 'Active' ? 'connection-active' : 'connection-inactive'}`} onClick={() => openStatusPopup(connection)} ></button>
                                         </td>
                                         <td>{connection.connection_id}</td>
-                                        <td>{connection.subarea.subarea}</td>
-                                        <td>{connection.customer.first_name + ' ' + connection.customer.last_name}</td>
+                                        {connection.subarea && <td>{connection.subarea.subarea}</td>}
+                                        {connection.customer && <td>{connection.customer.first_name + ' ' + connection.customer.last_name}</td>}
                                         <td>{connection.installation_date}</td>
                                         {connection.package ? <td>{connection.package.title}</td> : <td>{connection.package}</td>}
                                         <td>{connection.expiry_date}</td>

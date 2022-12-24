@@ -13,7 +13,7 @@ export const Dashboard = () => {
 
   useEffect(() => {
     if (!localStorage.getItem('authtoken')) {
-      navigate('/admin/login')
+      navigate('/login')
     }
     // eslint-disable-next-line
   }, [])

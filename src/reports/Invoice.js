@@ -40,8 +40,11 @@ const Invoice = () => {
                             <div className="col-md-4">
                                 Connection Info:
                                 <div className="invoice-to">{invoice.connection.connection_id}</div>
-                                <div className="invoice-to-address"><strong>Package:</strong> {invoice.connection.package.title}</div>
-                                <div className="invoice-to-address"><strong>Package Price:</strong> Rs.{invoice.connection.package.sale_price}</div>
+                                {console.log(invoice.connection.package)}
+                                
+                                {invoice.connection.package === null ? <div className="invoice-to-address"><strong>Package:</strong> None</div> : <div className="invoice-to-address"><strong>Package:</strong> {invoice.connection.package.title}</div>}
+                                
+                                {invoice.connection.package === null ? <div className="invoice-to-address"><strong>Package Price:</strong> Rs. 0.0</div> : <div className="invoice-to-address"><strong>Package Price:</strong> Rs.{invoice.connection.package.sale_price}</div>}
                                 <div className="invoice-to-address"><strong>Subarea:</strong> {invoice.connection.subarea.subarea}</div>
                             </div>
                             <div className="col-md-3">
@@ -84,7 +87,7 @@ const Invoice = () => {
                                             <td className='left'></td>
                                             <td className='left'></td>
                                             <td><strong>Received</strong></td>
-                                            {invoice.payment_received !==null ? <td>{invoice.payment_received.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</td> : <td>0.00</td>}
+                                            {invoice.payment_received !== null ? <td>{invoice.payment_received.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</td> : <td>0.00</td>}
                                         </tr>
                                         <tr>
                                             <td className='left'></td>

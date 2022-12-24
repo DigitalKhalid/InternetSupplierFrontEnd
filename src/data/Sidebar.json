@@ -2,17 +2,22 @@
   {
     "title": "Dashboard",
     "icon": "fa fa-desktop",
-    "path": "/admin"
+    "path": "/"
   },
   {
     "title": "Customers",
     "icon": "fa fa-users",
-    "path": "/admin/customers"
+    "path": "/customers"
+  },
+  {
+    "title": "Dealers",
+    "icon": "fa fa-user",
+    "path": "/dealers"
   },
   {
     "title": "Connections",
     "icon": "fa fa-wifi",
-    "path": "/admin/connections"
+    "path": "/connections"
   },
   {
     "title": "Store",
@@ -21,17 +26,17 @@
       {
         "title": "Packages",
         "icon": "fa fa-cube",
-        "path": "/admin/packages"
+        "path": "/store/packages"
       },
       {
         "title": "Products",
         "icon": "fa fa-box",
-        "path": "/admin/products"
+        "path": "/store/products"
       },
       {
         "title": "Services",
         "icon": "fa fa-network-wired",
-        "path": "/admin/services"
+        "path": "/store/services"
       }
     ]
   },
@@ -42,24 +47,19 @@
       {
         "title": "Invoices",
         "icon": "fa-solid fa-file-invoice",
-        "path": "/admin/invoices"
+        "path": "/orders/invoices"
       },
       {
         "title": "Payments",
         "icon": "fa fa-money-bills",
-        "path": "/admin/payments"
+        "path": "/orders/payments"
       }
     ]
   },
   {
-    "title": "Sub-Dealers",
-    "icon": "fa fa-user",
-    "path": "admin/subdealers"
-  },
-  {
     "title": "Complaints",
     "icon": "fa fa-message",
-    "path": "/admin/complaints"
+    "path": "/complaints"
   },
   {
     "title": "Library",
@@ -72,55 +72,55 @@
           {
             "title": "Country",
             "icon": "fa-solid fa-flag",
-            "path": "/admin/countries"
+            "path": "/library/locations/countries"
           },
           {
             "title": "City",
             "icon": "fa-solid fa-city",
-            "path": "/admin/cities"
+            "path": "/library/locations/cities"
           },
           {
             "title": "Area",
             "icon": "fa-solid fa-map",
-            "path": "/admin/areas"
+            "path": "/library/locations/areas"
           },
           {
             "title": "Sub Area",
             "icon": "fa-solid fa-location-dot",
-            "path": "/admin/subareas"
+            "path": "/library/locations/subareas"
           }
         ]
       },
       {
         "title": "Product Types",
         "icon": "fa-solid fa-object-ungroup",
-        "path": "/admin/producttypes"
+        "path": "/library/producttypes"
       },
       {
         "title": "Catagories",
         "icon": "fa-solid fa-object-group",
-        "path": "/admin/productcatagories"
+        "path": "/library/productcatagories"
       },
       {
         "title": "Units",
         "icon": "fa-solid fa-scale-balanced",
-        "path": "/admin/units"
+        "path": "/library/units"
       }
     ]
   },
   {
     "title": "My Account",
     "icon": "fa fa-user-tie",
-    "path": "/admin/myaccount"
+    "path": "/myaccount"
   },
   {
     "title": "Settings",
     "icon": "fa fa-sliders",
-    "path": "/admin/settings"
+    "path": "/settings"
   },
   {
     "title": "About",
     "icon": "fa fa-circle-info",
-    "path": "/admin/about"
+    "path": "/about"
   }
 ]

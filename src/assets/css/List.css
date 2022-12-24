@@ -52,6 +52,7 @@ td {
   display: flex;
   justify-content:space-between;
   padding-bottom: 1em;
+  height: 3.5em;
 }
 
 .connection-active {

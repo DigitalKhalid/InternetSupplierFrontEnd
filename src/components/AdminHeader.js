@@ -8,7 +8,7 @@ const AdminHeader = () => {
 
   const handleLogout = () => {
     localStorage.clear()
-    navigate('/admin/login')
+    navigate('/login')
   }
 
   const toggleTheme = () => {
@@ -24,13 +24,17 @@ const AdminHeader = () => {
     }
   }
 
+  // window.onunload = function () {
+  //   localStorage.clear();
+  // }
+  
   return (
     <div className='admin-header'>
       <div className="org">
         <strong>ClickPick</strong> Internet Services
       </div>
       <div className='admin-header-content'>
-        <span className='admin-header-icon'><i className={`${localStorage.getItem('theme') ==='light'?'fa-solid fa-sun':'fa-solid fa-moon'}`} name='alerts' onClick={toggleTheme}></i></span>
+        <span className='admin-header-icon'><i className={`${localStorage.getItem('theme') === 'light' ? 'fa-solid fa-sun' : 'fa-solid fa-moon'}`} name='alerts' onClick={toggleTheme}></i></span>
         <span className='admin-header-icon'><i className='fa-regular fa-comments' name='alerts'></i></span>
         <span className='admin-header-icon'><i className='fa fa-list-check' name='logs'></i></span>
         <span className='admin-header-icon'><i className='fa fa-arrow-right-from-bracket' name='logout' onClick={handleLogout}></i></span>

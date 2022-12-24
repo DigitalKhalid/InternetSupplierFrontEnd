@@ -5,11 +5,10 @@ import ConnectionContext from '../context/connection/ConnectionContext'
 
 const OrderForm = () => {
     const { order, setOrder } = useContext(OrderContext)
-    const { connections, getAllConnections } = useContext(ConnectionContext)
+    const { connections, getConnectionsList } = useContext(ConnectionContext)
 
     useEffect(() => {
-      getAllConnections()
-      console.log(connections)
+      getConnectionsList()
       // eslint-disable-next-line
     }, [])
     
@@ -33,7 +32,7 @@ const OrderForm = () => {
                         <option defaultValue=""></option>
                         {connections.map((connection) => {
                             return (
-                                <option key={connection.id} value={connection.id}>{connection.connection_id}</option>
+                                <option key={connection.id} value={connection.id}>{connection.connection_id} | {connection.customer_name}</option>
                             )
                         })}
                     </select>

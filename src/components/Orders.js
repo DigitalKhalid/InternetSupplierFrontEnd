@@ -51,7 +51,7 @@ export const Orders = () => {
         setOperation('payment')
         
         setPayment({ ...payment, 'order': order.id, 'amount': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)-order.payments.reduce((total, value) => total = total + value.amount, 0)})
-        
+        console.log(payment)
         const orderEdit = { ...order, 'connection': order.connection.id, 'status': 'Completed', 'value':order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0), 'balance':order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)-order.payments.reduce((total, value) => total = total + value.amount, 0)}
         
         setOrder(orderEdit)
@@ -103,7 +103,7 @@ export const Orders = () => {
             {/* Headers */}
             <div className="list-headers">
                 <input type="text" className="search-control" id="search" name='search' placeholder="Search" onChange={(event) => setSearchText(event.target.value)}></input>
-                <button className="btn btn-primary" onClick={openNewPopup}>Add Invoice</button>
+                <button className="btn btn-primary" onClick={openNewPopup}>New Order</button>
             </div>
 
             {/* List */}
@@ -146,11 +146,11 @@ export const Orders = () => {
                                             
                                             <Link className='action-btn' onClick={() => openEditPopup(order)} ><i className='fa fa-pen-to-square'></i></Link>
                                             
-                                            <Link className='action-btn' onClick={() => openDetail(order)} to='/admin/invoicedetails' ><i className='fa fa-rectangle-list'></i></Link>
+                                            <Link className='action-btn' onClick={() => openDetail(order)} to='/orders/invoice/invoicedetails' ><i className='fa fa-rectangle-list'></i></Link>
                                             
                                             <Link className={`${order.status !== 'Completed' ? 'action-btn green' : 'action-btn disable'}`} onClick={() => openPaymentPopup(order)}><i className='fa fa-money-bill'></i></Link>
                                             
-                                            <Link className='action-btn' to={'/admin/invoice'} onClick={() => localStorage.setItem('orderid', order.id)} target='_blank' rel="noopener noreferrer"><i className='fa fa-print'></i></Link>
+                                            <Link className='action-btn' to={'/order/invoice/print-a4'} onClick={() => localStorage.setItem('orderid', order.id)} target='_blank' rel="noopener noreferrer"><i className='fa fa-print'></i></Link>
                                         </td>
                                     </tr>
                                 )

@@ -49,6 +49,8 @@ const LoginState = (props) => {
     if (response.ok) {
       authenticate(json.token, credentials.username)
       localStorage.setItem('authtoken', json.token)
+      localStorage.setItem('userid', json.user_id)
+      localStorage.setItem('useremail', json.email)
       localStorage.setItem('username', credentials.username)
     }
   }

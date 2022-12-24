@@ -66,7 +66,7 @@ export const Payments = () => {
             {/* Headers */}
             <div className="list-headers">
                 <input type="text" className="search-control" id="search" name='search' placeholder="Search" onChange={(event) => setSearchText(event.target.value)}></input>
-                <button className="btn btn-dark disable">Add Payment</button>
+                {/* <button className="btn btn-primary">Add Payment</button> */}
             </div>
 
             {/* List */}
@@ -85,6 +85,8 @@ export const Payments = () => {
 
                                 <th className='sorting-head' onClick={() => sorting('date_created')}>Date/ Time <i className={`${column + sort === 'date_createdASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'date_createdDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
+                                <th className='sorting-head' onClick={() => sorting('received_by__first_name')}>Received By <i className={`${column + sort === 'received_by__first_nameASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'received_by__first_nameDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                                
                                 <th className='sorting-head' onClick={() => sorting('payment_type')}>Payment Type <i className={`${column + sort === 'payment_typeASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'payment_typeDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
                                 <th>Amount</th>
@@ -97,7 +99,8 @@ export const Payments = () => {
                                 return (
                                     <tr key={index}>
                                         <td>{payment.order.order_id}</td>
-                                        <td>{format(new Date(payment.date_created), 'dd-MM-yyyy - hh:mm a')}</td>
+                                        {payment.date_created && <td>{format(new Date(payment.date_created), 'dd-MM-yyyy - hh:mm a')}</td>}
+                                        <td>{payment.cashier_name}</td>
                                         <td>{payment.payment_type}</td>
                                         <td>{payment.amount}</td>
                                         <td >

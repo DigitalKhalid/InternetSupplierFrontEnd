@@ -11,10 +11,11 @@ const ConnectionForm = () => {
     const { toggleAlert } = useContext(AlertContext)
 
     const { getPackageList, packageList } = useContext(ProductContext)
-    const { customers, getAllCustomers } = useContext(CustomerContext)
+    const { customers, getAllCustomers, getAllDealers, dealers } = useContext(CustomerContext)
 
     useEffect(() => {
-        getAllCustomers('first_name', 'ASC', '')
+        getAllCustomers('first_name', 'ASC', '',)
+        getAllDealers()
         getPackageList()
         // eslint-disable-next-line
     }, [])
@@ -44,18 +45,32 @@ const ConnectionForm = () => {
                     <p className='label'></p>
                 </div>
 
-                <div className="col-md-10">
-                    <p className='title'><strong>Customer</strong></p>
-                    <select className="form-select" id="customer" name='customer' placeholder="" value={connection.customer} onChange={handleOnChange}>
-                        <option value=""></option>
-                        {customers.map((customer) => {
-                            return (
-                                <option key={customer.id} value={customer.id}>{customer.first_name + ' ' + customer.last_name}</option>
-                            )
-                        })}
-                    </select>
-                    <p className='label'></p>
-                </div>
+                {connection.customer_type === 'Individual' ?
+                    <div className="col-md-10">
+                        <p className='title'><strong>Customer</strong></p>
+                        <select className="form-select" id="customer" name='customer' placeholder="" value={connection.customer} onChange={handleOnChange}>
+                            <option value=""></option>
+                            {customers.map((customer) => {
+                                return (
+                                    <option key={customer.id} value={customer.id}>{customer.first_name + ' ' + customer.last_name}</option>
+                                )
+                            })}
+                        </select>
+                        <p className='label'></p>
+                    </div> :
+
+                    <div className="col-md-10">
+                        <p className='title'><strong>Dealer</strong></p>
+                        <select className="form-select" id="customer" name='customer' placeholder="" value={connection.customer} onChange={handleOnChange}>
+                            <option value=""></option>
+                            {dealers.map((dealer) => {
+                                return (
+                                    <option key={dealer.id} value={dealer.id}>{dealer.first_name + ' ' + dealer.last_name}</option>
+                                )
+                            })}
+                        </select>
+                        <p className='label'></p>
+                    </div>}
 
                 <div className="col-md-10">
                     <p className='title required'><strong>Installation Date</strong></p>

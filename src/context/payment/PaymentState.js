@@ -14,6 +14,7 @@ const PaymentState = (props) => {
   const blankFields = {
     id: '',
     date_created: '',
+    received_by: localStorage.getItem('userid'),
     payment_type: 'Debit',
     order: '',
     amount: '0'
