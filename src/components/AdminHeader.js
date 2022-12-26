@@ -1,11 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import applyTheme from '../functions/Theme'
+import OrderContext from '../context/order/OrderContext'
+import ConnectionContext from '../context/connection/ConnectionContext'
+import { useSelector } from 'react-redux'
 
 const AdminHeader = () => {
   const [theme, setTheme] = useState('light')
   const navigate = useNavigate()
+  const user = useSelector((state)=> state.login.user)
+  const { orders, getAllOrders, addOrderForExpiredConnections } = useContext(OrderContext)
+  const { expiredConnections } = useContext(ConnectionContext)
 
+  useEffect(() => {
+    if (!localStorage.getItem('authtoken')) {
+      navigate('/login')
+    }
+    // getAllOrders()
+    // addOrderForExpiredConnections(expiredConnections)
+  }, [])
+  
   const handleLogout = () => {
     localStorage.clear()
     navigate('/login')

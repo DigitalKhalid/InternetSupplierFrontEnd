@@ -10,12 +10,13 @@ const ConnectionState = (props) => {
 
   const host = process.env.REACT_APP_HOST
 
-  const [json, setConnections] = useState([])
+  const [connections, setConnections] = useState([])
   const [connectionsCount, setConnectionsCount] = useState(0)
   const [connectionsNext, setConnectionsNext] = useState('')
+  const [expiredConnections, setExpiredConnections] = useState([])
 
   const getConnectionID = () => {
-    let serial = Math.max(...json.map(o => (o.id))) + 1
+    let serial = Math.max(...connections.map(o => (o.id))) + 1
     const connectionID = serial.toString().padStart(5, '0')
     return connectionID
   }
@@ -152,6 +153,7 @@ const ConnectionState = (props) => {
       },
     });
     const json = await response.json();
+    setExpiredConnections(json)
     let connection = ''
 
     for (let index = 0; index < json.length; index++) {
@@ -192,14 +194,14 @@ const ConnectionState = (props) => {
 
     // delete record from frontend
     if (response.ok) {
-      const connectionsLeft = json.filter((con) => { return con.id !== connection.id })
+      const connectionsLeft = connections.filter((con) => { return con.id !== connection.id })
       setConnections(connectionsLeft)
     }
   }
 
 
   return (
-    <ConnectionContext.Provider value={{ blankFields, connections: json, connectionsCount, connectionsNext, connection, getConnectionsList, getConnectionID, setConnection, getAllConnections, getMoreConnections, addConnection, updateConnection, deleteConnection, updateConnectionStatus: updateExpiredConnectionStatus }}>
+    <ConnectionContext.Provider value={{ blankFields, connections, connectionsCount, connectionsNext, connection, expiredConnections, getConnectionsList, getConnectionID, setConnection, getAllConnections, getMoreConnections, addConnection, updateConnection, deleteConnection, updateConnectionStatus: updateExpiredConnectionStatus }}>
       {props.children}
     </ConnectionContext.Provider>
   )

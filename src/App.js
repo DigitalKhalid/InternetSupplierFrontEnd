@@ -4,7 +4,6 @@ import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Login from './components/Login';
 import PopupState from './context/popup/PopupState.js'
-import LoginState from './context/login/LoginState';
 
 import { Sidebar } from './components/Sidebar'
 import { Customers } from './components/Customers.js'
@@ -17,9 +16,9 @@ import Alerts from './components/Alerts';
 import AlertState from './context/alert/AlertState';
 import applyTheme from './functions/Theme';
 
-import { useDispatch } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { actionCreators } from './state/index'
+// import { useDispatch } from 'react-redux'
+// import { bindActionCreators } from 'redux'
+// import { actionCreators } from './state/index'
 import ConnectionState from './context/connection/ConnectionState';
 import CountryState from './context/country/CountryState';
 import { Countries } from './components/Countries';
@@ -43,19 +42,18 @@ import InvoiceState from './context/invoice/InvoiceState';
 import Dealers from './components/Dealers'
 
 function App() {
-  const dispatch = useDispatch();
-  const { authenticate } = bindActionCreators(actionCreators, dispatch);
+  // const dispatch = useDispatch();
+  // const { authenticate } = bindActionCreators(actionCreators, dispatch);
 
   useEffect(() => {
     localStorage.getItem('theme') ? applyTheme(localStorage.getItem('theme')) : applyTheme('light')
-    authenticate(localStorage.getItem('authtoken'), localStorage.getItem('username'))
+    // authenticate(localStorage.getItem('authtoken'), localStorage.getItem('username'))
     // eslint-disable-next-line
   }, [])
 
   return (
     <>
       <AlertState>
-        <LoginState>
           <PopupState>
             <ConnectionState>
               <CustomerState>
@@ -274,7 +272,6 @@ function App() {
               </CustomerState>
             </ConnectionState>
           </PopupState>
-        </LoginState>
       </AlertState>
     </>
   );

@@ -1,0 +1,31 @@
+@import "./Themes.css";
+
+.dashboard-items {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    justify-content:space-around;
+}
+
+.dashboard-item {
+    margin: 1em;
+    border-radius: 0.5em;
+    background-color: var(--sidebar-bgcolor);
+}
+
+.dashboard-item-content {
+    text-align: center;
+    vertical-align: middle;
+    justify-content: center;
+    margin: 0.5em;
+}
+
+.db-chart {
+    height: 250px;
+    width: 300px;
+}
+
+.db-textbox {
+    height: 1.5em;
+    width: 5em;
+}

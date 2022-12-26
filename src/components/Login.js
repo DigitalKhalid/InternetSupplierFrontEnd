@@ -2,18 +2,21 @@ import React, { useEffect, useContext } from 'react'
 import Popup from './Popup'
 import LoginForm from './LoginForm'
 import PopupContext from '../context/popup/PopupContext'
-import LoginContext from '../context/login/LoginContext'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { getAuthToken } from '../features/login/loginSlice'
 import ConnectionContext from '../context/connection/ConnectionContext'
+// import OrderContext from '../context/order/OrderContext'
+
 
 const Login = () => {
-    const login = useSelector(state => state.authenticate)
-    const context = useContext(PopupContext)
-    const {updateConnectionStatus} = useContext(ConnectionContext)
-    const { togglePopup } = context
+    const dispatch = useDispatch()
+    const credentials = useSelector((state) => state.login.credentials)
+    const user = useSelector((state) => state.login.user)
 
-    const { getToken } = useContext(LoginContext)
+    const context = useContext(PopupContext)
+    const { updateConnectionStatus } = useContext(ConnectionContext)
+    const { togglePopup } = context
 
     const navigate = useNavigate()
 
@@ -23,11 +26,11 @@ const Login = () => {
     }, [])
 
     const authenticate = () => {
-        getToken()
-        if (login.authtoken !== null) {
+        dispatch(getAuthToken(credentials))
+        if (user.token) {
             togglePopup()
-            navigate('/admin')
-            updateConnectionStatus()
+            navigate('/')
+            // updateConnectionStatus()
         }
     }
 

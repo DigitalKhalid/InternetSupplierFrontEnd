@@ -7,7 +7,7 @@ import Popup from './Popup'
 import ConnectionForm from './ConnectionForm'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Pagination from './Pagination'
-import Spinner from '../components/Spinner'
+import Spinner from './Spinner'
 import AlertContext from '../context/alert/AlertContext'
 
 export const Connections = () => {

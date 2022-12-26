@@ -11,6 +11,7 @@ const OrderState = (props) => {
   const [ordersCount, setOrdersCount] = useState(0)
   const [ordersNext, setOrdersNext] = useState('')
 
+
   const getOrderID = () => {
     let serial = Math.max(...orders.map(o => (o.id))) + 1
     const orderID = 'CPCL-' + serial.toString().padStart(5, '0')
@@ -91,6 +92,29 @@ const OrderState = (props) => {
   }
 
 
+    // Add Order for Expired Connection
+    const addOrderForExpiredConnections = async (expiredConnections) => {
+      let order = ''
+      for (let index = 0; index < expiredConnections.length; index++) {
+        const con = expiredConnections[index];
+        order = {...blankFields, 'connection':con.id}
+        console.log(order)
+        // Add record to server
+        // const url = `${host}orderapi/`
+    
+        // const response = await fetch(url, {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        //   },
+    
+        //   body: JSON.stringify(connection)
+        // });
+      }
+    }
+
+
   // Update Record
   const updateOrder = async () => {
     // Update record to server side
@@ -139,7 +163,7 @@ const OrderState = (props) => {
 
 
   return (
-    <OrderContext.Provider value={{ blankFields, orders, order, ordersCount, ordersNext, setOrder, getOrderID, getAllOrders, getMoreOrders, addOrder, updateOrder, deleteOrder }}>
+    <OrderContext.Provider value={{ blankFields, orders, order, ordersCount, ordersNext, addOrderForExpiredConnections, setOrder, getOrderID, getAllOrders, getMoreOrders, addOrder, updateOrder, deleteOrder }}>
       {props.children}
     </OrderContext.Provider>
   )
