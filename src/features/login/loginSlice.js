@@ -36,7 +36,6 @@ export const getAuthToken = createAsyncThunk('login/getAuthToken', async (data) 
     } else {
         return response.errors.message
     }
-
 })
 
 const loginSlice = createSlice({

@@ -5,33 +5,28 @@ import PopupContext from '../context/popup/PopupContext'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAuthToken } from '../features/login/loginSlice'
-import ConnectionContext from '../context/connection/ConnectionContext'
-// import OrderContext from '../context/order/OrderContext'
 
 
 const Login = () => {
     const dispatch = useDispatch()
     const credentials = useSelector((state) => state.login.credentials)
-    const user = useSelector((state) => state.login.user)
-
     const context = useContext(PopupContext)
-    const { updateConnectionStatus } = useContext(ConnectionContext)
     const { togglePopup } = context
 
     const navigate = useNavigate()
 
     useEffect(() => {
         togglePopup()
+
+        if (localStorage.getItem('authtoken')) {            
+            togglePopup()
+            navigate('/')
+        }
         //   eslint-disable-next-line
-    }, [])
+    }, [localStorage.getItem('authtoken')])
 
     const authenticate = () => {
         dispatch(getAuthToken(credentials))
-        if (user.token) {
-            togglePopup()
-            navigate('/')
-            // updateConnectionStatus()
-        }
     }
 
     return (

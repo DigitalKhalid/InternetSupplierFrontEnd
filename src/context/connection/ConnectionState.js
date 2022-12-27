@@ -13,7 +13,6 @@ const ConnectionState = (props) => {
   const [connections, setConnections] = useState([])
   const [connectionsCount, setConnectionsCount] = useState(0)
   const [connectionsNext, setConnectionsNext] = useState('')
-  const [expiredConnections, setExpiredConnections] = useState([])
 
   const getConnectionID = () => {
     let serial = Math.max(...connections.map(o => (o.id))) + 1
@@ -61,7 +60,7 @@ const ConnectionState = (props) => {
       },
     });
     const json = await response.json();
-    setConnections(json.concat(json.results))
+    setConnections(connections.concat(json.results))
     setConnectionsNext(json.next)
   }
 
@@ -140,44 +139,6 @@ const ConnectionState = (props) => {
     }
   }
 
-
-  // Update Status for Automation
-  const updateExpiredConnectionStatus = async () => {
-    const url = getListURL('activeexpiredconnectionapi')
-
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
-    });
-    const json = await response.json();
-    setExpiredConnections(json)
-    let connection = ''
-
-    for (let index = 0; index < json.length; index++) {
-      const con = json[index];
-      connection = ({ 'id': con.id, 'status': 'Inactive' })
-
-      // Update status to server side
-      const url = `${host}connectionapi/${connection.id}/`
-
-      const response = await fetch(url, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Token ' + localStorage.getItem('authtoken')
-        },
-        body: JSON.stringify(connection)
-      });
-
-      // create new order
-      // addOrder({...order, 'connection': con.id})
-    }
-  }
-
-
   // Delete Record
   const deleteConnection = async () => {
     // delete record from server using API
@@ -201,7 +162,7 @@ const ConnectionState = (props) => {
 
 
   return (
-    <ConnectionContext.Provider value={{ blankFields, connections, connectionsCount, connectionsNext, connection, expiredConnections, getConnectionsList, getConnectionID, setConnection, getAllConnections, getMoreConnections, addConnection, updateConnection, deleteConnection, updateConnectionStatus: updateExpiredConnectionStatus }}>
+    <ConnectionContext.Provider value={{ blankFields, connections, connectionsCount, connectionsNext, connection, getConnectionsList, getConnectionID, setConnection, getAllConnections, getMoreConnections, addConnection, updateConnection, deleteConnection }}>
       {props.children}
     </ConnectionContext.Provider>
   )
