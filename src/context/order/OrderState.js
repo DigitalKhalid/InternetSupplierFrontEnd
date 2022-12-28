@@ -47,7 +47,7 @@ const OrderState = (props) => {
 
     // For delete relative payment
     let paymentOrder = json.results[0]
-    paymentOrder = {...paymentOrder, 'status': paymentOrder.payment_count === 1 ? 'Pending' : 'Partial', 'connection': paymentOrder.connection.id}
+    paymentOrder = { ...paymentOrder, 'status': paymentOrder.payment_count === 1 ? 'Pending' : 'Partial', 'connection': paymentOrder.connection.id }
     setOrder(paymentOrder)
   }
 
@@ -92,29 +92,6 @@ const OrderState = (props) => {
   }
 
 
-    // Add Order for Expired Connection
-    const addOrderForExpiredConnections = async (expiredConnections) => {
-      let order = ''
-      for (let index = 0; index < expiredConnections.length; index++) {
-        const con = expiredConnections[index];
-        order = {...blankFields, 'connection':con.id}
-        console.log(order)
-        // Add record to server
-        // const url = `${host}orderapi/`
-    
-        // const response = await fetch(url, {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //     'Authorization': 'Token ' + localStorage.getItem('authtoken')
-        //   },
-    
-        //   body: JSON.stringify(connection)
-        // });
-      }
-    }
-
-
   // Update Record
   const updateOrder = async () => {
     // Update record to server side
@@ -155,7 +132,7 @@ const OrderState = (props) => {
     if (response.ok) {
       const OrdersLeft = orders.filter((Order) => { return Order.id !== order.id })
       setOrders(OrdersLeft)
-      setOrdersCount(ordersCount-1)
+      setOrdersCount(ordersCount - 1)
     } else {
       showAlert(response.status, order.order_id)
     }
@@ -163,7 +140,7 @@ const OrderState = (props) => {
 
 
   return (
-    <OrderContext.Provider value={{ blankFields, orders, order, ordersCount, ordersNext, addOrderForExpiredConnections, setOrder, getOrderID, getAllOrders, getMoreOrders, addOrder, updateOrder, deleteOrder }}>
+    <OrderContext.Provider value={{ blankFields, orders, order, ordersCount, ordersNext, setOrder, getOrderID, getAllOrders, getMoreOrders, addOrder, updateOrder, deleteOrder }}>
       {props.children}
     </OrderContext.Provider>
   )

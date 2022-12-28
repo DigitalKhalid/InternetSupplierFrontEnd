@@ -10,7 +10,7 @@ const OrderDetailState = (props) => {
 
   const blankFields = {
     id: '',
-    orderDetail: '',
+    order: '',
     product: '',
     qty: '1',
     sale_price: '0'

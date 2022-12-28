@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import applyTheme from '../functions/Theme'
-import { updateExpiredConnectionStatus } from '../functions/ScheduledConnectionOrders'
+import { updateExpiredConnectionStatus } from '../functions/Connections'
+import { updateConnectionOrderRenewal } from '../functions/Orders'
 
 const AdminHeader = () => {
   const [theme, setTheme] = useState('light')
@@ -11,7 +12,6 @@ const AdminHeader = () => {
     if (!localStorage.getItem('authtoken')) {
       navigate('/login')
     }
-    updateExpiredConnectionStatus()
     //eslint-disable-next-line
   }, [])
 
@@ -35,6 +35,7 @@ const AdminHeader = () => {
 
   const handleLogs = () => {
     updateExpiredConnectionStatus()
+    updateConnectionOrderRenewal()
   }
   // window.onunload = function () {
   //   localStorage.clear();

@@ -16,6 +16,7 @@ export const SidebarItem = (props) => {
             <div className={open ? 'sidebar-item open' : 'sidebar-item'}>
                 <span className="sidebar-title" onClick={() => setOpen(!open)}>
                     <span>
+                        <hr className='hr' />
                         <i className={icon}></i>
                         {title}
                     </span>
@@ -34,8 +35,9 @@ export const SidebarItem = (props) => {
     } else {
         return (
             <div className={open ? 'sidebar-item open' : 'sidebar-item'}>
-                <Link className={`${location.pathname === path ? "sidebar-title active" : "sidebar-title"}`} to={path} onClick={isOpen&&togglePopup}>
+                <Link className={`${location.pathname === path ? "sidebar-title active" : "sidebar-title"}`} to={path} onClick={isOpen && togglePopup}>
                     <span>
+                        <hr className='hr' />
                         <i className={icon}></i>
                         {title}
                     </span>
