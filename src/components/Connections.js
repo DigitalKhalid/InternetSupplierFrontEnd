@@ -9,10 +9,11 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import Pagination from './Pagination'
 import Spinner from './Spinner'
 import AlertContext from '../context/alert/AlertContext'
+import { updateConnectionOrderRenewal } from '../functions/Orders'
 
 export const Connections = () => {
     const context = useContext(ConnectionContext)
-    const { blankFields, connections, connectionsCount, connectionsNext, setConnection, getAllConnections, getMoreConnections, addConnection, deleteConnection, updateConnection } = context
+    const { connections, connection, connectionsCount, connectionsNext, setConnection, getAllConnections, getMoreConnections, addConnection, deleteConnection, updateConnection } = context
     const { toggleAlert } = useContext(AlertContext)
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
@@ -26,11 +27,11 @@ export const Connections = () => {
         //   eslint-disable-next-line
     }, [sort, column, searchText])
 
-    const openNewPopup = () => {
-        setOperation('add')
-        setConnection(blankFields)
-        togglePopup()
-    }
+    // const openNewPopup = () => {
+    //     setOperation('add')
+    //     setConnection(blankFields)
+    //     togglePopup()
+    // }
 
     const openEditPopup = (connection) => {
         const connectionEdit = { ...connection, 'customer': connection.customer.id, 'package': connection.package !== null ? connection.package.id : '', 'subarea': connection.subarea.id, 'customer_type': connection.customer.customer_type }
@@ -45,8 +46,10 @@ export const Connections = () => {
         togglePopup()
     }
 
-    const openInvoicePopup = () => {
-        console.log('Invoice')
+    const openGenOrderPopup = (connection) => {
+        setOperation('genOrder')
+        setConnection(connection)
+        togglePopup()
     }
 
     const openStatusPopup = (connection) => {
@@ -81,6 +84,11 @@ export const Connections = () => {
 
     const deleteRecord = () => {
         deleteConnection()
+        togglePopup()
+    }
+
+    const generateOrder = () => {
+        updateConnectionOrderRenewal(connection)
         togglePopup()
     }
 
@@ -165,12 +173,12 @@ export const Connections = () => {
                                         {connection.customer && <td>{connection.customer.first_name + ' ' + connection.customer.last_name}</td>}
                                         <td>{connection.installation_date}</td>
                                         {connection.package ? <td>{connection.package.title}</td> : <td>{connection.package}</td>}
-                                        <td>{connection.expiry_date}</td>
+                                        <td>{connection.temp_expiry_date && connection.temp_expiry_date > connection.expiry_date ? connection.temp_expiry_date: connection.expiry_date}</td>
                                         <td>{connection.status}</td>
                                         <td >
                                             <Link className='action-btn' onClick={() => openDeletePopup(connection)} ><i className='fa fa-trash-can'></i></Link>
                                             <Link className='action-btn' onClick={() => openEditPopup(connection)} ><i className='fa fa-pen-to-square'></i></Link>
-                                            <Link className='action-btn' onClick={() => openInvoicePopup(connection)} ><i className='fa fa-file-invoice'></i></Link>
+                                            <Link className='action-btn' onClick={() => openGenOrderPopup(connection)} ><i className='fa fa-file-invoice'></i></Link>
                                         </td>
                                     </tr>
                                 )
@@ -192,6 +200,8 @@ export const Connections = () => {
                 {operation === 'delete' && <Popup header='Delete Connection' body='Are you sure to delete this connection?' btnCancel='No' btnOk='Yes' btnOkClick={deleteRecord} alerts={false} />}
 
                 {operation === 'status' && <Popup header='Toggle Status' body='Are you sure to change the status of this connection?' btnCancel='No' btnOk='Yes' btnOkClick={updateRecord} alerts={false} />}
+                
+                {operation === 'genOrder' && <Popup header='Toggle Status' body='Are you sure to generate order for this connection?' btnCancel='No' btnOk='Yes' btnOkClick={generateOrder} alerts={false} />}
             </div>
         </>
     )

@@ -34,8 +34,8 @@ const AdminHeader = () => {
   }
 
   const handleLogs = () => {
-    updateExpiredConnectionStatus()
     updateConnectionOrderRenewal()
+    updateExpiredConnectionStatus()
   }
   // window.onunload = function () {
   //   localStorage.clear();

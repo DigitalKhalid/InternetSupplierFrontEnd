@@ -6,12 +6,13 @@ import OrderContext from '../context/order/OrderContext'
 import PopupContext from '../context/popup/PopupContext'
 import Popup from './Popup'
 import OrderDetailForm from './OrderDetailForm'
+import OrderPackageDetailForm from './OrderPackageDetailForm'
 import { format } from 'date-fns'
 import PaymentContext from '../context/payment/PaymentContext'
 import PaymentForm from './PaymentForm'
 
 export const OrderDetails = () => {
-    const { blankFields, orderDetails, setOrderDetail, getAllOrderDetails, updateOrderDetail, addOrderDetail, deleteOrderDetail } = useContext(OrderDetailContext)
+    const { blankFields, orderDetails, hasPackage, setOrderPackageDetail, setOrderDetail, getAllOrderDetails, updateOrderDetail, updateOrderPackageDetail, addOrderDetail, deleteOrderDetail } = useContext(OrderDetailContext)
     const { addPayment, payment, setPayment } = useContext(PaymentContext)
     const { order, setOrder, updateOrder, getAllOrders } = useContext(OrderContext)
     const navigate = useNavigate()
@@ -22,11 +23,9 @@ export const OrderDetails = () => {
 
     useEffect(() => {
         getAllOrderDetails(column, sort, localStorage.getItem('orderid'), 'order')
-        console.log('remount')
         if (!order.id) {
             getAllOrders('', 'ASC', localStorage.getItem('orderid'), 'id')
         }
-        
         //   eslint-disable-next-line
     }, [sort, column])
 
@@ -40,6 +39,12 @@ export const OrderDetails = () => {
         const orderDetailEdit = { ...orderDetail, 'product': orderDetail.product.id }
         setOperation('update')
         setOrderDetail(orderDetailEdit)
+        togglePopup()
+    }
+
+    const openEditPackageDetailPopup = (packageDetails) => {
+        setOperation('packageDetailsUpdate')
+        setOrderPackageDetail(packageDetails)
         togglePopup()
     }
 
@@ -67,6 +72,11 @@ export const OrderDetails = () => {
 
     const updateRecord = () => {
         updateOrderDetail()
+        togglePopup()
+    }
+
+    const updatePackageDetail = () => {
+        updateOrderPackageDetail()
         togglePopup()
     }
 
@@ -112,7 +122,10 @@ export const OrderDetails = () => {
                         {order.status !== 'Completed' && <button className="btn btn-success mx-3" onClick={openPaymentPopup}><i className='fa fa-money-bill'></i></button>}
                         <Link className='btn btn-primary ms-2' to={'/admin/invoice'} onClick={() => localStorage.setItem('orderid', order.id)} target='_blank' rel="noopener noreferrer"><i className='fa fa-print'></i></Link>
                     </div>
-                    <button className="btn btn-primary" onClick={openNewPopup}>Add Item</button>
+                    <div>
+                        {hasPackage === false && <button className="btn btn-primary mx-4" onClick={openNewPopup}>Add Package</button>}
+                        <button className="btn btn-primary" onClick={openNewPopup}>Add Item</button>
+                    </div>
                 </div>
 
                 {/* List */}
@@ -133,7 +146,8 @@ export const OrderDetails = () => {
                             {orderDetails.map((detail, index) => {
                                 return (
                                     <tr key={index}>
-                                        <td>{detail.product.title} | {detail.product.sku} ({detail.product.catagory.title})</td>
+                                        {detail.product.catagory.title === 'Package' && detail.packagedetails ? <td>{detail.product.title} | {detail.product.sku} ({detail.product.catagory.title}) <br /> Valid from {format(new Date(detail.packagedetails.valid_from), 'dd-MM-yyyy')} ~ {format(new Date(detail.packagedetails.valid_to), 'dd-MM-yyyy')} <Link className='action-btn' onClick={()=>openEditPackageDetailPopup(detail.packagedetails)}><i className='fa fa-pen-to-square'></i></Link></td> : <td>{detail.product.title} | {detail.product.sku} ({detail.product.catagory.title})</td>}
+                                        
                                         <td>{detail.qty}</td>
                                         <td>{detail.sale_price}</td>
                                         <td>{detail.sale_price * detail.qty}</td>
@@ -154,6 +168,8 @@ export const OrderDetails = () => {
                     {operation === 'update' && <Popup header='Edit Items' body={<OrderDetailForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={updateRecord} />}
 
                     {operation === 'add' && <Popup header='Add New Item' body={<OrderDetailForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={addRecord} />}
+                    
+                    {operation === 'packageDetailsUpdate' && <Popup header='Edit Package Validity' body={<OrderPackageDetailForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={updatePackageDetail} />}
 
                     {operation === 'delete' && <Popup header='Delete Item' body='Are you sure to delete this item from the order?' btnCancel='No' btnOk='Yes' btnOkClick={deleteRecord} alerts={false} />}
 

@@ -41,16 +41,16 @@ export const Sidebar = () => {
                         <strong>{localStorage.getItem('username')}</strong>
                     </div>
                 </div>
-                <hr />
 
-                <div className='sidebar-menu'>
-                    {items.map((item, index) => {
-                        return (
-                            <SidebarItem key={index} title={item.title} icon={item.icon} childrens={item.childrens} path={item.path} />
-                        )
-                    })}
+                <div className="sidebarmenu-container">
+                    <div className='sidebar-menu'>
+                        {items.map((item, index) => {
+                            return (
+                                <SidebarItem key={index} title={item.title} icon={item.icon} childrens={item.childrens} path={item.path} />
+                            )
+                        })}
+                    </div>
                 </div>
-                <hr />
             </div>
 
         </>

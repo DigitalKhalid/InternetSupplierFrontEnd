@@ -16,7 +16,16 @@ const OrderDetailState = (props) => {
     sale_price: '0'
   }
 
+  const defaultPackageDetailFields = {
+    id: '',
+    package: '',
+    valid_from: '',
+    valid_to: ''
+  }
+
   const [orderDetail, setOrderDetail] = useState(blankFields)
+  const [hasPackage, setHasPackage] = useState(false)
+  const [orderPackageDetail, setOrderPackageDetail] = useState(defaultPackageDetailFields)
 
   // Get all Records
   const getAllOrderDetails = async (sortField = 'product__title', sort = 'ASC', search = '', filterField = '') => {
@@ -31,6 +40,7 @@ const OrderDetailState = (props) => {
     });
     const json = await response.json();
     setOrderDetails(json)
+    setHasPackage(json.map((item) => item.product.catagory.title === 'Package' ? true : false))
   }
 
 
@@ -81,6 +91,26 @@ const OrderDetailState = (props) => {
   }
 
 
+  // Update Order Package Details
+  const updateOrderPackageDetail = async () => {
+    const url = `${host}orderpackagedetailapi/${orderPackageDetail.id}/`
+
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Token ' + localStorage.getItem('authtoken')
+      },
+      body: JSON.stringify(orderPackageDetail),
+    });
+    showAlert(response.status, 'package validity')
+
+    // Update record in frontend
+    if (response.ok) {
+      getAllOrderDetails('product__title', 'ASC', localStorage.getItem('orderid'), 'order')
+    }
+  }
+
   // Delete Record
   const deleteOrderDetail = async () => {
     // delete record from server using API
@@ -105,7 +135,7 @@ const OrderDetailState = (props) => {
 
 
   return (
-    <OrderDetailContext.Provider value={{ blankFields, orderDetails, orderDetail, setOrderDetail, getAllOrderDetails, addOrderDetail, updateOrderDetail, deleteOrderDetail }}>
+    <OrderDetailContext.Provider value={{ blankFields, orderDetails, orderDetail, hasPackage, orderPackageDetail, updateOrderPackageDetail, setOrderPackageDetail, setOrderDetail, getAllOrderDetails, addOrderDetail, updateOrderDetail, deleteOrderDetail }}>
       {props.children}
     </OrderDetailContext.Provider>
   )
