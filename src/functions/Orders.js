@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { addDays, addMonths, format, parseISO } from 'date-fns'
 
 const host = process.env.REACT_APP_HOST
 let orderSerial = 0
@@ -95,17 +95,36 @@ export const addOrderPackageDetail = async (orderDetail, connectionExpiryDate) =
 
     if (packageDetail.catagory.title === 'Package') {
         const date = new Date(connectionExpiryDate)
-        const activation_date = connectionExpiryDate ? new Date(date.setDate(date.getDate() + 1)) : new Date()
+        const activation_date = connectionExpiryDate ? addDays(date, 1) : new Date()
         const subscription_period = orderDetail.qty * packageDetail.unit.value
-        const expiry_date = format(new Date(activation_date.setDate(activation_date.getMonth() + subscription_period)), 'yyyy-MM-dd')
-
-        console.log(new Date(activation_date.setDate(activation_date.getMonth() + subscription_period)))
+        const expiry_date = format(addMonths(activation_date, subscription_period) , 'yyyy-MM-dd')
 
         const url = `${host}orderpackagedetailapi/`
-        const body = { ...defaultOrderPackageData, 'package': orderDetail.id, 'valid_from': format(new Date(activation_date), 'yyyy-MM-dd'), 'valid_to': format(new Date(expiry_date), 'yyyy-MM-dd') }
+        const body = { ...defaultOrderPackageData, 'package': orderDetail.id, 'valid_from': format(new Date(activation_date), 'yyyy-MM-dd'), 'valid_to': expiry_date }
     
         await fetch(url, {
             method: 'POST',
+            headers: requestHeader,
+            body: JSON.stringify(body),
+        })
+    }
+}
+
+export const autoUpdateOrderPackageDetails = async (orderDetail) => {
+    const packageDetail = await getPackageDetail(orderDetail.product)
+
+    if (packageDetail.catagory.title === 'Package') {
+        const activation_date = parseISO(orderDetail.packagedetails.valid_from) 
+        const subscription_period = orderDetail.qty * packageDetail.unit.value
+        console.log(subscription_period)
+        const expiry_date = format(addMonths(activation_date, subscription_period) , 'yyyy-MM-dd')
+
+        const url = `${host}orderpackagedetailapi/${orderDetail.packagedetails.id}/`
+
+        const body = { ...defaultOrderPackageData, 'package':orderDetail.id, 'valid_from': format(new Date(activation_date), 'yyyy-MM-dd'), 'valid_to': expiry_date }
+    
+        await fetch(url, {
+            method: 'PUT',
             headers: requestHeader,
             body: JSON.stringify(body),
         })

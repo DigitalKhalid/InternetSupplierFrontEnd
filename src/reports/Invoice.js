@@ -55,10 +55,12 @@ const Invoice = () => {
                                 <div className="invoice-to-address"><strong>Status:</strong> {invoice.status}</div>
                             </div>
                         </div>
+                        
                         <div className="row invoice-list">
                             <div className="col-md-12">
+                                <hr className='seperator' />
                                 <table>
-                                    <thead className='list-head'>
+                                    <thead className='table-header'>
                                         <tr>
                                             <th className='left'>Description</th>
                                             <th>Qty</th>
@@ -70,7 +72,8 @@ const Invoice = () => {
                                         {invoice.details.map((item, key) => {
                                             return (
                                                 <tr key={key}>
-                                                    <td className='left'>{item.product.title} ({item.product.sku}) - {item.product.catagory.title}</td>
+                                                    <td className='left'>{item.product.title} ({item.product.sku}) - {item.product.catagory.title} <br />
+                                                    {item.packagedetails && <small>valid from {format(new Date(item.packagedetails.valid_from), 'dd-MM-yyyy')} ~ {format(new Date(item.packagedetails.valid_to), 'dd-MM-yyyy')}</small>}</td>
                                                     <td>{item.qty}</td>
                                                     <td>{item.sale_price}</td>
                                                     <td>{(item.qty * item.sale_price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</td>

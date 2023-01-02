@@ -1,3 +1,6 @@
+import { addDays, format } from "date-fns"
+import { updateConnectionStatus } from "./Connections"
+
 const host = process.env.REACT_APP_HOST
 
 const requestHeader = {
@@ -17,33 +20,39 @@ const blankFields = {
 }
 
 // Add Record
-export const addPayment = async (connection, order, payment) => {
+export const addPackageSubscription = async (paymentID, order) => {
     // Add record to server
     const url = `${host}packagesubscriptionapi/`
-
-    const date = new Date(connection.expiry_date)
-    const activation_date = new Date(date.setDate(date.getDate() + 1))
+    const tempValidityExtention = 5
+    const connectionID = order.connection
+    const packageID = order.package
 
     for (let index = 0; index < order.details.length; index++) {
         const item = order.details[index];
-        if (item.catagory.title === 'Package') {
-            const subscription_period = item.qty * item.unit.value
-            return subscription_period
+        if (item.product.id === parseInt(order.package)) {
+            if (item.packagedetails !== null) {
+                const activationDate = format(new Date(item.packagedetails.valid_from), 'yyyy-MM-dd')
+                const expiryDate = format(new Date(item.packagedetails.valid_to), 'yyyy-MM-dd')
+                const tempExpiryDate = format(addDays(new Date(expiryDate), tempValidityExtention), 'yyyy-MM-dd')
+
+                const body = { ...blankFields, 'connection': connectionID, 'package': packageID, 'payment': paymentID, 'activation_date': activationDate, 'expiry_date': expiryDate, 'temp_expiry_date': tempExpiryDate }
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: requestHeader,
+                    body: JSON.stringify(body)
+                });
+
+                if (response.ok) {
+                    if (new Date() < expiryDate) {
+                        await updateConnectionStatus(connectionID, 'Active')
+                    }
+                }
+
+                break
+            }
         }
     }
 
-    const expiry_date = new Date(activation_date.setDate(activation_date.getMonth() + subscription_period))
-    const body = { ...blankFields, 'connection': connection.id, 'package': connection.package.id, 'payment': payment, 'activation_date': activation_date, 'expiry_date': expiry_date }
 
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: requestHeader,
-        body: JSON.stringify(body)
-    });
-    showAlert(response.status, '')
-
-    // Add record to frontend
-    if (response.ok) {
-        const json = await response.json();
-    }
 }

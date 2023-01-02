@@ -43,6 +43,22 @@ const ProductState = (props) => {
     setProductsNext(json.next)
   }
 
+    // Get Product List
+    const getProductList = async (sortField = 'title', sort = 'ASC', search = '', filterField = '') => {
+      const url = getListURL('productlistapi', sortField, sort, search, filterField)
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
+      });
+      const json = await response.json();
+      setProducts(json)
+    }
+
+
     // Get Package List
     const getPackageList = async (sortField = 'title', sort = 'ASC', search = '', filterField = '') => {
       const url = getListURL('packagelistapi', sortField, sort, search, filterField)
@@ -146,7 +162,7 @@ const ProductState = (props) => {
 
 
   return (
-    <ProductContext.Provider value={{ blankFields, packageList, products, product, productsCount, productsNext, setProduct, getAllProducts, getMoreProducts, addProduct, updateProduct, deleteProduct, getPackageList }}>
+    <ProductContext.Provider value={{ blankFields, packageList, products, product, productsCount, productsNext, setProduct, getAllProducts, getProductList, getMoreProducts, addProduct, updateProduct, deleteProduct, getPackageList }}>
       {props.children}
     </ProductContext.Provider>
   )

@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import OrderDetailContext from './OrderDetailContext'
 import AlertContext from "../alert/AlertContext"
 import getListURL from '../../functions/URLs'
+import { autoUpdateOrderPackageDetails } from '../../functions/Orders'
 
 const OrderDetailState = (props) => {
   const { showAlert } = useContext(AlertContext)
@@ -86,6 +87,7 @@ const OrderDetailState = (props) => {
 
     // Update record in frontend
     if (response.ok) {
+      await autoUpdateOrderPackageDetails(orderDetail)
       getAllOrderDetails('product__title', 'ASC', localStorage.getItem('orderid'), 'order')
     }
   }

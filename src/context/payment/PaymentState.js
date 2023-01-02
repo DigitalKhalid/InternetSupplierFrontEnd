@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import PaymentContext from './PaymentContext'
 import AlertContext from "../alert/AlertContext"
 import getListURL from '../../functions/URLs'
+import { addPackageSubscription } from "../../functions/PackageSubscription";
 
 const PaymentState = (props) => {
   const { showAlert } = useContext(AlertContext)
@@ -55,7 +56,7 @@ const PaymentState = (props) => {
   }
 
   // Add Record
-  const addPayment = async () => {
+  const addPayment = async (order = '') => {
     // Add record to server
     const url = `${host}paymentapi/`
 
@@ -75,6 +76,7 @@ const PaymentState = (props) => {
       const json = await response.json();
       setPayment(json)
       setPayments(payments.concat(payment))
+      addPackageSubscription(json.id, order)
     }
   }
 
@@ -119,7 +121,7 @@ const PaymentState = (props) => {
     if (response.ok) {
       const PaymentsLeft = payments.filter((Payment) => { return Payment.id !== payment.id })
       setPayments(PaymentsLeft)
-      setPaymentsCount(paymentsCount-1)
+      setPaymentsCount(paymentsCount - 1)
     } else {
       showAlert(response.status, '')
     }

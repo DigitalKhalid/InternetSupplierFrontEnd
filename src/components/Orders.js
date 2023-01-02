@@ -13,7 +13,7 @@ import PaymentForm from './PaymentForm'
 import PaymentContext from '../context/payment/PaymentContext'
 
 export const Orders = () => {
-    const { blankFields, orders, setOrder, ordersNext, ordersCount, getMoreOrders, getAllOrders, updateOrder, addOrder, deleteOrder } = useContext(OrderContext)
+    const { blankFields, orders, order, setOrder, ordersNext, ordersCount, getMoreOrders, getAllOrders, updateOrder, addOrder, deleteOrder } = useContext(OrderContext)
     const { payment, setPayment, addPayment } = useContext(PaymentContext)
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
@@ -43,7 +43,7 @@ export const Orders = () => {
 
     const openDetail = (order) => {
         setOperation('detail')
-        setOrder({...order, 'value':order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0), 'connection':order.connection.id})
+        setOrder({...order, 'value':order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)})
         localStorage.setItem('orderid', order.id)
     }
 
@@ -51,8 +51,8 @@ export const Orders = () => {
         setOperation('payment')
         
         setPayment({ ...payment, 'order': order.id, 'amount': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)-order.payments.reduce((total, value) => total = total + value.amount, 0)})
-        console.log(payment)
-        const orderEdit = { ...order, 'connection': order.connection.id, 'status': 'Completed', 'value':order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0), 'balance':order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)-order.payments.reduce((total, value) => total = total + value.amount, 0)}
+
+        const orderEdit = { ...order, 'connection': order.connection.id, 'package':order.connection.package, 'status': 'Completed', 'value':order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0), 'balance':order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)-order.payments.reduce((total, value) => total = total + value.amount, 0)}
         
         setOrder(orderEdit)
         togglePopup()
@@ -80,10 +80,12 @@ export const Orders = () => {
         togglePopup()
     }
 
-    const addPaymentRecord = () => {
+    const addPaymentRecord = async () => {
         if (payment.amount > 0) {
-            addPayment()
-            updateOrder()
+            addPayment(order)
+            if (payment.id) {
+                await updateOrder()
+            }
         }
         togglePopup()
     }

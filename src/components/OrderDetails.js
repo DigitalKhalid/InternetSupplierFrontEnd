@@ -12,7 +12,7 @@ import PaymentContext from '../context/payment/PaymentContext'
 import PaymentForm from './PaymentForm'
 
 export const OrderDetails = () => {
-    const { blankFields, orderDetails, hasPackage, setOrderPackageDetail, setOrderDetail, getAllOrderDetails, updateOrderDetail, updateOrderPackageDetail, addOrderDetail, deleteOrderDetail } = useContext(OrderDetailContext)
+    const { blankFields, orderDetails, orderDetail, hasPackage, setOrderPackageDetail, setOrderDetail, getAllOrderDetails, updateOrderDetail, updateOrderPackageDetail, addOrderDetail, deleteOrderDetail } = useContext(OrderDetailContext)
     const { addPayment, payment, setPayment } = useContext(PaymentContext)
     const { order, setOrder, updateOrder, getAllOrders } = useContext(OrderContext)
     const navigate = useNavigate()
@@ -36,7 +36,7 @@ export const OrderDetails = () => {
     }
 
     const openEditPopup = (orderDetail) => {
-        const orderDetailEdit = { ...orderDetail, 'product': orderDetail.product.id }
+        const orderDetailEdit = { ...orderDetail, 'product': orderDetail.product.id, 'package': orderDetail.product.catagory.title === 'Package'?true:false }
         setOperation('update')
         setOrderDetail(orderDetailEdit)
         togglePopup()
@@ -120,7 +120,7 @@ export const OrderDetails = () => {
                     <div>
                         <button className="btn btn-warning" onClick={() => navigate(-1)}><i className='fa fa-arrow-left'></i></button>
                         {order.status !== 'Completed' && <button className="btn btn-success mx-3" onClick={openPaymentPopup}><i className='fa fa-money-bill'></i></button>}
-                        <Link className='btn btn-primary ms-2' to={'/admin/invoice'} onClick={() => localStorage.setItem('orderid', order.id)} target='_blank' rel="noopener noreferrer"><i className='fa fa-print'></i></Link>
+                        <Link className='btn btn-primary ms-2' to={'order/invoice/print-a4'} onClick={() => localStorage.setItem('orderid', order.id)} target='_blank' rel="noopener noreferrer"><i className='fa fa-print'></i></Link>
                     </div>
                     <div>
                         {hasPackage === false && <button className="btn btn-primary mx-4" onClick={openNewPopup}>Add Package</button>}

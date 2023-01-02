@@ -2,15 +2,13 @@ import '../assets/css/Form.css'
 import React, { useContext, useEffect } from 'react'
 import OrderDetailContext from '../context/orderdetail/OrderDetailContext'
 import ProductContext from '../context/product/ProductContext'
-import OrderContext from '../context/order/OrderContext'
 
 const OrderDetailForm = () => {
-    const { orderDetail, setOrderDetail, orderDetails } = useContext(OrderDetailContext)
-    const { order, setOrder } = useContext(OrderContext)
-    const { products, getAllProducts } = useContext(ProductContext)
+    const { orderDetail, setOrderDetail } = useContext(OrderDetailContext)
+    const { products, getProductList } = useContext(ProductContext)
 
     useEffect(() => {
-        getAllProducts()
+        getProductList()
         // eslint-disable-next-line
     }, [])
 
@@ -34,18 +32,18 @@ const OrderDetailForm = () => {
             <form className="row g-2">
 
 
-                <div className="col-md-10">
+                {!orderDetail.package && <div className="col-md-10">
                     <p className='title required'><strong>Product</strong></p>
                     <select className="form-select" id="product" name='product' placeholder="" value={orderDetail.product} onChange={handleOnChange}>
                         <option defaultValue=""></option>
                         {products.map((product) => {
                             return (
-                                <option key={product.id} value={product.id}>{product.title} | {product.sku} ({product.catagory.title})</option>
+                                <option key={product.id} value={product.id}>{product.title} | {product.sku} ({product.catagory_title})</option>
                             )
                         })}
                     </select>
                     <p className='label'></p>
-                </div>
+                </div>}
 
                 <div className="col-md-10">
                     <p className='title required'><strong>Quantity</strong></p>
