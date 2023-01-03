@@ -36,7 +36,7 @@ export const OrderDetails = () => {
     }
 
     const openEditPopup = (orderDetail) => {
-        const orderDetailEdit = { ...orderDetail, 'product': orderDetail.product.id, 'package': orderDetail.product.catagory.title === 'Package'?true:false }
+        const orderDetailEdit = { ...orderDetail, 'product': orderDetail.product.id, 'package': orderDetail.product.catagory.title === 'Package' ? true : false }
         setOperation('update')
         setOrderDetail(orderDetailEdit)
         togglePopup()
@@ -59,7 +59,7 @@ export const OrderDetails = () => {
 
         setPayment({ ...payment, 'order': order.id, 'amount': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0) - order.payments.reduce((total, value) => total = total + value.amount, 0) })
 
-        const orderEdit = { ...order, 'status': 'Completed', 'value': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0), 'balance': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0) - order.payments.reduce((total, value) => total = total + value.amount, 0) }
+        const orderEdit = { ...order, 'connection': order.connection.id, 'package': order.connection.package, 'status': 'Completed', 'value': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0), 'balance': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0) - order.payments.reduce((total, value) => total = total + value.amount, 0) }
 
         setOrder(orderEdit)
         togglePopup()
@@ -85,10 +85,12 @@ export const OrderDetails = () => {
         togglePopup()
     }
 
-    const addPaymentRecord = () => {
+    const addPaymentRecord = async () => {
         if (payment.amount > 0) {
-            addPayment()
-            updateOrder()
+            addPayment(order)
+            if (payment.id) {
+                await updateOrder()
+            }
         }
         togglePopup()
     }
@@ -119,11 +121,12 @@ export const OrderDetails = () => {
                 <div className="list-headers">
                     <div>
                         <button className="btn btn-warning" onClick={() => navigate(-1)}><i className='fa fa-arrow-left'></i></button>
-                        {order.status !== 'Completed' && <button className="btn btn-success mx-3" onClick={openPaymentPopup}><i className='fa fa-money-bill'></i></button>}
-                        <Link className='btn btn-primary ms-2' to={'order/invoice/print-a4'} onClick={() => localStorage.setItem('orderid', order.id)} target='_blank' rel="noopener noreferrer"><i className='fa fa-print'></i></Link>
+                        
+                        <button className="btn btn-success mx-3" onClick={openPaymentPopup}><i className='fa fa-money-bill'></i></button>
+                        
+                        <Link className='btn btn-primary ms-2' to={'/order/invoice/print-a4'} onClick={() => localStorage.setItem('orderid', order.id)} target='_blank' rel="noopener noreferrer"><i className='fa fa-print'></i></Link>
                     </div>
-                    <div>
-                        {hasPackage === false && <button className="btn btn-primary mx-4" onClick={openNewPopup}>Add Package</button>}
+                    <div>                      
                         <button className="btn btn-primary" onClick={openNewPopup}>Add Item</button>
                     </div>
                 </div>
@@ -146,8 +149,8 @@ export const OrderDetails = () => {
                             {orderDetails.map((detail, index) => {
                                 return (
                                     <tr key={index}>
-                                        {detail.product.catagory.title === 'Package' && detail.packagedetails ? <td>{detail.product.title} | {detail.product.sku} ({detail.product.catagory.title}) <br /> Valid from {format(new Date(detail.packagedetails.valid_from), 'dd-MM-yyyy')} ~ {format(new Date(detail.packagedetails.valid_to), 'dd-MM-yyyy')} <Link className='action-btn' onClick={()=>openEditPackageDetailPopup(detail.packagedetails)}><i className='fa fa-pen-to-square'></i></Link></td> : <td>{detail.product.title} | {detail.product.sku} ({detail.product.catagory.title})</td>}
-                                        
+                                        {detail.product.catagory.title === 'Package' && detail.packagedetails ? <td>{detail.product.title} | {detail.product.sku} ({detail.product.catagory.title}) <br /> Valid from {format(new Date(detail.packagedetails.valid_from), 'dd-MM-yyyy')} ~ {format(new Date(detail.packagedetails.valid_to), 'dd-MM-yyyy')} <Link className='action-btn' onClick={() => openEditPackageDetailPopup(detail.packagedetails)}><i className='fa fa-pen-to-square'></i></Link></td> : <td>{detail.product.title} | {detail.product.sku} ({detail.product.catagory.title})</td>}
+
                                         <td>{detail.qty}</td>
                                         <td>{detail.sale_price}</td>
                                         <td>{detail.sale_price * detail.qty}</td>
@@ -168,7 +171,7 @@ export const OrderDetails = () => {
                     {operation === 'update' && <Popup header='Edit Items' body={<OrderDetailForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={updateRecord} />}
 
                     {operation === 'add' && <Popup header='Add New Item' body={<OrderDetailForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={addRecord} />}
-                    
+
                     {operation === 'packageDetailsUpdate' && <Popup header='Edit Package Validity' body={<OrderPackageDetailForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={updatePackageDetail} />}
 
                     {operation === 'delete' && <Popup header='Delete Item' body='Are you sure to delete this item from the order?' btnCancel='No' btnOk='Yes' btnOkClick={deleteRecord} alerts={false} />}

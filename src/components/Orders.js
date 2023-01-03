@@ -43,17 +43,17 @@ export const Orders = () => {
 
     const openDetail = (order) => {
         setOperation('detail')
-        setOrder({...order, 'value':order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)})
+        setOrder({ ...order, 'value': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0) })
         localStorage.setItem('orderid', order.id)
     }
 
     const openPaymentPopup = (order) => {
         setOperation('payment')
-        
-        setPayment({ ...payment, 'order': order.id, 'amount': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)-order.payments.reduce((total, value) => total = total + value.amount, 0)})
 
-        const orderEdit = { ...order, 'connection': order.connection.id, 'package':order.connection.package, 'status': 'Completed', 'value':order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0), 'balance':order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)-order.payments.reduce((total, value) => total = total + value.amount, 0)}
-        
+        setPayment({ ...payment, 'order': order.id, 'amount': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0) - order.payments.reduce((total, value) => total = total + value.amount, 0) })
+
+        const orderEdit = { ...order, 'connection': order.connection.id, 'package': order.connection.package, 'status': 'Completed', 'value': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0), 'balance': order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0) - order.payments.reduce((total, value) => total = total + value.amount, 0) }
+
         setOrder(orderEdit)
         togglePopup()
     }
@@ -141,17 +141,17 @@ export const Orders = () => {
                                         <td>{format(new Date(order.date_created), 'dd-MM-yyyy - hh:mm a')}</td>
                                         <td>{order.connection.connection_id}</td>
                                         <td>{order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)}</td>
-                                        <td>{order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0)-order.payments.reduce((total, value) => total = total + value.amount, 0)}</td>
+                                        <td>{order.details.reduce((total, value) => total = total + value.qty * value.sale_price, 0) - order.payments.reduce((total, value) => total = total + value.amount, 0)}</td>
                                         <td>{order.status}</td>
                                         <td >
                                             <Link className='action-btn' onClick={() => openDeletePopup(order)} ><i className='fa fa-trash-can'></i></Link>
-                                            
+
                                             <Link className='action-btn' onClick={() => openEditPopup(order)} ><i className='fa fa-pen-to-square'></i></Link>
-                                            
-                                            <Link className='action-btn' onClick={() => openDetail(order)} to='/orders/invoice/invoicedetails' ><i className='fa fa-rectangle-list'></i></Link>
-                                            
+
+                                            <Link className={`${order.status === 'Pending' ? 'action-btn' : 'action-btn disable'}`} onClick={() => openDetail(order)} to='/orders/invoice/invoicedetails' ><i className='fa fa-rectangle-list'></i></Link>
+
                                             <Link className={`${order.status !== 'Completed' ? 'action-btn green' : 'action-btn disable'}`} onClick={() => openPaymentPopup(order)}><i className='fa fa-money-bill'></i></Link>
-                                            
+
                                             <Link className='action-btn' to={'/order/invoice/print-a4'} onClick={() => localStorage.setItem('orderid', order.id)} target='_blank' rel="noopener noreferrer"><i className='fa fa-print'></i></Link>
                                         </td>
                                     </tr>

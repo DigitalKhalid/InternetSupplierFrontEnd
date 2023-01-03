@@ -10,6 +10,7 @@ import Pagination from './Pagination'
 import Spinner from './Spinner'
 import AlertContext from '../context/alert/AlertContext'
 import { updateConnectionOrderRenewal } from '../functions/Orders'
+import { grantTempExtention } from '../functions/PackageSubscription'
 
 export const Connections = () => {
     const context = useContext(ConnectionContext)
@@ -49,17 +50,32 @@ export const Connections = () => {
     const openGenOrderPopup = (connection) => {
         setOperation('genOrder')
         setConnection(connection)
-        togglePopup()
+
+        if (connection.package) {
+            if (connection.renewal) {
+                toggleAlert('error', 'This connection alreay have a pending order. Unable to proceed for new order.')
+
+            } else {
+                togglePopup()
+            }
+        } else {
+            toggleAlert('error', 'Please subscribe a package for this connection to proceed.')
+        }
     }
 
     const openStatusPopup = (connection) => {
         setOperation('status')
-        if (connection.package) {
-            setConnection({ ...connection, 'status': connection.status === 'Active' ? 'Inactive' : 'Active', 'customer': connection.customer.id, 'package': connection.package.id, 'subarea': connection.subarea.id })
-            togglePopup()
 
+        if (connection.subscription_id) {
+            if (connection.package) {
+                setConnection({ ...connection, 'status': connection.status === 'Active' ? 'Inactive' : 'Active', 'customer': connection.customer.id, 'package': connection.package.id, 'subarea': connection.subarea.id })
+                togglePopup()
+
+            } else {
+                toggleAlert('error', 'Unable to activate, please subscribe for a package first!')
+            }
         } else {
-            toggleAlert('error', 'Unable to activate, please subscribe for a package first!')
+            toggleAlert('error', 'Unable to activate. Generate a new order or pay existing order to proceed.')
         }
     }
 
@@ -79,6 +95,10 @@ export const Connections = () => {
         }
 
         updateConnection(connectionCheck)
+        if (connection.status === 'Active') {
+            grantTempExtention(connection.subscription_id, connection.temp_expiry_date)
+        }
+
         togglePopup()
     }
 
@@ -173,7 +193,7 @@ export const Connections = () => {
                                         {connection.customer && <td>{connection.customer.first_name + ' ' + connection.customer.last_name}</td>}
                                         <td>{connection.installation_date}</td>
                                         {connection.package ? <td>{connection.package.title}</td> : <td>{connection.package}</td>}
-                                        <td>{connection.temp_expiry_date && connection.temp_expiry_date > connection.expiry_date ? connection.temp_expiry_date: connection.expiry_date}</td>
+                                        <td>{connection.temp_expiry_date && connection.temp_expiry_date > connection.expiry_date ? connection.temp_expiry_date : connection.expiry_date}</td>
                                         <td>{connection.status}</td>
                                         <td >
                                             <Link className='action-btn' onClick={() => openDeletePopup(connection)} ><i className='fa fa-trash-can'></i></Link>
@@ -200,7 +220,7 @@ export const Connections = () => {
                 {operation === 'delete' && <Popup header='Delete Connection' body='Are you sure to delete this connection?' btnCancel='No' btnOk='Yes' btnOkClick={deleteRecord} alerts={false} />}
 
                 {operation === 'status' && <Popup header='Toggle Status' body='Are you sure to change the status of this connection?' btnCancel='No' btnOk='Yes' btnOkClick={updateRecord} alerts={false} />}
-                
+
                 {operation === 'genOrder' && <Popup header='Toggle Status' body='Are you sure to generate order for this connection?' btnCancel='No' btnOk='Yes' btnOkClick={generateOrder} alerts={false} />}
             </div>
         </>

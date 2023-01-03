@@ -5,9 +5,21 @@ const requestHeader = {
     'Authorization': 'Token ' + localStorage.getItem('authtoken')
 }
 
-export const updateConnectionStatus = async (connectionID, status) => {
+export const updateConnectionStatus = async (connectionID, status, renewal) => {
     const url = `${host}connectionapi/${connectionID}/`
-    const body = ({ 'id': connectionID, 'status': status })
+    let body = ''
+    if (status !== '') {
+        if (renewal !== '') {
+            body = ({ 'id': connectionID, 'status': status, 'renewal':renewal })
+        } else {
+            body = ({ 'id': connectionID, 'status': status })
+        }
+
+    } else {
+        if (renewal !== '') {
+            body = ({ 'id': connectionID, 'renewal':renewal })
+        }
+    }
 
     await fetch(url, {
         method: 'PATCH',

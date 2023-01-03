@@ -1,9 +1,10 @@
 import { addDays, addMonths, format, parseISO } from 'date-fns'
+import { updateConnectionStatus } from './Connections'
+import { getSettings } from './Settings'
 
 const host = process.env.REACT_APP_HOST
 let orderSerial = 0
 let orderID = ''
-let settings = ''
 
 const requestHeader = {
     'Content-Type': 'application/json',
@@ -148,32 +149,20 @@ const getPackageDetail = async (productID) => {
 
 
 // Get period from settings for connection renewal before expiry
-const getSettings = async () => {
-    const url = `${host}settingsapi/`
+// const getSettings = async () => {
+//     const url = `${host}settingsapi/`
 
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: requestHeader,
-    });
+//     const response = await fetch(url, {
+//         method: 'GET',
+//         headers: requestHeader,
+//     });
 
-    const json = await response.json();
-    settings = json[0]
+//     const json = await response.json();
 
-    if (response.ok) {
-        return settings
-    }
-}
-
-const updateConnection = async (connection) => {
-    // Update connection renewal to server
-    const url = `${host}connectionapi/${connection.id}/`
-
-    await fetch(url, {
-        method: 'PATCH',
-        headers: requestHeader,
-        body: JSON.stringify(connection)
-    });
-}
+//     if (response.ok) {
+//         return json[0]
+//     }
+// }
 
 
 // Get Connections list that will expire soon (within prescribed period)
@@ -199,9 +188,7 @@ export const updateConnectionOrderRenewal = async (connection) => {
                 const con = json[index];
     
                 if (new Date() >= new Date(new Date(con.expiry_date).setDate(new Date(con.expiry_date).getDate() - settings.renew_order_before))) {
-                    const connection = ({ 'id': con.id, 'renewal': true })
-                    updateConnection(connection)
-                    console.log('connection')
+                    updateConnectionStatus(con.id, '', true)
                     
                     // Generate order for this connection
                     await genOrderID()
