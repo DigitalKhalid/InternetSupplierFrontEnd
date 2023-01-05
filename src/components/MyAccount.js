@@ -1,9 +1,52 @@
-import React from 'react'
+import '../assets/css/Form.css'
+import React, { useContext, useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { getAllUsers } from '../features/login/loginSlice'
 
-export const MyAccount = () => {
-  return (
-    <div>
-        MyAccount Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt suscipit voluptates illo autem numquam, recusandae iste mollitia aperiam earum! Pariatur quasi dolor similique laborum eveniet, obcaecati vitae beatae facilis! Reprehenderit explicabo enim libero quasi, atque ipsam necessitatibus cupiditate sequi nostrum, iusto praesentium, est hic nobis quo aliquam ratione et quis alias. Sequi quasi alias error dicta a deserunt perspiciatis, illum, corporis nesciunt tempora officia nihil ratione, aliquid earum quae praesentium qui possimus nulla eaque! Corrupti, voluptatum debitis! Laborum consequuntur debitis quisquam illo illum voluptatum reprehenderit id dolorem expedita autem. Nihil ipsum placeat illo? Ut quasi repellat, maxime sunt pariatur, sequi tempora quibusdam dolor doloremque similique nemo quia quo repellendus id obcaecati enim, in quisquam. Sed dicta suscipit, a provident quaerat dolore doloribus? Officiis accusamus officia corrupti voluptas quod, quam sequi numquam natus et dolore tempora ipsa porro accusantium minima, explicabo libero aliquid molestiae beatae quidem praesentium atque odio. Soluta, expedita? Tempore tenetur voluptatum ad provident nihil ea consequatur velit dolorum libero id recusandae fuga sunt magni perferendis quae, sapiente officia, doloremque rerum voluptas, eos maxime accusamus. Porro incidunt pariatur suscipit voluptate voluptatum autem totam expedita libero, iure sequi tenetur blanditiis ducimus quae nemo praesentium, nihil officia aliquam necessitatibus? Magnam eaque fugiat deserunt labore itaque. Earum dolore tenetur, nobis quidem a voluptas. Non commodi quibusdam, quas rerum incidunt, corrupti accusamus animi id cum aperiam libero optio maxime deleniti eaque ducimus mollitia modi esse placeat unde consectetur quidem eum? Doloremque, blanditiis at molestias, sed culpa fugit quisquam fugiat ad dolore similique labore?
-    </div>
-  )
+const MyAccount = () => {
+    const user = useSelector((state)=> state.login.users)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+      // dispatch(getAllUsers('?user__id=' + localStorage.getItem('userid')))
+      // eslint-disable-next-line
+    }, [])
+    
+
+    const handleOnChange = (event) => {
+        // setuser({ ...user, [event.target.name]: event.target.value })
+    }
+
+    return (
+        <div className='container form'>
+            <form className="row g-2">
+                <div className="col-md-7">
+                    <p className='title required'><strong>Username</strong></p>
+                    <input type="text" className="form-control" id="username" name='username' placeholder="" value={user.id} onChange={handleOnChange} ></input>
+                    <p className='label'></p>
+                </div>
+
+                <div className="col-md-7">
+                    <p className='title required'><strong>Old Password</strong></p>
+                    <input type="password" className="form-control" autoComplete='off' id="old-password" name='old-password' placeholder="" value={user.oldPassword} onChange={handleOnChange} ></input>
+                    <p className='label'></p>
+                </div>
+
+                <div className="col-md-7">
+                    <p className='title required'><strong>New Password</strong></p>
+                    <input type="password" className="form-control" autoComplete='off' id="new-password" name='new-password' placeholder="" value={user.newPassword} onChange={handleOnChange} ></input>
+                    <p className='label'></p>
+                </div>
+
+                <div className="col-md-7">
+                    <p className='title required'><strong>Confirm Password</strong></p>
+                    <input type="password" className="form-control" autoComplete='off' id="password" name='password' placeholder="" value={user.password} onChange={handleOnChange} ></input>
+                    <p className='label'></p>
+                </div>
+            </form>
+        </div>
+    )
 }
+
+export default MyAccount

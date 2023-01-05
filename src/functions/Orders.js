@@ -94,7 +94,7 @@ const addOrderDetail = async (order, subscribedPackage, connectionExpiryDate) =>
 export const addOrderPackageDetail = async (orderDetail, connectionExpiryDate) => {
     const packageDetail = await getPackageDetail(orderDetail.product)
 
-    if (packageDetail.catagory.title === 'Package') {
+    if (packageDetail.type.title === 'Package') {
         const date = new Date(connectionExpiryDate)
         const activation_date = connectionExpiryDate ? addDays(date, 1) : new Date()
         const subscription_period = orderDetail.qty * packageDetail.unit.value
@@ -114,7 +114,7 @@ export const addOrderPackageDetail = async (orderDetail, connectionExpiryDate) =
 export const autoUpdateOrderPackageDetails = async (orderDetail) => {
     const packageDetail = await getPackageDetail(orderDetail.product)
 
-    if (packageDetail.catagory.title === 'Package') {
+    if (packageDetail.type.title === 'Package') {
         const activation_date = parseISO(orderDetail.packagedetails.valid_from) 
         const subscription_period = orderDetail.qty * packageDetail.unit.value
         console.log(subscription_period)

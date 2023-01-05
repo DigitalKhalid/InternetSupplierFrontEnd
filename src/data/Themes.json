@@ -70,7 +70,7 @@
       "actionsBgcolor": "white",
 
       "sidebarBgcolor": "rgba(255, 255, 255, 0.1)",
-      "sidebarHoverBgcolor": "rgba(0, 0, 255, 1)",
+      "sidebarHoverBgcolor": "rgba(50, 200, 255, 1)",
       "sidebarActiveBgcolor": "rgba(255, 255, 255, 0.2)",
       "sidebarActiveColor": "white",
       "sidebarCloseColor": "red",

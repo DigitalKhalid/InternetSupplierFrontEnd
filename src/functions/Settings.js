@@ -17,7 +17,6 @@ export const getSettings = async () => {
     const json = await response.json();
 
     if (response.ok) {
-        console.log(json[0])
         return json[0]
     }
 }

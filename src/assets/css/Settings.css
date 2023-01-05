@@ -1,0 +1,51 @@
+@import "./Themes.css";
+
+.settings {
+    display: block;
+    overflow-y: auto;
+}
+
+.settings-group {
+    width: 100%;
+    font-size: 1.25em;
+    font-weight: bold;
+    color: var(--sidebar-hover-bgcolor);
+}
+.settings-row {
+    height: 2em;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.settings-label {
+    background-color: var(--sidebar-bgcolor);
+    vertical-align: middle;
+    width: 100%;
+    font-size: 1.1em;
+    height: 2.75em;
+    padding-top: 0.15em;
+    padding-left: 1em;
+}
+
+.settings-field {
+    width: 20%;
+    height: 3em;
+    text-align: center;
+}
+
+.settings-description {
+    padding-left: 1.5em;
+    margin-top: -.25em;
+    font-size: 0.75em;
+}
+
+.form-switch {
+    font-size: 2em;
+    margin-left: -3em;
+}
+
+.save-btn {
+    float: right;
+    margin-top: 1em;
+}

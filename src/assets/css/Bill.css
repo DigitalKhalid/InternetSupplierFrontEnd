@@ -1,0 +1,95 @@
+.bill {
+  width: 76mm;
+  /* min-height: 29.7cm; */
+  padding: 1mm;
+  margin: 1cm auto;
+  border: 1px #d3d3d3 solid;
+  border-radius: 5px;
+  background: white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.bill-page {
+  padding: 0.5cm;
+  /* height: 276mm; */
+}
+
+.bill-header {
+  text-align: center;
+  font-size: 0.75em;
+  padding: 0;
+  margin: 0;
+}
+
+.bill-body {
+  padding-top: 0.25em;
+  text-align: center;
+  font-size: 0.75em;
+}
+
+.bill-list {
+  padding-top: 0.5em;
+}
+
+.table-header {
+  border-bottom: 0.5px solid gray;
+  text-align: center;
+  line-height: 2.5em;
+}
+
+.bill-notes {
+  margin-top: 0.25em;
+  padding: 0.25em;
+  font-weight: bold;
+  border-bottom: 0.5px dashed gray;
+  border-top: 0.5px dashed gray;
+  font-size: 1.25em;
+}
+
+.bill-footer {
+  padding-top: 0.25em;
+  text-align: center;
+  font-size: 0.5em;
+}
+
+.list-border-top {
+  border-top: 0.25px solid black;
+}
+
+.list-border-bottom {
+  border-bottom: 0.25px solid black;
+}
+
+@page {
+  size: auto;
+  margin: 0;
+}
+
+@media print {
+  .bill {
+    margin: 0;
+    border: initial;
+    border-radius: initial;
+    width: initial;
+    min-height: initial;
+    box-shadow: initial;
+    background: initial;
+    page-break-inside:avoid;
+  }
+
+  /* .col-md-3{
+    width: 25%;
+  }
+  
+  .col-md-4{
+    width: 33.32%;
+  }
+  
+  .col-md-5{
+    width: 41.65%;
+  }
+  
+  .col-md-6{
+    width: 50%;
+  } */
+}

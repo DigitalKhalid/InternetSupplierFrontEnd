@@ -152,7 +152,14 @@ export const Orders = () => {
 
                                             <Link className={`${order.status !== 'Completed' ? 'action-btn green' : 'action-btn disable'}`} onClick={() => openPaymentPopup(order)}><i className='fa fa-money-bill'></i></Link>
 
-                                            <Link className='action-btn' to={'/order/invoice/print-a4'} onClick={() => localStorage.setItem('orderid', order.id)} target='_blank' rel="noopener noreferrer"><i className='fa fa-print'></i></Link>
+                                            <div className="dropdown">
+                                                <Link className='action-btn' to={'/payment/bill/print'} onClick={() => localStorage.setItem('orderid', order.id)} target='_blank' rel="noopener noreferrer"><i className='fa fa-print'></i>
+                                                    <div class="dropdown-content">
+                                                        <Link to={'/payment/bill/print'} onClick={() => localStorage.setItem('orderid', order.id)} target='_blank' rel="noopener noreferrer">Bill</Link>
+                                                        <Link to={'/order/invoice/print-a4'} onClick={() => localStorage.setItem('orderid', order.id)} target='_blank' rel="noopener noreferrer">A4</Link>
+                                                    </div>
+                                                </Link>
+                                            </div>
                                         </td>
                                     </tr>
                                 )

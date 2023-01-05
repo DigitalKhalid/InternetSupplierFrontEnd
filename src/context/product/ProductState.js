@@ -29,7 +29,7 @@ const ProductState = (props) => {
   // Get all Records
   const getAllProducts = async (sortField = 'title', sort = 'ASC', search = '', filterField = '') => {
     const url = getListURL('productapirelated', sortField, sort, search, filterField)
-    console.log(url)
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -115,7 +115,7 @@ const ProductState = (props) => {
 
 
   // Update Record
-  const updateProduct = async () => {
+  const updateProduct = async (productType) => {
     // Update record to server side
     const url = `${host}productapi/${product.id}/`
 
@@ -133,7 +133,7 @@ const ProductState = (props) => {
 
     // Update record in frontend
     if (response.ok) {
-      // getAllProducts()
+      getAllProducts('title', 'ASC', productType, 'catagory__type__title')
     }
   }
 
@@ -155,6 +155,7 @@ const ProductState = (props) => {
     if (response.ok) {
       const productsLeft = products.filter((Product) => { return Product.id !== product.id })
       setProducts(productsLeft)
+      setProductsCount(productsCount-1)
     } else {
       showAlert(response.status, product.title)
     }

@@ -1,9 +1,85 @@
-import React from 'react'
+import '../assets/css/Settings.css'
+import React, { useEffect, useState, useContext } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { getSettings, updateSettings } from '../features/settings/settingSlice'
+import AlertContext from '../context/alert/AlertContext'
 
-export const Settings = () => {
+const Settings = () => {
+  const settings = useSelector((state) => state.setting.settings)
+  const error = useSelector((state) => state.setting.error)
+  const dispatch = useDispatch()
+  const [setting, setSetting] = useState('')
+  const { toggleAlert } = useContext(AlertContext)
+
+  useEffect(() => {
+    dispatch(getSettings())
+    // eslint-disable-next-line
+  }, [])
+
+  const updateRecord = () => {
+    dispatch(updateSettings(setting))
+    if (error) {
+      toggleAlert('error', error)
+    } else {
+      toggleAlert('success', 'Settings Updated.')
+      document.getElementById('btn-save').hidden = true
+    }
+  }
+
+  const handleOnChange = (event) => {
+    if (document.getElementById('btn-save').hidden === true) {
+      document.getElementById('btn-save').hidden = false
+    }
+
+    setSetting({ ...settings, [event.target.name]: event.target.value })
+  }
+
+  const handleOnCheck = (event) => {
+    if (document.getElementById('btn-save').hidden === true) {
+      document.getElementById('btn-save').hidden = false
+    }
+
+    setSetting({ ...settings, [event.target.name]: event.target.checked })
+  }
+
   return (
-    <div>
-        Settings Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores in velit vero amet consectetur? Illum voluptatibus recusandae delectus molestias laudantium velit accusantium blanditiis, excepturi, deserunt voluptate ducimus itaque sint a, dolorum quis magni assumenda! Animi quia numquam dignissimos esse ipsa natus debitis tempore minima est totam accusantium beatae, deleniti non quo rerum autem quidem doloremque temporibus harum unde. Explicabo repellendus, perferendis minus assumenda odit iure optio maiores eveniet corrupti pariatur, temporibus deleniti ratione. Aut dolore ea pariatur dolorum. Amet, blanditiis minima. Saepe similique laudantium nobis, repellendus cumque doloribus fugit reiciendis hic! Ad eos ullam incidunt ipsa molestias atque deleniti aperiam nisi est consequuntur velit facere, dolor minima in quis nesciunt sint aliquam laborum provident nihil ea? Enim consequuntur odio repellendus molestiae illum! Ratione dolore fuga suscipit atque illum tempore modi odit, tempora, quibusdam enim inventore dignissimos eum? Accusantium dolorum incidunt, reprehenderit excepturi officia perferendis aliquid eveniet quaerat aperiam dignissimos culpa, reiciendis ad eaque! Error distinctio vel, officia accusamus sit expedita minima accusantium illo facilis placeat, iste ab non harum doloribus eaque quaerat. Quisquam et ut qui obcaecati in distinctio, quae earum sint odio. Ab consequatur, ea consequuntur suscipit aut nulla voluptas quam doloremque incidunt cumque quidem. Ipsam deleniti consequatur consequuntur?
+    <div className='container'>
+      <form className='settings'>
+        <div className="settings-group">
+          <i className='fa fa-basket-shopping'></i> Orders
+        </div>
+        <div className="settings-row">
+          <p className='settings-label'><strong>Generate Order Before (Days)</strong></p>
+          <input type="text" className="form-control settings-field" id="renew_order_before" name='renew_order_before' placeholder="" defaultValue={settings.renew_order_before} onChange={handleOnChange}></input>
+        </div>
+        <p className='settings-description'>No of Days before expiry date to generate new order for connection subscription renewal.</p>
+
+
+        <div className="settings-group">
+          <i className='fa fa-wifi'></i> Connections
+        </div>
+        <div className="settings-row">
+          <p className='settings-label'><strong>Temporary Validity Extention (Days)</strong></p>
+          <input type="text" className="form-control settings-field" id="temp_validity_extension" name='temp_validity_extension' placeholder="" defaultValue={settings.temp_validity_extension} onChange={handleOnChange}></input>
+        </div>
+        <p className='settings-description'>No. of Days will be added to the connection subscription expiry date when manually activate the inactive connection.</p>
+
+
+        <div className="settings-group">
+          <i className='fa fa-file-invoice'></i> Bills/ Invoices
+        </div>
+        <div className="settings-row">
+          <p className='settings-label'><strong>Auto Print Bill</strong></p>
+          <div className="form-check form-switch">
+            <input className="form-check-input" type="checkbox" role="switch" id="bill_auto_print" name='bill_auto_print' defaultChecked={settings.bill_auto_print} onClick={handleOnCheck}></input>
+          </div>
+        </div>
+        <p className='settings-description'>Auto print a bill when receive a payment against an order.</p>
+
+      </form>
+      <button className="btn btn-primary save-btn" id='btn-save' hidden={true} onClick={updateRecord}>Save</button>
     </div>
   )
 }
+
+export default Settings

@@ -4,7 +4,8 @@ const host = process.env.REACT_APP_HOST
 
 const initialState = {
     loading: false,
-    user: [],
+    users: [],
+    user: '',
     error: '',
     credentials: {
         username: '',
@@ -38,6 +39,44 @@ export const getAuthToken = createAsyncThunk('login/getAuthToken', async (data) 
     }
 })
 
+export const getAllUsers = createAsyncThunk('login/getAllUsers', async (filters) => {
+    let url = ''
+    if (filters) {
+        url = `${host}userapi/${filters}`
+    } else {
+        url = `${host}userapi/`
+    }
+
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: requestHeader,
+    })
+
+    if (response.ok) {
+        const json = await response.json()
+        return json
+    } else {
+        return response.errors.message
+    }
+})
+
+export const updateUser = createAsyncThunk('login/updateUser', async (data) => {
+    const url = `${host}userapi/${data.user_id}`
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: requestHeader,
+        body: JSON.stringify(data)
+    })
+
+    if (response.ok) {
+        const json = await response.json()
+        return json
+    } else {
+        return response.errors.message
+    }
+})
+
 const loginSlice = createSlice({
     name: 'login',
     initialState,
@@ -61,6 +100,22 @@ const loginSlice = createSlice({
         builder.addCase(getAuthToken.rejected, (state, action) => {
             state.loading = false
             state.user = []
+            state.error = action.error.message
+        })
+
+        builder.addCase(getAllUsers.pending, (state) => {
+            state.loading = true
+        })
+
+        builder.addCase(getAllUsers.fulfilled, (state, action) => {
+            state.loading = false
+            state.users = action.payload
+            state.error = ''
+        })
+
+        builder.addCase(getAllUsers.rejected, (state, action) => {
+            state.loading = false
+            state.users = []
             state.error = action.error.message
         })
     },

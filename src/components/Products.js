@@ -10,7 +10,7 @@ import Pagination from './Pagination'
 import Spinner from './Spinner'
 
 export const Products = (props) => {
-    let { productCatagory } = props
+    let { productType } = props
     const { blankFields, products, setProduct, productsNext, productsCount, getMoreProducts, getAllProducts, updateProduct, addProduct, deleteProduct } = useContext(ProductContext)
     const { togglePopup } = useContext(PopupContext)
     const [operation, setOperation] = useState(null)
@@ -19,9 +19,9 @@ export const Products = (props) => {
     const [searchText, setSearchText] = useState('')
 
     useEffect(() => {
-        getAllProducts(column, sort, productCatagory + "&search=" + searchText, 'catagory__title')
+        getAllProducts(column, sort, productType + "&search=" + searchText, 'catagory__type__title')
         //   eslint-disable-next-line
-    }, [sort, column, searchText])
+    }, [sort, column, searchText, productType])
 
     const openNewPopup = () => {
         setOperation('add')
@@ -30,14 +30,13 @@ export const Products = (props) => {
     }
 
     const openEditPopup = (product) => {
-        const productEdit = { ...product, 'type': product.type.id, 'catagory': product.catagory.id, 'unit': product.unit.id }
+        const productEdit = { ...product, 'catagory': product.catagory.id, 'unit': product.unit.id }
         setOperation('update')
         setProduct(productEdit)
         togglePopup()
     }
 
     const openDeletePopup = (product) => {
-        console.log(product)
         setOperation('delete')
         setProduct(product)
         togglePopup()
@@ -49,9 +48,9 @@ export const Products = (props) => {
     }
 
     const updateRecord = () => {
-        updateProduct()
+        updateProduct(productType)
         togglePopup()
-        getAllProducts(column, sort, productCatagory + "&search=" + searchText, 'catagory__title')
+        // getAllProducts(column, sort, productType + "&search=" + searchText, 'catagory__type__title')
     }
 
     const deleteRecord = () => {
@@ -74,7 +73,7 @@ export const Products = (props) => {
             {/* Headers */}
             <div className="list-headers">
                 <input type="text" className="search-control" id="search" name='search' placeholder="Search" onChange={(event) => setSearchText(event.target.value)}></input>
-                <button className="btn btn-primary" onClick={openNewPopup}>Add {productCatagory}</button>
+                <button className="btn btn-primary" onClick={openNewPopup}>Add {productType}</button>
             </div>
 
             {/* List */}
@@ -84,7 +83,7 @@ export const Products = (props) => {
                     dataLength={products.length}
                     next={getMoreProducts}
                     hasMore={products.length < productsCount}
-                    // loader={<Spinner />}
+                // loader={<Spinner />}
                 >
                     <table>
                         <thead className='list-head'>
@@ -94,6 +93,8 @@ export const Products = (props) => {
                                 <th className='sorting-head' onClick={() => sorting('sku')}>SKU <i className={`${column + sort === 'skuASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'skuDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
                                 <th className='sorting-head' onClick={() => sorting('description')}>Description <i className={`${column + sort === 'descriptionASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'descriptionDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
+                                
+                                <th className='sorting-head' onClick={() => sorting('unit__title')}>{productType==='Package'?'Period':'Unit'} <i className={`${column + sort === 'unit__titleASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'unit__titleDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
                                 <th className='sorting-head' onClick={() => sorting('sale_price')}>Sale Price <i className={`${column + sort === 'sale_priceASC' ? 'sort-btn fa fa-sort-up' : column + sort === 'sale_priceDESC' ? 'sort-btn fa fa-sort-down' : 'sort-btn fa fa-sort'}`}></i></th>
 
@@ -107,6 +108,7 @@ export const Products = (props) => {
                                         <td>{product.title}</td>
                                         <td>{product.sku}</td>
                                         <td>{product.description}</td>
+                                        <td>{product.unit.title}</td>
                                         <td>{product.sale_price}</td>
                                         <td >
                                             <Link className='action-btn' onClick={() => openDeletePopup(product)} ><i className='fa fa-trash-can'></i></Link>
@@ -125,9 +127,9 @@ export const Products = (props) => {
 
             {/* Popup Forms */}
             <div>
-                {operation === 'update' && <Popup header='Edit Product' body={<ProductForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={updateRecord} />}
+                {operation === 'update' && <Popup header='Edit Product' body={<ProductForm type={productType}/>} btnCancel='Cancel' btnOk='Save' btnOkClick={updateRecord} />}
 
-                {operation === 'add' && <Popup header='Add New Product' body={<ProductForm />} btnCancel='Cancel' btnOk='Save' btnOkClick={addRecord} />}
+                {operation === 'add' && <Popup header='Add New Product' body={<ProductForm type={productType} />} btnCancel='Cancel' btnOk='Save' btnOkClick={addRecord} />}
 
                 {operation === 'delete' && <Popup header='Delete Product' body='Are you sure to delete this product?' btnCancel='No' btnOk='Yes' btnOkClick={deleteRecord} alerts={false} />}
             </div>

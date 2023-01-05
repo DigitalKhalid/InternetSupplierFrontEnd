@@ -49,7 +49,7 @@ const Invoice = () => {
                             </div>
                             <div className="col-md-3">
                                 Received By:
-                                <div className="invoice-to">ClickPick</div>
+                                <div className="invoice-to">{invoice.cashier_name}</div>
                                 <div className="invoice-to-address"><strong>Order ID:</strong> {invoice.order_id}</div>
                                 <div className="invoice-to-address"><strong>Dated:</strong> {format(new Date(invoice.date_created), 'dd-MM-yyyy')}</div>
                                 <div className="invoice-to-address"><strong>Status:</strong> {invoice.status}</div>
