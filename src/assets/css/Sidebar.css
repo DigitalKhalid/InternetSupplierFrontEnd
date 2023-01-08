@@ -45,7 +45,7 @@
 .sidebarmenu-container {
     display: flex;
     flex-direction: column;
-    height: 84%;
+    height: 100%;
     width: 100%;
 }
 
@@ -132,7 +132,7 @@
     padding-bottom: 1em;
     padding-left: 1.5em;
     align-items: center;
-    height: 16%;
+    height: 7em;
 }
 
 .avatar {
@@ -146,9 +146,6 @@
     line-height: 0.2em;
 }
 
-/* .copywrite {
-
-} */
 
 .bizz-footer {
     display: flex;

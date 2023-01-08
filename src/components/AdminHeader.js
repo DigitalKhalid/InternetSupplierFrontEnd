@@ -18,6 +18,7 @@ const AdminHeader = () => {
   const handleLogout = () => {
     localStorage.clear()
     navigate('/login')
+    window.location.reload()
   }
 
   const toggleTheme = () => {
@@ -34,8 +35,8 @@ const AdminHeader = () => {
   }
 
   const handleLogs = () => {
-    updateConnectionOrderRenewal()
-    updateExpiredConnectionStatus()
+    // updateConnectionOrderRenewal()
+    // updateExpiredConnectionStatus()
   }
   // window.onunload = function () {
   //   localStorage.clear();

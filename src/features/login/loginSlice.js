@@ -18,25 +18,30 @@ const requestHeader = {
 }
 
 
-export const getAuthToken = createAsyncThunk('login/getAuthToken', async (data) => {
+export const getAuthToken = createAsyncThunk('login/getAuthToken', async (data, { rejectWithValue }) => {
     const url = `${host}gettoken/`
 
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: requestHeader,
-        body: JSON.stringify(data)
-    })
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: requestHeader,
+            body: JSON.stringify(data)
+        })
 
-    const json = await response.json()
-    if (response.ok) {
-        localStorage.setItem('authtoken', json.token)
-        localStorage.setItem('userid', json.user_id)
-        localStorage.setItem('useremail', json.email)
-        localStorage.setItem('username', data.username)
-        return json
-    } else {
-        return response.errors.message
+        if (response.ok) {
+            const json = await response.json()
+            localStorage.setItem('authtoken', json.token)
+            localStorage.setItem('userid', json.user_id)
+            localStorage.setItem('useremail', json.email)
+            localStorage.setItem('username', data.username)
+            return json
+        }
+        const errorMessage = 'Incorrect username or password'
+        return rejectWithValue(errorMessage)
+    } catch (error) {
+        return rejectWithValue(error)
     }
+
 })
 
 export const getAllUsers = createAsyncThunk('login/getAllUsers', async (filters) => {
@@ -100,7 +105,7 @@ const loginSlice = createSlice({
         builder.addCase(getAuthToken.rejected, (state, action) => {
             state.loading = false
             state.user = []
-            state.error = action.error.message
+            state.error = action.payload
         })
 
         builder.addCase(getAllUsers.pending, (state) => {
@@ -116,7 +121,7 @@ const loginSlice = createSlice({
         builder.addCase(getAllUsers.rejected, (state, action) => {
             state.loading = false
             state.users = []
-            state.error = action.error.message
+            state.error = action.payload
         })
     },
 })

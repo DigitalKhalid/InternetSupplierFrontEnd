@@ -41,7 +41,7 @@ const OrderDetailState = (props) => {
     });
     const json = await response.json();
     setOrderDetails(json)
-    setHasPackage(json.map((item) => item.product.catagory.title === 'Package' ? true : false))
+    // setHasPackage(json.map((item) => item.product.catagory.title === 'Package' ? true : false))
   }
 
 

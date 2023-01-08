@@ -1,36 +1,28 @@
 import { addDays, addMonths, format, parseISO } from 'date-fns'
 import { updateConnectionStatus } from './Connections'
-import { getSettings } from './Settings'
+import store from '../redux/store'
+import { getSettings } from '../features/settings/settingSlice'
+import { getOrderSerial, updateOrderSerial } from '../features/orders/orderSlice'
 
 const host = process.env.REACT_APP_HOST
-let orderSerial = 0
-let orderID = ''
 
 const requestHeader = {
     'Content-Type': 'application/json',
     'Authorization': 'Token ' + localStorage.getItem('authtoken')
 }
 
-export const getOrders = async () => {
-    const url = `${host}orderserialapi`
-
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: requestHeader
-    });
-
-    const json = await response.json();
-    orderSerial = Math.max(...json.map(o => (o.id))) + 1
-    return orderSerial
-}
-
-export const genOrderID = async () => {
+const genOrderID = async () => {
+    let orderID = ''
+    let orderSerial = store.getState().order.orderSerial
 
     if (orderSerial === 0) {
-        await getOrders()
+        await store.dispatch(getOrderSerial())
+        orderSerial = store.getState().order.orderSerial
     }
+
     orderID = 'CPCL-' + orderSerial.toString().padStart(5, '0')
-    orderSerial = orderSerial + 1
+
+    store.dispatch(updateOrderSerial(orderSerial + 1))
     return orderID
 }
 
@@ -57,14 +49,16 @@ const defaultOrderPackageData = {
     valid_to: '',
 }
 
-const generateOrder = async (connection) => {
-
+const generateOrder = async (orderID, connection) => {
     const url = `${host}orderapi/`
     const body = { ...defaultOrderData, 'connection': connection.id, 'order_id': orderID }
 
     const response = await fetch(url, {
         method: 'POST',
-        headers: requestHeader,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
         body: JSON.stringify(body),
     })
     const json = await response.json();
@@ -81,7 +75,10 @@ const addOrderDetail = async (order, subscribedPackage, connectionExpiryDate) =>
 
     const response = await fetch(url, {
         method: 'POST',
-        headers: requestHeader,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
         body: JSON.stringify(body),
     })
     const json = await response.json();
@@ -94,20 +91,25 @@ const addOrderDetail = async (order, subscribedPackage, connectionExpiryDate) =>
 export const addOrderPackageDetail = async (orderDetail, connectionExpiryDate) => {
     const packageDetail = await getPackageDetail(orderDetail.product)
 
-    if (packageDetail.type.title === 'Package') {
+    if (packageDetail.catagory.type.title === 'Package') {
         const date = new Date(connectionExpiryDate)
         const activation_date = connectionExpiryDate ? addDays(date, 1) : new Date()
         const subscription_period = orderDetail.qty * packageDetail.unit.value
-        const expiry_date = format(addMonths(activation_date, subscription_period) , 'yyyy-MM-dd')
+        const expiry_date = format(addMonths(activation_date, subscription_period), 'yyyy-MM-dd')
 
         const url = `${host}orderpackagedetailapi/`
         const body = { ...defaultOrderPackageData, 'package': orderDetail.id, 'valid_from': format(new Date(activation_date), 'yyyy-MM-dd'), 'valid_to': expiry_date }
-    
-        await fetch(url, {
+
+        const response = await fetch(url, {
             method: 'POST',
-            headers: requestHeader,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + localStorage.getItem('authtoken')
+            },
             body: JSON.stringify(body),
         })
+
+        return response.ok
     }
 }
 
@@ -115,18 +117,21 @@ export const autoUpdateOrderPackageDetails = async (orderDetail) => {
     const packageDetail = await getPackageDetail(orderDetail.product)
 
     if (packageDetail.type.title === 'Package') {
-        const activation_date = parseISO(orderDetail.packagedetails.valid_from) 
+        const activation_date = parseISO(orderDetail.packagedetails.valid_from)
         const subscription_period = orderDetail.qty * packageDetail.unit.value
-        console.log(subscription_period)
-        const expiry_date = format(addMonths(activation_date, subscription_period) , 'yyyy-MM-dd')
+
+        const expiry_date = format(addMonths(activation_date, subscription_period), 'yyyy-MM-dd')
 
         const url = `${host}orderpackagedetailapi/${orderDetail.packagedetails.id}/`
 
-        const body = { ...defaultOrderPackageData, 'package':orderDetail.id, 'valid_from': format(new Date(activation_date), 'yyyy-MM-dd'), 'valid_to': expiry_date }
-    
+        const body = { ...defaultOrderPackageData, 'package': orderDetail.id, 'valid_from': format(new Date(activation_date), 'yyyy-MM-dd'), 'valid_to': expiry_date }
+
         await fetch(url, {
             method: 'PUT',
-            headers: requestHeader,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + localStorage.getItem('authtoken')
+            },
             body: JSON.stringify(body),
         })
     }
@@ -138,7 +143,10 @@ const getPackageDetail = async (productID) => {
 
     const response = await fetch(url, {
         method: 'GET',
-        headers: requestHeader,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
     })
     const json = await response.json();
 
@@ -147,52 +155,41 @@ const getPackageDetail = async (productID) => {
     }
 }
 
-
-// Get period from settings for connection renewal before expiry
-// const getSettings = async () => {
-//     const url = `${host}settingsapi/`
-
-//     const response = await fetch(url, {
-//         method: 'GET',
-//         headers: requestHeader,
-//     });
-
-//     const json = await response.json();
-
-//     if (response.ok) {
-//         return json[0]
-//     }
-// }
-
-
-// Get Connections list that will expire soon (within prescribed period)
-export const updateConnectionOrderRenewal = async (connection) => {
+// Generate orders for Connections that will expire soon (within prescribed period) or generate order for connection specified
+export const updateConnectionOrderRenewal = async (connection = '') => {
     if (connection) {
-        await genOrderID()
-        await generateOrder(connection)
+        // Generate order for this connection
+        const orderID = await genOrderID()
+        await generateOrder(orderID, connection)
+        // updateConnectionStatus(connection.id, '', true)
 
     } else {
         const url = `${host}activevalidconnectionapi/`
-        
+
         const response = await fetch(url, {
             method: 'GET',
-            headers: requestHeader,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + localStorage.getItem('authtoken')
+            },
         });
-    
-        const json = await response.json();
 
         if (response.ok) {
-            const settings = getSettings()
-    
+            const json = await response.json();
+            console.log(json)
+
+            await store.dispatch(getSettings())
+            const settings = store.getState().setting.settings
+
             for (let index = 0; index < json.length; index++) {
                 const con = json[index];
-    
                 if (new Date() >= new Date(new Date(con.expiry_date).setDate(new Date(con.expiry_date).getDate() - settings.renew_order_before))) {
-                    updateConnectionStatus(con.id, '', true)
-                    
+
                     // Generate order for this connection
-                    await genOrderID()
-                    await generateOrder(con)
+                    const orderID = await genOrderID()
+                    await generateOrder(orderID, con)
+
+                    updateConnectionStatus(con.id, '', true)
                 }
             }
             return json;

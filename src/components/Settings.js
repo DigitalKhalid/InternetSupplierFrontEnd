@@ -42,44 +42,46 @@ const Settings = () => {
     setSetting({ ...settings, [event.target.name]: event.target.checked })
   }
 
-  return (
-    <div className='container'>
-      <form className='settings'>
-        <div className="settings-group">
-          <i className='fa fa-basket-shopping'></i> Orders
-        </div>
-        <div className="settings-row">
-          <p className='settings-label'><strong>Generate Order Before (Days)</strong></p>
-          <input type="text" className="form-control settings-field" id="renew_order_before" name='renew_order_before' placeholder="" defaultValue={settings.renew_order_before} onChange={handleOnChange}></input>
-        </div>
-        <p className='settings-description'>No of Days before expiry date to generate new order for connection subscription renewal.</p>
-
-
-        <div className="settings-group">
-          <i className='fa fa-wifi'></i> Connections
-        </div>
-        <div className="settings-row">
-          <p className='settings-label'><strong>Temporary Validity Extention (Days)</strong></p>
-          <input type="text" className="form-control settings-field" id="temp_validity_extension" name='temp_validity_extension' placeholder="" defaultValue={settings.temp_validity_extension} onChange={handleOnChange}></input>
-        </div>
-        <p className='settings-description'>No. of Days will be added to the connection subscription expiry date when manually activate the inactive connection.</p>
-
-
-        <div className="settings-group">
-          <i className='fa fa-file-invoice'></i> Bills/ Invoices
-        </div>
-        <div className="settings-row">
-          <p className='settings-label'><strong>Auto Print Bill</strong></p>
-          <div className="form-check form-switch">
-            <input className="form-check-input" type="checkbox" role="switch" id="bill_auto_print" name='bill_auto_print' defaultChecked={settings.bill_auto_print} onClick={handleOnCheck}></input>
+  if (settings) {
+    return (
+      <div className='container'>
+        <form className='settings'>
+          <div className="settings-group">
+            <i className='fa fa-basket-shopping'></i> Orders
           </div>
-        </div>
-        <p className='settings-description'>Auto print a bill when receive a payment against an order.</p>
+          <div className="settings-row">
+            <p className='settings-label'><strong>Generate Order Before (Days)</strong></p>
+            <input type="text" className="form-control settings-field" id="renew_order_before" name='renew_order_before' placeholder="" defaultValue={settings.renew_order_before} onChange={handleOnChange}></input>
+          </div>
+          <p className='settings-description'>No of Days before expiry date to generate new order for connection subscription renewal.</p>
 
-      </form>
-      <button className="btn btn-primary save-btn" id='btn-save' hidden={true} onClick={updateRecord}>Save</button>
-    </div>
-  )
+
+          <div className="settings-group">
+            <i className='fa fa-wifi'></i> Connections
+          </div>
+          <div className="settings-row">
+            <p className='settings-label'><strong>Temporary Validity Extention (Days)</strong></p>
+            <input type="text" className="form-control settings-field" id="temp_validity_extension" name='temp_validity_extension' placeholder="" defaultValue={settings.temp_validity_extension} onChange={handleOnChange}></input>
+          </div>
+          <p className='settings-description'>No. of Days will be added to the connection subscription expiry date when manually activate the inactive connection.</p>
+
+
+          <div className="settings-group">
+            <i className='fa fa-file-invoice'></i> Bills/ Invoices
+          </div>
+          <div className="settings-row">
+            <p className='settings-label'><strong>Auto Print Bill</strong></p>
+            <div className="form-check form-switch">
+              <input className="form-check-input" type="checkbox" role="switch" id="bill_auto_print" name='bill_auto_print' defaultChecked={settings.bill_auto_print} onClick={handleOnCheck}></input>
+            </div>
+          </div>
+          <p className='settings-description'>Auto print a bill when receive a payment against an order.</p>
+
+        </form>
+        <button className="btn btn-primary save-btn" id='btn-save' hidden={true} onClick={updateRecord}>Save</button>
+      </div>
+    )
+  }
 }
 
 export default Settings

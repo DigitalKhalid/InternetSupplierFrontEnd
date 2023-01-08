@@ -44,6 +44,7 @@ import Bill from './reports/Bill';
 import MyAccount from './components/MyAccount'
 import Settings from './components/Settings';
 import About from './components/About';
+import BarChart from './components/BarChart';
 
 function App() {
   // const dispatch = useDispatch();
@@ -338,6 +339,7 @@ function App() {
 
                                     <Route path='/order/invoice/print-a4' element={<Invoice />} />
                                     <Route path='/payment/bill/print' element={<Bill />} />
+                                    <Route path='/barchart' element={<BarChart />} />
                                   </Routes>
                                 </Router>
                               </InvoiceState>

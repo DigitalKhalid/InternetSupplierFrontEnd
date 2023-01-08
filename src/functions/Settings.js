@@ -11,7 +11,10 @@ export const getSettings = async () => {
 
     const response = await fetch(url, {
         method: 'GET',
-        headers: requestHeader,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
     });
 
     const json = await response.json();

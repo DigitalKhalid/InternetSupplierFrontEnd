@@ -19,9 +19,11 @@ export const getSettings = createAsyncThunk('setting/getSettings', async () => {
 
     const response = await fetch(url, {
         method: 'GET',
-        headers: requestHeader,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
     })
-
     if (response.ok) {
         const json = await response.json()
         return json[0]
@@ -34,7 +36,10 @@ export const updateSettings = createAsyncThunk('setting/updateSettings', async (
 
     const response = await fetch(url, {
         method: 'PATCH',
-        headers: requestHeader,
+        headers:  {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
         body: JSON.stringify(data)
     })
 

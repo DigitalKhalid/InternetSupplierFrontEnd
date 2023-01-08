@@ -12,7 +12,7 @@ import PaymentContext from '../context/payment/PaymentContext'
 import PaymentForm from './PaymentForm'
 
 export const OrderDetails = () => {
-    const { blankFields, orderDetails, orderDetail, hasPackage, setOrderPackageDetail, setOrderDetail, getAllOrderDetails, updateOrderDetail, updateOrderPackageDetail, addOrderDetail, deleteOrderDetail } = useContext(OrderDetailContext)
+    const { blankFields, orderDetails, setOrderPackageDetail, setOrderDetail, getAllOrderDetails, updateOrderDetail, updateOrderPackageDetail, addOrderDetail, deleteOrderDetail } = useContext(OrderDetailContext)
     const { addPayment, payment, setPayment } = useContext(PaymentContext)
     const { order, setOrder, updateOrder, getAllOrders } = useContext(OrderContext)
     const navigate = useNavigate()
@@ -149,7 +149,7 @@ export const OrderDetails = () => {
                             {orderDetails.map((detail, index) => {
                                 return (
                                     <tr key={index}>
-                                        {detail.product.catagory.title === 'Package' && detail.packagedetails ? <td>{detail.product.title} | {detail.product.sku} ({detail.product.catagory.title}) <br /> Valid from {format(new Date(detail.packagedetails.valid_from), 'dd-MM-yyyy')} ~ {format(new Date(detail.packagedetails.valid_to), 'dd-MM-yyyy')} <Link className='action-btn' onClick={() => openEditPackageDetailPopup(detail.packagedetails)}><i className='fa fa-pen-to-square'></i></Link></td> : <td>{detail.product.title} | {detail.product.sku} ({detail.product.catagory.title})</td>}
+                                        {detail.product.catagory.type.title === 'Package' && detail.packagedetails ? <td>{detail.product.title} | {detail.product.sku} ({detail.product.catagory.title}) <br /> Valid from {format(new Date(detail.packagedetails.valid_from), 'dd-MM-yyyy')} ~ {format(new Date(detail.packagedetails.valid_to), 'dd-MM-yyyy')} <Link className='action-btn' onClick={() => openEditPackageDetailPopup(detail.packagedetails)}><i className='fa fa-pen-to-square'></i></Link></td> : <td>{detail.product.title} | {detail.product.sku} ({detail.product.catagory.title})</td>}
 
                                         <td>{detail.qty}</td>
                                         <td>{detail.sale_price}</td>
