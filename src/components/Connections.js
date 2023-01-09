@@ -63,6 +63,12 @@ export const Connections = () => {
         }
     }
 
+    const openArchivedPopup = (connection) => {
+        setOperation('archive')
+        setConnection({ ...connection, 'archived': connection.archived === true ? false : true, 'customer': connection.customer.id, 'package': connection.package.id, 'subarea': connection.subarea.id })
+        togglePopup()
+    }
+
     const openStatusPopup = (connection) => {
         setOperation('status')
 
@@ -186,7 +192,7 @@ export const Connections = () => {
                                 return (
                                     <tr key={index}>
                                         <td className="status-light">
-                                            <button className={`${connection.status === 'Active' ? 'connection-active' : 'connection-inactive'}`} onClick={() => openStatusPopup(connection)} ></button>
+                                            <button className={`${connection.archived === true ? 'connection-archived' : connection.status === 'Active' ? 'connection-active' : 'connection-inactive'}`} onClick={() => openStatusPopup(connection)} ></button>
                                         </td>
                                         <td>{connection.connection_id}</td>
                                         {connection.subarea && <td>{connection.subarea.subarea}</td>}
@@ -199,6 +205,7 @@ export const Connections = () => {
                                             <Link className='action-btn' onClick={() => openDeletePopup(connection)} ><i className='fa fa-trash-can'></i></Link>
                                             <Link className='action-btn' onClick={() => openEditPopup(connection)} ><i className='fa fa-pen-to-square'></i></Link>
                                             <Link className='action-btn' onClick={() => openGenOrderPopup(connection)} ><i className='fa fa-file-invoice'></i></Link>
+                                            <Link className='action-btn' onClick={() => openArchivedPopup(connection)} ><i className={`${connection.archived === false ? 'fa fa-box-archive red' : 'fa fa-square-plus green'}`}></i></Link>
                                         </td>
                                     </tr>
                                 )
@@ -221,7 +228,9 @@ export const Connections = () => {
 
                 {operation === 'status' && <Popup header='Toggle Status' body='Are you sure to change the status of this connection?' btnCancel='No' btnOk='Yes' btnOkClick={updateRecord} alerts={false} />}
 
-                {operation === 'genOrder' && <Popup header='Toggle Status' body='Are you sure to generate order for this connection?' btnCancel='No' btnOk='Yes' btnOkClick={generateOrder} alerts={false} />}
+                {operation === 'genOrder' && <Popup header='Generate Order' body='Are you sure to generate order for this connection?' btnCancel='No' btnOk='Yes' btnOkClick={generateOrder} alerts={false} />}
+
+                {operation === 'archive' && <Popup header='Archive' body='Are you sure to toggle archive?' btnCancel='No' btnOk='Yes' btnOkClick={updateRecord} alerts={false} />}
             </div>
         </>
     )

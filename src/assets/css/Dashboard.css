@@ -34,9 +34,14 @@
     margin: 0.5em;
 }
 
-.db-chart {
+.db-piechart {
     height: 15.5em;
     width: 17em;
+}
+
+.db-barchart {
+    height: 20.5em;
+    width: 100%;
 }
 
 .db-textbox {

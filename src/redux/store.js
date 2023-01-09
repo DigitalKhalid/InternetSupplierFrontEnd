@@ -5,6 +5,7 @@ import orderReducer from '../features/orders/orderSlice';
 import catagorySlice from "../features/productcatagory/catagorySlice";
 import unitSlice from "../features/units/unitSlice";
 import settingSlice from "../features/settings/settingSlice";
+import dashboardSlice from "../features/dashboard/dashboardSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     catagory: catagorySlice,
     unit: unitSlice,
     setting: settingSlice,
+    dashboard: dashboardSlice,
   }
 })
 

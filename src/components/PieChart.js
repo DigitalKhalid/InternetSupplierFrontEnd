@@ -2,17 +2,17 @@ import '../assets/css/PieChart.css'
 import React from 'react'
 
 const PieChart = (props) => {
-    const { percentage, color, width } = props
+    const { value, color, width } = props
 
     const pieStyle = {
-        '--percentage': percentage,
+        '--percentage': value,
         '--pie-color': color,
         '--pie-width': width
     }
 
     return (
-        <div class="pie animate" style={pieStyle}>
-            {percentage}%
+        <div className="pie animate" style={pieStyle}>
+            {value}
         </div>
     )
 }

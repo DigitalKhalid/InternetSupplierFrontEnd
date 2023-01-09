@@ -1,18 +1,22 @@
 [
   {
-    "title": "html",
-    "percentage": "90%"
+    "title": "Jan, 2023",
+    "percentage": "100%",
+    "value": "12658"
   },
   {
-    "title": "css",
-    "percentage": "35%"
+    "title": "Feb, 2023",
+    "percentage": "35%",
+    "value": "12658"
   },
   {
-    "title": "java",
-    "percentage": "73%"
+    "title": "Mar, 2023",
+    "percentage": "73%",
+    "value": "12658"
   },
   {
-    "title": "python",
-    "percentage": "55%"
+    "title": "April, 2023",
+    "percentage": "55%",
+    "value": "12658"
   }
 ]

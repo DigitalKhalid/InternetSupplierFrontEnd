@@ -87,10 +87,8 @@ export const OrderDetails = () => {
 
     const addPaymentRecord = async () => {
         if (payment.amount > 0) {
-            addPayment(order)
-            if (payment.id) {
-                await updateOrder()
-            }
+            await addPayment(order)
+            await updateOrder()
         }
         togglePopup()
     }
