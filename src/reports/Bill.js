@@ -25,7 +25,7 @@ const Bill = () => {
                         <div>Date: {format(new Date(), 'dd-MM-yyyy hh:mm a')}</div>
                         <div></div>
                         <div>Received By: {invoice.cashier_name}</div>
-                        <div>Paid By: {invoice.connection.customer.first_name} {invoice.connection.customer.last_name}</div>
+                        <div>Paid By: {invoice.connection.customer.first_name} {invoice.connection.customer.last_name} ({invoice.connection.customer.customer_type})</div>
                         <div>{invoice.connection.connection_id} | {invoice.connection.subarea.subarea}</div>
 
                         <div className="row bill-list">

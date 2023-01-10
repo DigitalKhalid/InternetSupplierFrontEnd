@@ -33,7 +33,7 @@ const Invoice = () => {
                         <div className="row">
                             <div className="col-md-5">
                                 Invoice to:
-                                <div className="invoice-to">{invoice.connection.customer.first_name} {invoice.connection.customer.last_name}</div>
+                                <div className="invoice-to">{invoice.connection.customer.first_name} {invoice.connection.customer.last_name} ({invoice.connection.customer.customer_type})</div>
                                 <div className="invoice-to-address">{invoice.connection.customer.street_address}, {invoice.connection.customer.subarea.subarea}, {invoice.connection.customer.subarea.area.area}, {invoice.connection.customer.subarea.area.city.city} </div>
                                 <div className="invoice-to-address"><strong>Contact:</strong> {invoice.connection.customer.contact}</div>
                             </div>

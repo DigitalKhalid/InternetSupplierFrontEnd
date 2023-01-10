@@ -11,6 +11,8 @@ import Spinner from './Spinner'
 import { format } from 'date-fns'
 import PaymentForm from './PaymentForm'
 import PaymentContext from '../context/payment/PaymentContext'
+import { useDispatch, useSelector } from 'react-redux'
+import { getSettings } from '../features/settings/settingSlice'
 
 export const Orders = () => {
     const { blankFields, orders, order, setOrder, ordersNext, ordersCount, getMoreOrders, getAllOrders, updateOrder, addOrder, deleteOrder } = useContext(OrderContext)
@@ -21,10 +23,13 @@ export const Orders = () => {
     const [column, setColumn] = useState('order_id')
     const [searchText, setSearchText] = useState('')
 
+    const settings = useSelector((state)=> state.setting.settings)
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
     useEffect(() => {
         getAllOrders(column, sort, searchText)
+        dispatch(getSettings())
         //   eslint-disable-next-line
     }, [sort, column, searchText])
 
@@ -84,6 +89,11 @@ export const Orders = () => {
         if (payment.amount > 0) {
             await addPayment(order)
             await updateOrder()
+            if (settings.bill_auto_print === true) {
+                localStorage.setItem('orderid', order.id)
+                const win = window.open('/payment/bill/print', '_blank')
+                win.focus()
+            }
         }
         togglePopup()
     }

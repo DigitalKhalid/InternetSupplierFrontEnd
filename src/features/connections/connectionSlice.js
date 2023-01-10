@@ -4,16 +4,6 @@ import axios from 'axios';
 
 const host = process.env.REACT_APP_HOST
 
-// const blankFields = {
-//     id: '',
-//     customer: '',
-//     connection_id: getConnectionID(),
-//     installation_date: new Date().toISOString().slice(0, 10),
-//     package: '',
-//     status: 'Inactive',
-//     new: 'True'
-// }
-
 const initialState = {
     loading: false,
     connections: [],
@@ -31,7 +21,10 @@ export const updateExpiredConnectionStatus = createAsyncThunk('connection/update
 
     const response = await fetch(url, {
         method: 'GET',
-        headers: requestHeader,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
     });
 
     const json = await response.json();
@@ -50,8 +43,6 @@ export const updateExpiredConnectionStatus = createAsyncThunk('connection/update
                 headers: requestHeader,
                 body: JSON.stringify(connection)
             });
-
-            // Generate order for this connection
             
         }
         return json;

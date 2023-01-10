@@ -2,11 +2,14 @@ import React, { useContext, useState } from "react";
 import ConnectionContext from './ConnectionContext'
 import AlertContext from "../alert/AlertContext"
 import getListURL from "../../functions/URLs";
+import { useSelector } from "react-redux";
 // import OrderContext from "../order/OrderContext";
 
 const ConnectionState = (props) => {
   const { showAlert } = useContext(AlertContext)
   // const { addOrder, order } = useContext(OrderContext)
+
+  const settings = useSelector((state) => state.setting.settings)
 
   const host = process.env.REACT_APP_HOST
 
@@ -81,13 +84,13 @@ const ConnectionState = (props) => {
 
   // Add Record
   const addConnection = async (customer_type) => {
-    let connection_id_prefix = ''
-    if (customer_type === 'Individual') {
-      connection_id_prefix = 'ClickPick-'
+    // let connection_id_prefix = ''
+    // if (customer_type === 'Individual') {
+    //   connection_id_prefix = 'ClickPick-'
 
-    } else if (customer_type === 'Dealer') {
-      connection_id_prefix = 'ClickDealer-'
-    }
+    // } else if (customer_type === 'Dealer') {
+    //   connection_id_prefix = 'ClickDealer-'
+    // }
 
     // Add record to server
     const url = `${host}connectionapi/`
@@ -99,7 +102,7 @@ const ConnectionState = (props) => {
         'Authorization': 'Token ' + localStorage.getItem('authtoken')
       },
 
-      body: JSON.stringify({ ...connection, 'connection_id': connection_id_prefix + connection.connection_id })
+      body: JSON.stringify({ ...connection, 'connection_id': settings.connection_id_prefix + connection.connection_id })
     });
     getAllConnections()
     showAlert(response.status, connection.connection_id)

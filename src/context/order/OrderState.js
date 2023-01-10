@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import OrderContext from './OrderContext'
 import AlertContext from "../alert/AlertContext"
 import getListURL from '../../functions/URLs'
+import { useSelector } from "react-redux";
 
 const OrderState = (props) => {
   const { showAlert } = useContext(AlertContext)
@@ -11,10 +12,11 @@ const OrderState = (props) => {
   const [ordersCount, setOrdersCount] = useState(0)
   const [ordersNext, setOrdersNext] = useState('')
 
+  const settings = useSelector((state) => state.setting.settings)
 
   const getOrderID = () => {
     let serial = Math.max(...orders.map(o => (o.id))) + 1
-    const orderID = 'CPCL-' + serial.toString().padStart(5, '0')
+    const orderID = settings.order_id_prefix + serial.toString().padStart(5, '0')
     return orderID
   }
 

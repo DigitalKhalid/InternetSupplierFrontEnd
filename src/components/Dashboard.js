@@ -81,16 +81,14 @@ export const Dashboard = () => {
 
       <br />
 
-      <div className='dashboard-group-title'>Cash Collection History (Last Six Months):</div>
+      {/* <div className='dashboard-group-title'>Cash Collection History (Last Six Months):</div>
       <div className='dashboard-items'>
         <div className="dashboard-item db-barchart" id='connections-pie'>
           <div className="dashboard-item-content">
             {<BarChart data={chartData} />}
-            {/* <br />
-            <strong>Archieved</strong> */}
           </div>
         </div>
-      </div>
+      </div> */}
 
     </div>
   )

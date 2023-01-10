@@ -50,6 +50,12 @@ const Settings = () => {
             <i className='fa fa-basket-shopping'></i> Orders
           </div>
           <div className="settings-row">
+            <p className='settings-label'><strong>Order ID Prefix</strong></p>
+            <input type="text" className="form-control settings-field" id="order_id_prefix" name='order_id_prefix' placeholder="" defaultValue={settings.order_id_prefix} onChange={handleOnChange}></input>
+          </div>
+          <p className='settings-description'>Prefix will be added to all new order IDs by default.</p>
+          
+          <div className="settings-row">
             <p className='settings-label'><strong>Generate Order Before (Days)</strong></p>
             <input type="text" className="form-control settings-field" id="renew_order_before" name='renew_order_before' placeholder="" defaultValue={settings.renew_order_before} onChange={handleOnChange}></input>
           </div>
@@ -60,11 +66,16 @@ const Settings = () => {
             <i className='fa fa-wifi'></i> Connections
           </div>
           <div className="settings-row">
+            <p className='settings-label'><strong>Connection ID Prefix</strong></p>
+            <input type="text" className="form-control settings-field" id="connection_id_prefix" name='connection_id_prefix' placeholder="" defaultValue={settings.connection_id_prefix} onChange={handleOnChange}></input>
+          </div>
+          <p className='settings-description'>Prefix will be added to all new connection IDs by default</p>
+
+          <div className="settings-row">
             <p className='settings-label'><strong>Temporary Validity Extention (Days)</strong></p>
             <input type="text" className="form-control settings-field" id="temp_validity_extension" name='temp_validity_extension' placeholder="" defaultValue={settings.temp_validity_extension} onChange={handleOnChange}></input>
           </div>
           <p className='settings-description'>No. of Days will be added to the connection subscription expiry date when manually activate the inactive connection.</p>
-
 
           <div className="settings-group">
             <i className='fa fa-file-invoice'></i> Bills/ Invoices

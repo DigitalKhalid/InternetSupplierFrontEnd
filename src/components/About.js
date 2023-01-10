@@ -5,13 +5,20 @@ const About = () => {
     return (
         <div>
             <p className="paragraph">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium odio officiis explicabo modi ea doloribus, blanditiis non labore, fuga quisquam inventore porro adipisci voluptates! Perspiciatis neque harum excepturi deserunt quis dignissimos error placeat ducimus quibusdam ut in velit tempora obcaecati libero, inventore laudantium dicta. Aliquam quisquam, aut soluta praesentium eligendi dolorum sint, adipisci eos, magnam quibusdam cum nihil delectus animi tenetur possimus incidunt reprehenderit maiores aperiam sequi aspernatur? Quo culpa quis, dignissimos eum numquam, nam asperiores dolorem sed distinctio explicabo, consectetur velit. Esse, quo doloremque laborum quos beatae sit earum iure aperiam et iste officiis molestias cupiditate neque sunt labore?
+                BizzISP Manager is a simple and interactive application to manage connections and business activities among customers and dealers. The focus is to minimize efforts to keep track of package subscriptions and their renewal.
             </p>
             <p className="paragraph">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium odio officiis explicabo modi ea doloribus, blanditiis non labore, fuga quisquam inventore porro adipisci voluptates! Perspiciatis neque harum excepturi deserunt quis dignissimos error placeat ducimus quibusdam ut in velit tempora obcaecati libero, inventore laudantium dicta. Aliquam quisquam, aut soluta praesentium eligendi dolorum sint, adipisci eos, magnam quibusdam cum nihil delectus animi tenetur possimus incidunt reprehenderit maiores aperiam sequi aspernatur? Quo culpa quis, dignissimos eum numquam, nam asperiores dolorem sed distinctio explicabo, consectetur velit. Esse, quo doloremque laborum quos beatae sit earum iure aperiam et iste officiis molestias cupiditate neque sunt labore?
+                The application BizzISP version 1.0 is an initial Beta release and will be released final product after several trials to provide seemless and bug free service. Improvements will be shared among all BizzISP Manager Users and deployed to their dedicated hosting on request.
             </p>
             <p className="paragraph">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium odio officiis explicabo modi ea doloribus, blanditiis non labore, fuga quisquam inventore porro adipisci voluptates! Perspiciatis neque harum excepturi deserunt quis dignissimos error placeat ducimus quibusdam ut in velit tempora obcaecati libero, inventore laudantium dicta. Aliquam quisquam, aut soluta praesentium eligendi dolorum sint, adipisci eos, magnam quibusdam cum nihil delectus animi tenetur possimus incidunt reprehenderit maiores aperiam sequi aspernatur? Quo culpa quis, dignissimos eum numquam, nam asperiores dolorem sed distinctio explicabo, consectetur velit. Esse, quo doloremque laborum quos beatae sit earum iure aperiam et iste officiis molestias cupiditate neque sunt labore?
+                The product is solely property of BizzSole hence distribution and sharing of source code by ones will be liable to legal procecutions.
+            </p>
+            <strong>Contact Information:</strong>
+            <p className="paragraph">
+                For more information, please contact <a href="/" target='_blank' rel='nooperner'>bizzsole.com</a>. <br />
+                <i className='fa fa-envelope'></i> bizzsole@gmail.com <br />
+                <i className='fa-brands fa-facebook'></i> https://facebook.com/bizzsole <br />
+                <i className='fa-brands fa-whatsapp'></i> 0301-5339757
             </p>
         </div>
     )

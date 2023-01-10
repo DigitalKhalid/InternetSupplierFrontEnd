@@ -45,6 +45,7 @@ import MyAccount from './components/MyAccount'
 import Settings from './components/Settings';
 import About from './components/About';
 import BarChart from './components/BarChart';
+import { Complaints } from './components/Complaints';
 
 function App() {
   // const dispatch = useDispatch();
@@ -315,7 +316,22 @@ function App() {
                                                   </div>
                                                 </div>
                                               </div>} />
-                                            
+
+                                            <Route path='complaints' element={
+                                              <div className="container-content">
+                                                <div className='content'>
+                                                  <div className="content-header">
+                                                    Complaints
+                                                    <div className='alerts'>
+                                                      <Alerts />
+                                                    </div>
+                                                  </div>
+                                                  <div className="content-body">
+                                                    <Complaints />
+                                                  </div>
+                                                </div>
+                                              </div>} />
+
                                             <Route path='About' element={
                                               <div className="container-content">
                                                 <div className='content'>

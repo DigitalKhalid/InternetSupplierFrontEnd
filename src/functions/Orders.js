@@ -5,6 +5,7 @@ import { getSettings } from '../features/settings/settingSlice'
 import { getOrderSerial, updateOrderSerial } from '../features/orders/orderSlice'
 
 const host = process.env.REACT_APP_HOST
+const settings = store.getState().setting.settings
 
 const requestHeader = {
     'Content-Type': 'application/json',
@@ -20,7 +21,8 @@ const genOrderID = async () => {
         orderSerial = store.getState().order.orderSerial
     }
 
-    orderID = 'CPCL-' + orderSerial.toString().padStart(5, '0')
+
+    orderID = settings.order_id_prefix + orderSerial.toString().padStart(5, '0')
 
     store.dispatch(updateOrderSerial(orderSerial + 1))
     return orderID
@@ -176,10 +178,8 @@ export const updateConnectionOrderRenewal = async (connection = '') => {
 
         if (response.ok) {
             const json = await response.json();
-            console.log(json)
 
             await store.dispatch(getSettings())
-            const settings = store.getState().setting.settings
 
             for (let index = 0; index < json.length; index++) {
                 const con = json[index];
