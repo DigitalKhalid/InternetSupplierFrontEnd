@@ -4,7 +4,7 @@ import AlertContext from "../alert/AlertContext"
 import getListURL from "../../functions/URLs";
 
 const CountryState = (props) => {
-    const { showAlert } = useContext(AlertContext)
+    const { showAlert, toggleAlert } = useContext(AlertContext)
 
     const host = process.env.REACT_APP_HOST
     const [countries, setCountries] = useState([])
@@ -22,47 +22,63 @@ const CountryState = (props) => {
     const getAllCountries = async (sortField = 'country', sort = 'ASC', search = '', filterField = '') => {
         const url = getListURL('countryapi', sortField, sort, search, filterField)
 
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-        });
-        const json = await response.json();
-        setCountriesCount(json.count)
-        setCountries(json.results)
-        setCountriesNext(json.next)
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+            });
+            const json = await response.json();
+            setCountriesCount(json.count)
+            setCountries(json.results)
+            setCountriesNext(json.next)
+
+        } catch (error) {
+            toggleAlert('error', error.message)
+        }
     }
 
     // Get List
     const getCountriesList = async (sortField = 'country', sort = 'ASC', search = '', filterField = '') => {
         const url = getListURL('countrylistapi', sortField, sort, search, filterField)
 
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-        });
-        const json = await response.json();
-        setCountries(json)
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+            });
+            const json = await response.json();
+            setCountries(json)
+
+        } catch (error) {
+            toggleAlert('error', error.message)
+        }
     }
 
     // Append more records used for pagination
     const getMoreCountries = async () => {
         const url = countriesNext
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-        });
-        const json = await response.json();
-        setCountries(countries.concat(json.results))
-        setCountriesNext(json.next)
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+            });
+            const json = await response.json();
+            setCountries(countries.concat(json.results))
+            setCountriesNext(json.next)
+
+        } catch (error) {
+            toggleAlert('error', error.message)
+        }
     }
 
     // Add Record
@@ -70,17 +86,22 @@ const CountryState = (props) => {
         // Add record to server
         const url = `${host}countryapi/`
 
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
 
-            body: JSON.stringify(country)
-        });
-        getAllCountries('country', 'ASC', '')
-        showAlert(response.status, country.country)
+                body: JSON.stringify(country)
+            });
+            getAllCountries('country', 'ASC', '')
+            showAlert(response.status, country.country)
+
+        } catch (error) {
+            toggleAlert('error', error.message)
+        }
     }
 
 
@@ -89,20 +110,25 @@ const CountryState = (props) => {
         // Update record to server side
         const url = `${host}countryapi/${country.id}/`
 
-        const response = await fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-            body: JSON.stringify(country)
-        });
-        // const json = await response.json();
-        showAlert(response.status, country.country)
+        try {
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+                body: JSON.stringify(country)
+            });
+            // const json = await response.json();
+            showAlert(response.status, country.country)
 
-        // Update record in frontend
-        if (response.ok) {
-            getAllCountries('country', 'ASC', '')
+            // Update record in frontend
+            if (response.ok) {
+                getAllCountries('country', 'ASC', '')
+            }
+
+        } catch (error) {
+            toggleAlert('error', error.message)
         }
     }
 
@@ -112,19 +138,24 @@ const CountryState = (props) => {
         // delete record from server using API
         const url = `${host}countryapi/${country.id}`
 
-        const response = await fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-        });
-        showAlert(response.status, country.country)
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+            });
+            showAlert(response.status, country.country)
 
-        // delete record from frontend
-        if (response.ok) {
-            const CountrysLeft = countries.filter((con) => { return con.id !== country.id })
-            setCountries(CountrysLeft)
+            // delete record from frontend
+            if (response.ok) {
+                const CountrysLeft = countries.filter((con) => { return con.id !== country.id })
+                setCountries(CountrysLeft)
+            }
+
+        } catch (error) {
+            toggleAlert('error', error.message)
         }
     }
 

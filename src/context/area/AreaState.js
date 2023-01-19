@@ -4,7 +4,7 @@ import AlertContext from "../alert/AlertContext"
 import getListURL from '../../functions/URLs'
 
 const AreaState = (props) => {
-    const { showAlert } = useContext(AlertContext)
+    const { showAlert, toggleAlert } = useContext(AlertContext)
 
     const host = process.env.REACT_APP_HOST
     const [areas, setAreas] = useState([])
@@ -37,7 +37,7 @@ const AreaState = (props) => {
             setAreasNext(json.next)
 
         } catch (error) {
-            showAlert(error, 'error')
+            toggleAlert('error', error.message)
         }
     }
 
@@ -45,30 +45,42 @@ const AreaState = (props) => {
     const getAreasList = async (sortField = 'area', sort = 'ASC', search = '', filterField = '') => {
         const url = getListURL('arealistapi', sortField, sort, search, filterField)
 
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-        });
-        const json = await response.json();
-        setAreas(json)
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+            });
+            const json = await response.json();
+            setAreas(json)
+
+        } catch (error) {
+            toggleAlert('error', error.message)
+        }
     }
+
 
     // Append more records used for pagination
     const getMoreAreas = async () => {
         const url = areasNext
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-        });
-        const json = await response.json();
-        setAreas(areas.concat(json.results))
-        setAreasNext(json.next)
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+            });
+            const json = await response.json();
+            setAreas(areas.concat(json.results))
+            setAreasNext(json.next)
+
+        } catch (error) {
+            toggleAlert('error', error.message)
+        }
     }
 
     // Add Record
@@ -76,17 +88,22 @@ const AreaState = (props) => {
         // Add record to server
         const url = `${host}areaapi/`
 
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
 
-            body: JSON.stringify(area)
-        });
-        getAllAreas('area', 'ASC', '')
-        showAlert(response.status, area.area)
+                body: JSON.stringify(area)
+            });
+            getAllAreas('area', 'ASC', '')
+            showAlert(response.status, area.area)
+
+        } catch (error) {
+            toggleAlert('error', error.message)
+        }
     }
 
 
@@ -95,20 +112,25 @@ const AreaState = (props) => {
         // Update record to server side
         const url = `${host}areaapi/${area.id}/`
 
-        const response = await fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-            body: JSON.stringify(area)
-        });
-        // const json = await response.json();
-        showAlert(response.status, area.area)
+        try {
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+                body: JSON.stringify(area)
+            });
+            // const json = await response.json();
+            showAlert(response.status, area.area)
 
-        // Update record in frontend
-        if (response.ok) {
-            getAllAreas('area', 'ASC', '')
+            // Update record in frontend
+            if (response.ok) {
+                getAllAreas('area', 'ASC', '')
+            }
+
+        } catch (error) {
+            toggleAlert('error', error.message)
         }
     }
 
@@ -118,19 +140,24 @@ const AreaState = (props) => {
         // delete record from server using API
         const url = `${host}areaapi/${area.id}`
 
-        const response = await fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-        });
-        showAlert(response.status)
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+            });
+            showAlert(response.status)
 
-        // delete record from frontend
-        if (response.ok) {
-            const areasLeft = areas.filter((con) => { return con.id !== area.id })
-            setAreas(areasLeft)
+            // delete record from frontend
+            if (response.ok) {
+                const areasLeft = areas.filter((con) => { return con.id !== area.id })
+                setAreas(areasLeft)
+            }
+
+        } catch (error) {
+            toggleAlert('error', error.message)
         }
     }
 

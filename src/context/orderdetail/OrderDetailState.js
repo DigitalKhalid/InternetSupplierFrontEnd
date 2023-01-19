@@ -5,7 +5,7 @@ import getListURL from '../../functions/URLs'
 import { autoUpdateOrderPackageDetails } from '../../functions/Orders'
 
 const OrderDetailState = (props) => {
-  const { showAlert } = useContext(AlertContext)
+  const { showAlert, toggleAlert } = useContext(AlertContext)
   const host = process.env.REACT_APP_HOST
   const [orderDetails, setOrderDetails] = useState([])
 
@@ -25,23 +25,26 @@ const OrderDetailState = (props) => {
   }
 
   const [orderDetail, setOrderDetail] = useState(blankFields)
-  const [hasPackage, setHasPackage] = useState(false)
   const [orderPackageDetail, setOrderPackageDetail] = useState(defaultPackageDetailFields)
 
   // Get all Records
   const getAllOrderDetails = async (sortField = 'product__title', sort = 'ASC', search = '', filterField = '') => {
     const url = getListURL('orderdetailapirelated', sortField, sort, search, filterField)
 
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
-    });
-    const json = await response.json();
-    setOrderDetails(json)
-    // setHasPackage(json.map((item) => item.product.catagory.title === 'Package' ? true : false))
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
+      });
+      const json = await response.json();
+      setOrderDetails(json)
+
+    } catch (error) {
+      toggleAlert('error', error.message)
+    }
   }
 
 
@@ -50,22 +53,27 @@ const OrderDetailState = (props) => {
     // Add record to server
     const url = `${host}orderdetailapi/`
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
 
-      body: JSON.stringify(orderDetail)
-    });
-    showAlert(response.status, orderDetail.product)
+        body: JSON.stringify(orderDetail)
+      });
+      showAlert(response.status, orderDetail.product)
 
-    // Add record to frontend
-    if (response.ok) {
-      const json = await response.json();
-      setOrderDetail(json)
-      getAllOrderDetails('', 'ASC', localStorage.getItem('orderid'), 'order')
+      // Add record to frontend
+      if (response.ok) {
+        const json = await response.json();
+        setOrderDetail(json)
+        getAllOrderDetails('', 'ASC', localStorage.getItem('orderid'), 'order')
+      }
+
+    } catch (error) {
+      toggleAlert('error', error.message)
     }
   }
 
@@ -75,20 +83,25 @@ const OrderDetailState = (props) => {
     // Update record to server side
     const url = `${host}orderdetailapi/${orderDetail.id}/`
 
-    const response = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
-      body: JSON.stringify(orderDetail)
-    });
-    showAlert(response.status, 'item')
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
+        body: JSON.stringify(orderDetail)
+      });
+      showAlert(response.status, 'item')
 
-    // Update record in frontend
-    if (response.ok) {
-      await autoUpdateOrderPackageDetails(orderDetail)
-      getAllOrderDetails('product__title', 'ASC', localStorage.getItem('orderid'), 'order')
+      // Update record in frontend
+      if (response.ok) {
+        await autoUpdateOrderPackageDetails(orderDetail)
+        getAllOrderDetails('product__title', 'ASC', localStorage.getItem('orderid'), 'order')
+      }
+
+    } catch (error) {
+      toggleAlert('error', error.message)
     }
   }
 
@@ -97,19 +110,24 @@ const OrderDetailState = (props) => {
   const updateOrderPackageDetail = async () => {
     const url = `${host}orderpackagedetailapi/${orderPackageDetail.id}/`
 
-    const response = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
-      body: JSON.stringify(orderPackageDetail),
-    });
-    showAlert(response.status, 'package validity')
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
+        body: JSON.stringify(orderPackageDetail),
+      });
+      showAlert(response.status, 'package validity')
 
-    // Update record in frontend
-    if (response.ok) {
-      getAllOrderDetails('product__title', 'ASC', localStorage.getItem('orderid'), 'order')
+      // Update record in frontend
+      if (response.ok) {
+        getAllOrderDetails('product__title', 'ASC', localStorage.getItem('orderid'), 'order')
+      }
+
+    } catch (error) {
+      toggleAlert('error', error.message)
     }
   }
 
@@ -118,26 +136,31 @@ const OrderDetailState = (props) => {
     // delete record from server using API
     const url = `${host}orderdetailapi/${orderDetail.id}`
 
-    const response = await fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
-    });
+    try {
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
+      });
 
-    // delete record from frontend
-    if (response.ok) {
-      const OrderDetailsLeft = orderDetails.filter((OrderDetail) => { return OrderDetail.id !== orderDetail.id })
-      setOrderDetails(OrderDetailsLeft)
-    } else {
-      showAlert(response.status)
+      // delete record from frontend
+      if (response.ok) {
+        const OrderDetailsLeft = orderDetails.filter((OrderDetail) => { return OrderDetail.id !== orderDetail.id })
+        setOrderDetails(OrderDetailsLeft)
+      } else {
+        showAlert(response.status)
+      }
+
+    } catch (error) {
+      toggleAlert('error', error.message)
     }
   }
 
 
   return (
-    <OrderDetailContext.Provider value={{ blankFields, orderDetails, orderDetail, hasPackage, orderPackageDetail, updateOrderPackageDetail, setOrderPackageDetail, setOrderDetail, getAllOrderDetails, addOrderDetail, updateOrderDetail, deleteOrderDetail }}>
+    <OrderDetailContext.Provider value={{ blankFields, orderDetails, orderDetail, orderPackageDetail, updateOrderPackageDetail, setOrderPackageDetail, setOrderDetail, getAllOrderDetails, addOrderDetail, updateOrderDetail, deleteOrderDetail }}>
       {props.children}
     </OrderDetailContext.Provider>
   )

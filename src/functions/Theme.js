@@ -37,8 +37,7 @@ const applyTheme = (theme) => {
             document.documentElement.style.setProperty('--gradiant-color-1', element.detail.gradiantColor1)
             document.documentElement.style.setProperty('--gradiant-color-2', element.detail.gradiantColor2)
             document.documentElement.style.setProperty('--bg-image', element.detail.bgImage)
-
-            document.documentElement.style.setProperty('--main-bg', element.detail.mainBg)
+            document.documentElement.style.setProperty('--bg-color', element.detail.bgColor)
 
             document.documentElement.style.setProperty('--font-family', element.detail.fontFamily)
 

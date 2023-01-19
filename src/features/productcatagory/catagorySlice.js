@@ -26,12 +26,17 @@ export const getAllCatagories = createAsyncThunk('catagory/getAllCatagories', as
         url = `${host}catagoryapi/`
     }
 
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: requestHeader,
-    })
-    const json = await response.json()
-    return json
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: requestHeader,
+        })
+        const json = await response.json()
+        return json
+
+    } catch (error) {
+        return error.message
+    }
 })
 
 const catagorySlice = createSlice({

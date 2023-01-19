@@ -5,7 +5,7 @@ import getListURL from '../../functions/URLs'
 import { addPackageSubscription } from "../../functions/PackageSubscription";
 
 const PaymentState = (props) => {
-  const { showAlert } = useContext(AlertContext)
+  const { showAlert, toggleAlert } = useContext(AlertContext)
 
   const host = process.env.REACT_APP_HOST
   const [payments, setPayments] = useState([])
@@ -27,32 +27,43 @@ const PaymentState = (props) => {
   const getAllPayments = async (sortField = 'order', sort = 'DESC', search = '', filterField = '') => {
     const url = getListURL('paymentapirelated', sortField, sort, search, filterField)
 
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
-    });
-    const json = await response.json();
-    setPaymentsCount(json.count)
-    setPayments(json.results)
-    setPaymentsNext(json.next)
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
+      });
+      const json = await response.json();
+      setPaymentsCount(json.count)
+      setPayments(json.results)
+      setPaymentsNext(json.next)
+
+    } catch (error) {
+      toggleAlert('error', error.message)
+    }
   }
 
   // Append more records used for pagination
   const getMorePayments = async () => {
     const url = paymentsNext
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
-    });
-    const json = await response.json();
-    setPayments(payments.concat(json.results))
-    setPaymentsNext(json.next)
+
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
+      });
+      const json = await response.json();
+      setPayments(payments.concat(json.results))
+      setPaymentsNext(json.next)
+
+    } catch (error) {
+      toggleAlert('error', error.message)
+    }
   }
 
   // Add Record
@@ -60,23 +71,28 @@ const PaymentState = (props) => {
     // Add record to server
     const url = `${host}paymentapi/`
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
 
-      body: JSON.stringify(payment)
-    });
-    showAlert(response.status, '')
+        body: JSON.stringify(payment)
+      });
+      showAlert(response.status, '')
 
-    // Add record to frontend
-    if (response.ok) {
-      const json = await response.json();
-      setPayment(json)
-      setPayments(payments.concat(payment))
-      addPackageSubscription(json.id, order)
+      // Add record to frontend
+      if (response.ok) {
+        const json = await response.json();
+        setPayment(json)
+        setPayments(payments.concat(payment))
+        addPackageSubscription(json.id, order)
+      }
+
+    } catch (error) {
+      toggleAlert('error', error.message)
     }
   }
 
@@ -86,20 +102,25 @@ const PaymentState = (props) => {
     // Update record to server side
     const url = `${host}paymentapi/${payment.id}/`
 
-    const response = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
-      body: JSON.stringify(payment)
-    });
-    showAlert(response.status, '')
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
+        body: JSON.stringify(payment)
+      });
+      showAlert(response.status, '')
 
 
-    // Update record in frontend
-    if (response.ok) {
-      getAllPayments()
+      // Update record in frontend
+      if (response.ok) {
+        getAllPayments()
+      }
+
+    } catch (error) {
+      toggleAlert('error', error.message)
     }
   }
 
@@ -109,21 +130,26 @@ const PaymentState = (props) => {
     // delete record from server using API
     const url = `${host}paymentapi/${payment.id}`
 
-    const response = await fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
-    });
+    try {
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
+      });
 
-    // delete record from frontend
-    if (response.ok) {
-      const PaymentsLeft = payments.filter((Payment) => { return Payment.id !== payment.id })
-      setPayments(PaymentsLeft)
-      setPaymentsCount(paymentsCount - 1)
-    } else {
-      showAlert(response.status, '')
+      // delete record from frontend
+      if (response.ok) {
+        const PaymentsLeft = payments.filter((Payment) => { return Payment.id !== payment.id })
+        setPayments(PaymentsLeft)
+        setPaymentsCount(paymentsCount - 1)
+      } else {
+        showAlert(response.status, '')
+      }
+
+    } catch (error) {
+      toggleAlert('error', error.message)
     }
   }
 

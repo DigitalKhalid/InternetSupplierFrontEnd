@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 // import OrderContext from "../order/OrderContext";
 
 const ConnectionState = (props) => {
-  const { showAlert } = useContext(AlertContext)
+  const { showAlert, toggleAlert } = useContext(AlertContext)
   // const { addOrder, order } = useContext(OrderContext)
 
   const settings = useSelector((state) => state.setting.settings)
@@ -39,47 +39,63 @@ const ConnectionState = (props) => {
   const getAllConnections = async (sortField = 'connection_id', sort = 'DESC', search = '', filterField = '') => {
     const url = getListURL('connectionapirelated', sortField, sort, search, filterField)
 
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
-    });
-    const json = await response.json();
-    setConnectionsCount(json.count)
-    setConnections(json.results)
-    setConnectionsNext(json.next)
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
+      });
+      const json = await response.json();
+      setConnectionsCount(json.count)
+      setConnections(json.results)
+      setConnectionsNext(json.next)
+
+    } catch (error) {
+      toggleAlert('error', error.message)
+    }
   }
 
   // Append more records used for pagination
   const getMoreConnections = async () => {
     const url = connectionsNext
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
-    });
-    const json = await response.json();
-    setConnections(connections.concat(json.results))
-    setConnectionsNext(json.next)
+
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
+      });
+      const json = await response.json();
+      setConnections(connections.concat(json.results))
+      setConnectionsNext(json.next)
+
+    } catch (error) {
+      toggleAlert('error', error.message)
+    }
   }
 
   // Get Connections List
   const getConnectionsList = async (sortField = 'connection_id', sort = 'DESC', search = '', filterField = '') => {
     const url = getListURL('connectionlistapi', sortField, sort, search, filterField)
 
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
-    });
-    const json = await response.json();
-    setConnections(json)
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
+      });
+      const json = await response.json();
+      setConnections(json)
+
+    } catch (error) {
+      toggleAlert('error', error.message)
+    }
   }
 
   // Add Record
@@ -95,21 +111,26 @@ const ConnectionState = (props) => {
     // Add record to server
     const url = `${host}connectionapi/`
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
 
-      body: JSON.stringify({ ...connection, 'connection_id': settings.connection_id_prefix + connection.connection_id })
-    });
-    getAllConnections()
-    showAlert(response.status, connection.connection_id)
+        body: JSON.stringify({ ...connection, 'connection_id': settings.connection_id_prefix + connection.connection_id })
+      });
+      getAllConnections()
+      showAlert(response.status, connection.connection_id)
 
-    if (response.ok) {
-      const json = await response.json();
-      setConnection(json)
+      if (response.ok) {
+        const json = await response.json();
+        setConnection(json)
+      }
+
+    } catch (error) {
+      toggleAlert('error', error.message)
     }
   }
 
@@ -119,26 +140,31 @@ const ConnectionState = (props) => {
     // Update record to server side
     const url = `${host}connectionapi/${connection.id}/`
 
-    const response = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
-      body: JSON.stringify(connection)
-    });
-    // const json = await response.json();
-    showAlert(response.status, connection.connection_id)
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
+        body: JSON.stringify(connection)
+      });
+      // const json = await response.json();
+      showAlert(response.status, connection.connection_id)
 
-    // Update record in frontend
-    if (response.ok) {
-      if (customerType === 'Individual') {
-        getAllConnections('connection_id', 'DESC', 'Individual', 'customer__customer_type')
-      } else if (customerType === 'Dealer') {
-        getAllConnections('connection_id', 'DESC', 'Dealer', 'customer__customer_type')
-      } else {
-        getAllConnections()
+      // Update record in frontend
+      if (response.ok) {
+        if (customerType === 'Individual') {
+          getAllConnections('connection_id', 'DESC', 'Individual', 'customer__customer_type')
+        } else if (customerType === 'Dealer') {
+          getAllConnections('connection_id', 'DESC', 'Dealer', 'customer__customer_type')
+        } else {
+          getAllConnections()
+        }
       }
+
+    } catch (error) {
+      toggleAlert('error', error.message)
     }
   }
 
@@ -147,19 +173,24 @@ const ConnectionState = (props) => {
     // delete record from server using API
     const url = `${host}connectionapi/${connection.id}`
 
-    const response = await fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('authtoken')
-      },
-    });
-    showAlert(response.status, connection.connection_id)
+    try {
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
+      });
+      showAlert(response.status, connection.connection_id)
 
-    // delete record from frontend
-    if (response.ok) {
-      const connectionsLeft = connections.filter((con) => { return con.id !== connection.id })
-      setConnections(connectionsLeft)
+      // delete record from frontend
+      if (response.ok) {
+        const connectionsLeft = connections.filter((con) => { return con.id !== connection.id })
+        setConnections(connectionsLeft)
+      }
+
+    } catch (error) {
+      toggleAlert('error', error.message)
     }
   }
 

@@ -8,17 +8,22 @@ const InvoiceState = (props) => {
     // Get Invoice
     const getInvoice = async (paymentID) => {
         const url = getListURL('invoiceapi', '', '', paymentID, 'id')
-        console.log(url)
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-        });
-        const json = await response.json();
-        setInvoice(json[0])
-        console.log(json[0])
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+            });
+            const json = await response.json();
+            setInvoice(json[0])
+            console.log(json[0])
+
+        } catch (error) {
+            window.alert(error.message)
+        }
     }
 
 

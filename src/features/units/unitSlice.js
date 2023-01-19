@@ -8,7 +8,7 @@ const initialState = {
     unit: {
         id: '',
         title: '',
-        value:''
+        value: ''
     },
     error: '',
 }
@@ -26,13 +26,18 @@ export const getAllUnits = createAsyncThunk('unit/getAllUnits', async (filters) 
     } else {
         url = `${host}unitapi/`
     }
-    
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: requestHeader,
-    })
-    const json = await response.json()
-    return json
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: requestHeader,
+        })
+        const json = await response.json()
+        return json
+
+    } catch (error) {
+        return error.message
+    }
 })
 
 const unitSlice = createSlice({

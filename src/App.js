@@ -1,5 +1,5 @@
-import './App.css';
 import './assets/css/Admin.css'
+import './assets/css/Themes.css'
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Login from './components/Login';
@@ -74,7 +74,7 @@ function App() {
                               <InvoiceState>
                                 <Router>
                                   <Routes>
-                                    <Route path='/login' element={<Login />} />
+                                    <Route path='login' element={<Login />} />
                                     <Route path='error' element={<Error />} />
 
                                     {<Route path='/*' element={

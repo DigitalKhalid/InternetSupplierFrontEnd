@@ -38,7 +38,8 @@
   /* background image */
   --gradiant-color-1: rgba(255, 255, 255, 0.1);
   --gradiant-color-2: rgba(255, 255, 255, 0.4);
-  --bg-image: url('../../../public/images/bg-light.jpg');
+  --bg-image: url('../../../public/bg-light.jpg');
+  --bg-color: rgba(50, 200, 255, 0.5);
 
   --main-bg: radial-gradient(var(--gradiant-color-1), var(--gradiant-color-2)),
     var(--bg-image);

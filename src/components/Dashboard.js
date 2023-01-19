@@ -7,8 +7,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getConnectionsDashboard, getPaymentsDashboard } from '../features/dashboard/dashboardSlice'
 // import { bindActionCreators } from 'redux'
 // import { actionCreators } from '../state/index'
-import chartData from '../data/BarChart.json'
-import BarChart from './BarChart'
 
 export const Dashboard = () => {
   const dispatch = useDispatch()

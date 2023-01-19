@@ -10,38 +10,6 @@ const initialState = {
     error: '',
 }
 
-const requestHeader = {
-    'Content-Type': 'application/json',
-    'Authorization': 'Token ' + localStorage.getItem('authtoken')
-}
-
-const defaultOrderData = {
-    id: '',
-    date_created: '',
-    order_id: '',
-    connection: '',
-    value: '0',
-    status: 'Pending'
-}
-
-// export const generateScheduledOrders = createAsyncThunk('order/generateDefaultOrder', async () => {
-//     const url = `${host}orderapi/`
-
-//     const scheduledConnections = []
-
-//     for (let index = 0; index < scheduledConnections.length; index++) {
-//         const connection = scheduledConnections[index];
-
-//         const body = { ...defaultOrderData, 'connection': connection }
-
-//         await fetch(url, {
-//             method: 'POST',
-//             headers: requestHeader,
-//             body: JSON.stringify(body),
-//         })
-//     }
-// })
-
 export const getOrderSerial = createAsyncThunk('order/generateDefaultOrder', async () => {
     const url = `${host}orderserialapi`
 
@@ -61,7 +29,7 @@ export const getOrderSerial = createAsyncThunk('order/generateDefaultOrder', asy
         }
 
     } catch (error) {
-        return error
+        return error.message
     }
 })
 
@@ -75,22 +43,6 @@ const orderSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        // builder.addCase(generateScheduledOrders.pending, (state) => {
-        //     state.loading = true
-        // })
-
-        // builder.addCase(generateScheduledOrders.fulfilled, (state, action) => {
-        //     state.loading = false
-        //     state.order = action.payload
-        //     state.error = ''
-        // })
-
-        // builder.addCase(generateScheduledOrders.rejected, (state, action) => {
-        //     state.loading = false
-        //     state.order = ''
-        //     state.error = action.error.message
-        // })
-
         builder.addCase(getOrderSerial.pending, (state) => {
             state.loading = true
         })

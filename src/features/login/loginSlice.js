@@ -39,7 +39,7 @@ export const getAuthToken = createAsyncThunk('login/getAuthToken', async (data, 
         const errorMessage = 'Incorrect username or password'
         return rejectWithValue(errorMessage)
     } catch (error) {
-        return rejectWithValue(error)
+        return rejectWithValue(error.message)
     }
 
 })
@@ -52,35 +52,40 @@ export const getAllUsers = createAsyncThunk('login/getAllUsers', async (filters)
         url = `${host}userapi/`
     }
 
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: requestHeader,
-    })
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: requestHeader,
+        })
 
-    if (response.ok) {
-        const json = await response.json()
-        return json
-    } else {
-        return response.errors.message
+        if (response.ok) {
+            const json = await response.json()
+            return json
+        } else {
+            return response.errors.message
+        }
+
+    } catch (error) {
+        return error.message
     }
 })
 
-export const updateUser = createAsyncThunk('login/updateUser', async (data) => {
-    const url = `${host}userapi/${data.user_id}`
+// export const updateUser = createAsyncThunk('login/updateUser', async (data) => {
+//     const url = `${host}userapi/${data.user_id}`
 
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: requestHeader,
-        body: JSON.stringify(data)
-    })
+//     const response = await fetch(url, {
+//         method: 'POST',
+//         headers: requestHeader,
+//         body: JSON.stringify(data)
+//     })
 
-    if (response.ok) {
-        const json = await response.json()
-        return json
-    } else {
-        return response.errors.message
-    }
-})
+//     if (response.ok) {
+//         const json = await response.json()
+//         return json
+//     } else {
+//         return response.errors.message
+//     }
+// })
 
 const loginSlice = createSlice({
     name: 'login',

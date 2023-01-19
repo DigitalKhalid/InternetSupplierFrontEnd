@@ -33,9 +33,8 @@
 
       "gradiantColor1": "rgba(255, 255, 255, 0.1)",
       "gradiantColor2": "rgba(255, 255, 255, 0.4)",
-      "bgImage": "url('../images/bg-light.jpg')",
-
-      "mainBg": "radialgradient(var(gradiantcolor1), var(gradiantcolor2)), var(bgimage)",
+      "bgImage": "url('../bg-light.jpg')",
+      "bgColor": "rgba(240, 250, 255, 1)",
 
       "fontFamily": "'Segoe UI', Tahoma, Geneva, Verdana, sansserif",
 
@@ -76,11 +75,10 @@
       "sidebarCloseColor": "red",
       "sidebarOpenColor": "lightgreen",
 
-      "gradiantColor1": "rgba(0, 0, 0, 0.1)",
+      "gradiantColor1": "rgba(0, 0, 0, 0.3)",
       "gradiantColor2": "rgba(0, 0, 0, 0.4)",
-      "bgImage": "url('../images/bg-dark.jpg')",
-
-      "mainBg": "radial-gradient(var(--gradiant-color-1), var(--gradiant-color-2)), var(--bg-image);",
+      "bgImage": "url('../bg-dark.jpg')",
+      "bgColor": "rgba(20, 35, 50, 0.9)",
 
       "fontFamily": "'Segoe UI', Tahoma, Geneva, Verdana, sansserif",
 

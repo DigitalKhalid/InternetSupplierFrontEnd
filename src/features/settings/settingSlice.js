@@ -8,25 +8,24 @@ const initialState = {
     error: '',
 }
 
-const requestHeader = {
-    'Content-Type': 'application/json',
-    'Authorization': 'Token ' + localStorage.getItem('authtoken')
-}
-
-
 export const getSettings = createAsyncThunk('setting/getSettings', async () => {
     const url = `${host}settingsapi/`
 
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + localStorage.getItem('authtoken')
-        },
-    })
-    if (response.ok) {
-        const json = await response.json()
-        return json[0]
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + localStorage.getItem('authtoken')
+            },
+        })
+        if (response.ok) {
+            const json = await response.json()
+            return json[0]
+        }
+
+    } catch (error) {
+        return error.message
     }
 })
 
@@ -36,7 +35,7 @@ export const updateSettings = createAsyncThunk('setting/updateSettings', async (
 
     const response = await fetch(url, {
         method: 'PATCH',
-        headers:  {
+        headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Token ' + localStorage.getItem('authtoken')
         },

@@ -4,7 +4,7 @@ import AlertContext from "../alert/AlertContext"
 import getListURL from "../../functions/URLs";
 
 const SubAreaState = (props) => {
-    const { showAlert } = useContext(AlertContext)
+    const { showAlert, toggleAlert } = useContext(AlertContext)
 
     const host = process.env.REACT_APP_HOST
     const [subAreas, setSubAreas] = useState([])
@@ -23,48 +23,64 @@ const SubAreaState = (props) => {
     // Get all Records
     const getAllSubAreas = async (sortField = 'subarea', sort = 'ASC', search = '', filterField = '') => {
         const url = getListURL('subareaapirelated', sortField, sort, search, filterField)
-        console.log(url)
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-        });
-        const json = await response.json();
-        setSubAreasCount(json.count)
-        setSubAreas(json.results)
-        setSubAreasNext(json.next)
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+            });
+            const json = await response.json();
+            setSubAreasCount(json.count)
+            setSubAreas(json.results)
+            setSubAreasNext(json.next)
+
+        } catch (error) {
+            toggleAlert('error', error.message)
+        }
     }
 
     // Get List
     const getSubAreasList = async (sortField = 'subarea', sort = 'ASC', search = '', filterField = '') => {
         const url = getListURL('subarealistapi', sortField, sort, search, filterField)
-        console.log(url)
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-        });
-        const json = await response.json();
-        setSubAreas(json)
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+            });
+            const json = await response.json();
+            setSubAreas(json)
+
+        } catch (error) {
+            toggleAlert('error', error.message)
+        }
     }
 
     // Append more records used for pagination
     const getMoreSubAreas = async () => {
         const url = subAreasNext
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-        });
-        const json = await response.json();
-        setSubAreas(subAreas.concat(json.results))
-        setSubAreasNext(json.next)
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+            });
+            const json = await response.json();
+            setSubAreas(subAreas.concat(json.results))
+            setSubAreasNext(json.next)
+
+        } catch (error) {
+            toggleAlert('error', error.message)
+        }
     }
 
     // Add Record
@@ -72,17 +88,22 @@ const SubAreaState = (props) => {
         // Add record to server
         const url = `${host}subareaapi/`
 
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
 
-            body: JSON.stringify(subArea)
-        });
-        getAllSubAreas('Subarea', 'ASC', '')
-        showAlert(response.status, subArea.subarea)
+                body: JSON.stringify(subArea)
+            });
+            getAllSubAreas('Subarea', 'ASC', '')
+            showAlert(response.status, subArea.subarea)
+
+        } catch (error) {
+            toggleAlert('error', error.message)
+        }
     }
 
 
@@ -91,20 +112,25 @@ const SubAreaState = (props) => {
         // Update record to server side
         const url = `${host}subareaapi/${subArea.id}/`
 
-        const response = await fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-            body: JSON.stringify(subArea)
-        });
-        // const json = await response.json();
-        showAlert(response.status, subArea.subarea)
+        try {
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+                body: JSON.stringify(subArea)
+            });
+            // const json = await response.json();
+            showAlert(response.status, subArea.subarea)
 
-        // Update record in frontend
-        if (response.ok) {
-            getAllSubAreas()
+            // Update record in frontend
+            if (response.ok) {
+                getAllSubAreas()
+            }
+
+        } catch (error) {
+            toggleAlert('error', error.message)
         }
     }
 
@@ -114,19 +140,24 @@ const SubAreaState = (props) => {
         // delete record from server using API
         const url = `${host}subareaapi/${subArea.id}`
 
-        const response = await fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + localStorage.getItem('authtoken')
-            },
-        });
-        showAlert(response.status, subArea.subarea)
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('authtoken')
+                },
+            });
+            showAlert(response.status, subArea.subarea)
 
-        // delete record from frontend
-        if (response.ok) {
-            const SubareasLeft = subAreas.filter((con) => { return con.id !== subArea.id })
-            setSubAreas(SubareasLeft)
+            // delete record from frontend
+            if (response.ok) {
+                const SubareasLeft = subAreas.filter((con) => { return con.id !== subArea.id })
+                setSubAreas(SubareasLeft)
+            }
+
+        } catch (error) {
+            toggleAlert('error', error.message)
         }
     }
 

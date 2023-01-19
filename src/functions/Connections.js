@@ -7,25 +7,34 @@ const requestHeader = {
 
 export const updateConnectionStatus = async (connectionID, status, renewal) => {
     const url = `${host}connectionapi/${connectionID}/`
+
     let body = ''
     if (status !== '') {
         if (renewal !== '') {
-            body = ({ 'id': connectionID, 'status': status, 'renewal':renewal })
+            body = ({ 'id': connectionID, 'status': status, 'renewal': renewal })
         } else {
             body = ({ 'id': connectionID, 'status': status })
         }
 
     } else {
         if (renewal !== '') {
-            body = ({ 'id': connectionID, 'renewal':renewal })
+            body = ({ 'id': connectionID, 'renewal': renewal })
         }
     }
 
-    await fetch(url, {
-        method: 'PATCH',
-        headers: requestHeader,
-        body: JSON.stringify(body)
-    });
+    try {
+        await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + localStorage.getItem('authtoken')
+            },
+            body: JSON.stringify(body)
+        });
+
+    } catch (error) {
+        return error.message
+    }
 }
 
 
@@ -35,7 +44,10 @@ export const updateExpiredConnectionStatus = async () => {
 
     const response = await fetch(url, {
         method: 'GET',
-        headers: requestHeader,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + localStorage.getItem('authtoken')
+        },
     });
 
     const json = await response.json();
