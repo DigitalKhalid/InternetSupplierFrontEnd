@@ -15,7 +15,7 @@ const AdminHeader = () => {
 
   const handleLogout = () => {
     localStorage.clear()
-    // navigate('/login')
+    navigate('/login')
     window.location.reload()
   }
 

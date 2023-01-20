@@ -11,6 +11,7 @@ import Spinner from './Spinner'
 import AlertContext from '../context/alert/AlertContext'
 import { updateConnectionOrderRenewal } from '../functions/Orders'
 import { grantTempExtention } from '../functions/PackageSubscription'
+import LoadingBar from 'react-top-loading-bar'
 
 export const Connections = () => {
     const context = useContext(ConnectionContext)
@@ -131,6 +132,13 @@ export const Connections = () => {
 
     return (
         <>
+            <LoadingBar
+                height={3}
+                color='#f11946'
+                progress={100}
+                onLoaderFinished={() => 0}
+            />
+
             {/* Headers */}
             <div className="list-headers">
                 <input type="text" className="search-control" id="search" name='search' placeholder="Search" onChange={(event) => setSearchText(event.target.value)}></input>

@@ -46,6 +46,7 @@ import Settings from './components/Settings';
 import About from './components/About';
 import BarChart from './components/BarChart';
 import { Complaints } from './components/Complaints';
+// import LoadingBar from 'react-top-loading-bar'
 
 function App() {
   // const dispatch = useDispatch();
